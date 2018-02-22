@@ -22,6 +22,7 @@ public class PaintBall extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		batch.begin();
 		batch.draw(img, 0, 0);
+		testmethod();
 		batch.end();
 	}
 	
@@ -30,4 +31,9 @@ public class PaintBall extends ApplicationAdapter {
 		batch.dispose();
 		img.dispose();
 	}
+
+	public void testmethod() {
+
+	    Gdx.app.log("TAG", "Testings");
+    }
 }
