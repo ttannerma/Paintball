@@ -16,6 +16,10 @@ public class PaintBall extends ApplicationAdapter {
 		img = new Texture("badlogic.jpg");
 	}
 
+	public void print() {
+		Gdx.app.log("TAG", "working");
+	}
+
 	@Override
 	public void render () {
 		Gdx.gl.glClearColor(1, 0, 0, 1);
