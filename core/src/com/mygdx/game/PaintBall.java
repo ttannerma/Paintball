@@ -13,7 +13,6 @@ public class PaintBall extends ApplicationAdapter {
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
-		//test
 		img = new Texture("badlogic.jpg");
 	}
 
