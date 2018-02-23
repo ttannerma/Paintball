@@ -18,6 +18,7 @@ public class PaintBall extends ApplicationAdapter {
 
 	public void print() {
 		Gdx.app.log("TAG", "working");
+		//testing
 	}
 
 	@Override
