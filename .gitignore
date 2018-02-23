@@ -2,13 +2,11 @@
 *.jar
 *.bat
 gradlew
-*.xml
 /html/
 *.class
 *.war
 *.pro
 *.ear
-/android/res/
 hs_err_pid*
 
 ## Robovm
