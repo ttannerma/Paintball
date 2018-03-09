@@ -34,8 +34,8 @@ public class Player extends Sprite{
         texture = new Texture(Gdx.files.internal("sketch_ball.png"));
         playerRegion = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
         TextureRegion[] rollingAnimation = convertTo1D(playerRegion);
-        rectangle = new Rectangle(x, y, texture.getWidth() / 4, texture.getHeight());
         rolling = new Animation<TextureRegion>(1 / 60f, rollingAnimation);
+        rectangle = new Rectangle(x, y, rolling.getKeyFrame(0).getRegionWidth(), texture.getHeight());
         setX(x);
         setY(y);
 
@@ -150,10 +150,12 @@ public class Player extends Sprite{
     }
 
     public float getX(float playerXpos) {
-        return playerXpos;
+
+        return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 2);
     }
     public float getY(float playerYpos) {
-        return playerYpos;
+
+        return playerYpos + (rolling.getKeyFrame(0).getRegionHeight() / 2);
     }
 
     public void dispose() {

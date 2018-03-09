@@ -81,7 +81,7 @@ public class PaintBall extends ApplicationAdapter {
 		player.render(batch);
 
         camera.position.x = player.getX(player.playerXpos);
-        camera.position.y = player.getY(player.playerXpos);
+        camera.position.y = player.getY(player.playerYpos);
         camera.update();
 
 		/*
