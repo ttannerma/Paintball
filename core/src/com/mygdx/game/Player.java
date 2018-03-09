@@ -15,15 +15,19 @@ import com.badlogic.gdx.math.Rectangle;
 public class Player extends Sprite{
 
     private Texture texture;
-    private Rectangle rectangle;
+    public Rectangle rectangle;
     private TextureRegion[][] playerRegion;
     private TextureRegion currentFrame;
     private Animation<TextureRegion> rolling;
 
-    private float x;
-    private float y;
+    int i = 0;
+
+    float x;
+    float y;
+    float playerYpos;
+    float playerXpos;
     private float speedMul = 20;
-    private int animationFrame = 0;
+    private int animationFrame = 1;
     private float timer = 0;
 
     public Player (float x, float y) {
@@ -49,6 +53,7 @@ public class Player extends Sprite{
     }
 
     private float yValueLastTime = 0;
+
     public void render(SpriteBatch batch) {
         float positiveThreshold = 2;
         float negativeThreshold = -2;
@@ -120,12 +125,16 @@ public class Player extends Sprite{
             }
             timer = 1;
         }
-        batch.draw(currentFrame,
-                rectangle.x, rectangle.y,
+        i++;
+        Gdx.app.log("TAG", Integer.toString(i));
+        batch.draw(currentFrame, rectangle.x, rectangle.y,
                 rectangle.getHeight() /2,
                 rectangle.getWidth() /2,
                 rectangle.width, rectangle.height,
                 0.5f,0.5f, -x);
+
+        playerXpos = rectangle.x;
+        playerYpos = rectangle.y;
 
         batch.end();
 
@@ -140,8 +149,14 @@ public class Player extends Sprite{
         this.y = y;
     }
 
+    public float getX(float playerXpos) {
+        return playerXpos;
+    }
+    public float getY(float playerYpos) {
+        return playerYpos;
+    }
+
     public void dispose() {
         texture.dispose();
     }
-
 }
