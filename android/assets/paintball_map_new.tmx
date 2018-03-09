@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="32" tileheight="32" infinite="0" nextobjectid="24">
+ <tileset firstgid="1" name="paintball_tileset" tilewidth="32" tileheight="32" tilecount="72" columns="8">
+  <image source="Sprite_sheet.png" trans="ffffff" width="256" height="288"/>
+ </tileset>
+ <layer name="whole_map_ground" width="32" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjZGBgYBzFGIBS/YQAPv20tJcY+0l1x0DaTy4YrOFP63RHrj3D3X56u4la9uMzl1T7ccmR6z5S7KcVJtV+UtSREnbkmEupv0mN45GIAYiKAYU=
+  </data>
+ </layer>
+ <layer name="ground_and_walls" width="32" height="18">
+  <data encoding="base64" compression="zlib">
+   eJztlNsKgDAIQK3VYF33/1+bPQyGKVvtFpRwXjb0iIgA7WNBRgbzMC8Gv3aPdAwq4JfyJAah9u9/l98iGpka+G2Et6Q/NPMv+umdMUxeLv8O17tHPUp4z7X/tIfafteDm/cm/NH3O/j+GVkTaqX6W/TA7fnZg65E7I0rHQfLJQPo
+  </data>
+ </layer>
+ <layer name="red_gate" width="32" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjGRgAMSKQKwExPoD7JZRMApGwSigFwAALN0Aow==
+  </data>
+ </layer>
+ <layer name="purple_gate" width="32" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAoGF1AfYPtNBth+4wG2X2OA7acHAAAzJwC3
+  </data>
+ </layer>
+ <layer name="blue_gate" width="32" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMAqGDlAfYPt1Bth+7QG2X2OA7acWAAAGvwCn
+  </data>
+ </layer>
+ <layer name="blue_puddle" width="32" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2AUjIJRMApGNtAdaAeMAroDAGDkAC4=
+  </data>
+ </layer>
+ <layer name="red_puddle" width="32" height="18">
+  <data encoding="base64" compression="zlib">
+   eJxjYBgFo2DwAdWBdsAoGAWjYBSMgmENAPYIACY=
+  </data>
+ </layer>
+ <objectgroup name="map_walls">
+  <object id="1" x="32" y="33" width="26" height="441"/>
+  <object id="2" x="31" y="31" width="237" height="31"/>
+  <object id="3" x="225" y="29" width="29" height="194"/>
+  <object id="4" x="190" y="202" width="64" height="20"/>
+  <object id="5" x="167" y="203" width="30" height="37"/>
+  <object id="6" x="136" y="231" width="39" height="23"/>
+  <object id="7" x="134" y="254" width="26" height="129"/>
+  <object id="8" x="162" y="353" width="28" height="29"/>
+  <object id="9" x="172" y="383" width="50" height="29"/>
+  <object id="10" x="207" y="414" width="99" height="31"/>
+  <object id="11" x="289" y="322" width="24" height="108"/>
+  <object id="12" x="287" y="320" width="159" height="32"/>
+  <object id="13" x="423" y="354" width="28" height="89"/>
+  <object id="14" x="450" y="413" width="55" height="32"/>
+  <object id="15" x="482" y="33" width="28" height="408"/>
+  <object id="16" x="487" y="30" width="504" height="33"/>
+  <object id="17" x="961" y="65" width="31" height="477"/>
+  <object id="18" x="109" y="511" width="887" height="31"/>
+  <object id="19" x="58" y="454" width="32" height="37"/>
+  <object id="20" x="91" y="483" width="35" height="36"/>
+ </objectgroup>
+ <objectgroup name="red_puddle">
+  <object id="21" x="192" y="160" width="33" height="33"/>
+ </objectgroup>
+ <objectgroup name="blue_puddle">
+  <object id="22" x="95" y="448" width="33" height="34"/>
+ </objectgroup>
+</map>
