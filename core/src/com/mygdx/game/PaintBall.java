@@ -37,7 +37,7 @@ public class PaintBall extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
-		camera.setToOrtho(false, 800f, 400f);
+		camera.setToOrtho(false, 400f, 200f);
 		randomColor = new Color(0.2f, 0.5f, 0.3f, 1.0f);
 		player = new Player(0,0);
 		paintPuddles = new paintPuddles();
@@ -53,8 +53,8 @@ public class PaintBall extends ApplicationAdapter {
 	public void render () {
         player.rotate(180f);
         batch.setProjectionMatrix(camera.combined);
-        //Gdx.gl.glClearColor(1, 0, 0, 1);
-        //Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        Gdx.gl.glClearColor(1, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         tiledMapRenderer.setView(camera);
         tiledMapRenderer.render();
 
@@ -81,17 +81,16 @@ public class PaintBall extends ApplicationAdapter {
 		player.render(batch);
 
         camera.position.x = player.getX(player.playerXpos);
-        camera.position.y = player.getY(player.playerXpos);
+        camera.position.y = player.getY(player.playerYpos);
         camera.update();
 
-		/*
 
 
-        paintPuddles.render(batch);
-		player.render(batch);
+
+        //paintPuddles.render(batch);
 
 		timer--;
-		*/
+
 	}
 	
 	@Override
@@ -102,9 +101,9 @@ public class PaintBall extends ApplicationAdapter {
 		//map.dispose();
 
 
-		/*
+
 		player.dispose();
 		paintPuddles.dispose();
-		*/
+
     }
 }

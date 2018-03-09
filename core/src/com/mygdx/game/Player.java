@@ -18,6 +18,7 @@ public class Player extends Sprite{
     public Rectangle rectangle;
     private TextureRegion[][] playerRegion;
     private TextureRegion currentFrame;
+    private SpriteBatch batch;
     private Animation<TextureRegion> rolling;
 
     int i = 0;
@@ -34,8 +35,9 @@ public class Player extends Sprite{
         texture = new Texture(Gdx.files.internal("sketch_ball.png"));
         playerRegion = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
         TextureRegion[] rollingAnimation = convertTo1D(playerRegion);
-        rectangle = new Rectangle(x, y, texture.getWidth() / 4, texture.getHeight());
         rolling = new Animation<TextureRegion>(1 / 60f, rollingAnimation);
+        rectangle = new Rectangle(x, y, rolling.getKeyFrame(0).getRegionWidth(), texture.getHeight());
+        currentFrame = rolling.getKeyFrames()[1];
         setX(x);
         setY(y);
 
@@ -102,9 +104,8 @@ public class Player extends Sprite{
                 y += (-1 * speed);
             }
         }
-        rectangle.setPosition(x,y);
+        rectangle.setPosition(x, y);
         Gdx.app.log("TAG", "x: " + Float.toString(x) + " y: " + Float.toString(y));
-        batch.begin();
 
         if(yValueLastTime > y && timer <= 0) {
             currentFrame = rolling.getKeyFrames()[animationFrame];
@@ -124,19 +125,20 @@ public class Player extends Sprite{
                 animationFrame--;
             }
             timer = 1;
+        } else {
+            currentFrame = rolling.getKeyFrames()[1];
         }
         i++;
         Gdx.app.log("TAG", Integer.toString(i));
+        batch.begin();
         batch.draw(currentFrame, rectangle.x, rectangle.y,
                 rectangle.getHeight() /2,
                 rectangle.getWidth() /2,
                 rectangle.width, rectangle.height,
-                0.5f,0.5f, -x);
-
+                0.1f,0.1f, -x);
+        batch.end();
         playerXpos = rectangle.x;
         playerYpos = rectangle.y;
-
-        batch.end();
 
         yValueLastTime = y;
     }
@@ -150,10 +152,10 @@ public class Player extends Sprite{
     }
 
     public float getX(float playerXpos) {
-        return playerXpos;
+        return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 2);
     }
     public float getY(float playerYpos) {
-        return playerYpos;
+        return playerYpos + (rolling.getKeyFrame(0).getRegionWidth() / 2);
     }
 
     public void dispose() {
