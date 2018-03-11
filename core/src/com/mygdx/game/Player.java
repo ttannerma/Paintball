@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.math.Rectangle;
 
 /**
@@ -15,7 +16,7 @@ import com.badlogic.gdx.math.Rectangle;
 public class Player extends Sprite{
 
     private Texture texture;
-    public Rectangle rectangle;
+    public Rectangle playerRectangle;
     private TextureRegion[][] playerRegion;
     private TextureRegion currentFrame;
     private SpriteBatch batch;
@@ -36,11 +37,10 @@ public class Player extends Sprite{
         playerRegion = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
         TextureRegion[] rollingAnimation = convertTo1D(playerRegion);
         rolling = new Animation<TextureRegion>(1 / 60f, rollingAnimation);
-        rectangle = new Rectangle(x, y, rolling.getKeyFrame(0).getRegionWidth(), texture.getHeight());
+        playerRectangle = new Rectangle(x, y, rolling.getKeyFrame(0).getRegionWidth() / 10, texture.getHeight() / 10);
         currentFrame = rolling.getKeyFrames()[1];
         setX(x);
         setY(y);
-
     }
 
     private TextureRegion[] convertTo1D(TextureRegion[][] region) {
@@ -51,6 +51,7 @@ public class Player extends Sprite{
                 animation[index++] = region[i][j];
             }
         }
+
         return animation;
     }
 
@@ -104,7 +105,7 @@ public class Player extends Sprite{
                 y += (-1 * speed);
             }
         }
-        rectangle.setPosition(x, y);
+        playerRectangle.setPosition(x, y);
         Gdx.app.log("TAG", "x: " + Float.toString(x) + " y: " + Float.toString(y));
 
         if(yValueLastTime > y && timer <= 0) {
@@ -131,17 +132,17 @@ public class Player extends Sprite{
         i++;
         Gdx.app.log("TAG", Integer.toString(i));
         batch.begin();
-        batch.draw(currentFrame, rectangle.x, rectangle.y,
-                rectangle.getHeight() /2,
-                rectangle.getWidth() /2,
-                rectangle.width, rectangle.height,
-                0.1f,0.1f, -x);
+        batch.draw(currentFrame, playerRectangle.x, playerRectangle.y,
+                playerRectangle.getHeight() /2,
+                playerRectangle.getWidth() /2,
+                playerRectangle.width, playerRectangle.height, 1, 1, -x);
         batch.end();
-        playerXpos = rectangle.x;
-        playerYpos = rectangle.y;
+        playerXpos = playerRectangle.x;
+        playerYpos = playerRectangle.y;
 
         yValueLastTime = y;
     }
+
 
     public void setX(float x) {
         this.x = x;
@@ -152,10 +153,10 @@ public class Player extends Sprite{
     }
 
     public float getX(float playerXpos) {
-        return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 2);
+        return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2);
     }
     public float getY(float playerYpos) {
-        return playerYpos + (rolling.getKeyFrame(0).getRegionWidth() / 2);
+        return playerYpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2);
     }
 
     public void dispose() {
