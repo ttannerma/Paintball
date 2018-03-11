@@ -38,7 +38,7 @@
    eJxjYBgFo2DwAdWBdsAoGAWjYBSMgmENAPYIACY=
   </data>
  </layer>
- <objectgroup name="map_walls">
+ <objectgroup name="map_walls_object">
   <object id="1" x="32" y="33" width="18.6667" height="440.333"/>
   <object id="2" x="31" y="31" width="228.333" height="19"/>
   <object id="3" x="238.333" y="35" width="15.6667" height="188"/>
@@ -67,19 +67,19 @@
   <object id="30" x="448" y="511.5" width="31.5" height="11"/>
   <object id="31" x="875" y="56" width="10" height="359.5"/>
  </objectgroup>
- <objectgroup name="red_puddle">
+ <objectgroup name="red_puddle_object">
   <object id="21" x="192" y="160" width="33" height="33"/>
  </objectgroup>
- <objectgroup name="purple_gate">
+ <objectgroup name="purple_gate_object">
   <object id="34" x="224" y="448" width="32.25" height="63.75"/>
  </objectgroup>
- <objectgroup name="blue_gate">
+ <objectgroup name="blue_gate_object">
   <object id="35" x="448" y="448" width="32" height="63.75"/>
  </objectgroup>
- <objectgroup name="red_gate">
+ <objectgroup name="red_gate_object">
   <object id="38" x="64" y="256" width="63.75" height="32.25"/>
  </objectgroup>
- <objectgroup name="blue_puddle">
+ <objectgroup name="blue_puddle_object">
   <object id="22" x="95" y="448" width="33" height="34"/>
  </objectgroup>
 </map>
