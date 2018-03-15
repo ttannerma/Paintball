@@ -1,19 +1,23 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 /**
  * Contains implementation of the player
  * Created by sauli on 2/23/2018.
  */
-public class Player extends Sprite{
+public class Player extends Sprite {
 
     private Texture texture;
     public Rectangle playerRectangle;
@@ -21,6 +25,7 @@ public class Player extends Sprite{
     private TextureRegion currentFrame;
     private SpriteBatch batch;
     private Animation<TextureRegion> rolling;
+    TiledMap tiledMap;
 
     int i = 0;
 
@@ -31,6 +36,11 @@ public class Player extends Sprite{
     private float speedMul = 20;
     private int animationFrame = 1;
     private float timer = 0;
+    boolean upLeftCollision;
+    boolean downLeftCollision;
+    boolean upRightCollision;
+    boolean downRightCollision;
+
 
     public Player (float x, float y) {
         texture = new Texture(Gdx.files.internal("sketch_ball.png"));
@@ -41,6 +51,7 @@ public class Player extends Sprite{
         currentFrame = rolling.getKeyFrames()[1];
         setX(x);
         setY(y);
+        tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
     }
 
     private TextureRegion[] convertTo1D(TextureRegion[][] region) {
@@ -63,45 +74,56 @@ public class Player extends Sprite{
         float speed = 50 * Gdx.graphics.getDeltaTime();
         timer = timer - 5 * speed * Gdx.graphics.getDeltaTime();
 
+
         if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() > 0) {
 
-            if(Gdx.input.getAccelerometerY() < negativeThreshold) {
+            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) - speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+            if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
                 x += (-1 * speed);
             }
 
-            if(Gdx.input.getAccelerometerZ() > positiveThreshold) {
+            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2),playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10  / 2 + speed);
+            if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
                 y += speed;
             }
         }
 
         if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() > 0 ) {
 
-            if(Gdx.input.getAccelerometerY() > positiveThreshold) {
+            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) + speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+            if(Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
                 x += speed;
             }
 
-            if(Gdx.input.getAccelerometerZ() > positiveThreshold) {
+            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2), playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2+ speed);
+            if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
                 y += speed;
             }
         }
 
+
         if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() < 0 ) {
 
-            if(Gdx.input.getAccelerometerY() > positiveThreshold) {
+            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) + speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+            if(Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
                 x += speed;
             }
-            if(Gdx.input.getAccelerometerZ() < negativeThreshold) {
+
+            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2), playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10  / 2 - speed);
+            if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
                 y += (-1 * speed);
             }
         }
 
         if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() < 0) {
 
-            if(Gdx.input.getAccelerometerY() < negativeThreshold) {
+            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) - speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+            if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
                 x += (-1 * speed);
             }
 
-            if(Gdx.input.getAccelerometerZ() < negativeThreshold) {
+            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2), playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2 - speed);
+            if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
                 y += (-1 * speed);
             }
         }
@@ -129,6 +151,7 @@ public class Player extends Sprite{
         } else {
             currentFrame = rolling.getKeyFrames()[1];
         }
+
         i++;
         Gdx.app.log("TAG", Integer.toString(i));
         batch.begin();
@@ -141,6 +164,35 @@ public class Player extends Sprite{
         playerYpos = playerRectangle.y;
 
         yValueLastTime = y;
+    }
+
+    public void getMyCorners(float pX, float pY) {
+
+        float downYpos = pY;
+        float upYpos = rolling.getKeyFrame(0).getRegionHeight() / 10 / 2 + downYpos;
+        float leftXpos = pX;
+        float rightXpos = rolling.getKeyFrame(0).getRegionWidth() / 10 / 2 + leftXpos;
+
+        upLeftCollision = isFree(leftXpos, upYpos);
+        downLeftCollision = isFree(leftXpos, downYpos);
+        upRightCollision = isFree(rightXpos, upYpos);
+        downRightCollision = isFree(rightXpos, downYpos);
+    }
+
+    private boolean isFree(float x, float y) {
+
+        int indexXround = (int)(x / 32);
+        int indexYround = (int)(y / 32);
+
+        TiledMapTileLayer wallCells = (TiledMapTileLayer) tiledMap.getLayers().get("walls");
+
+        if(wallCells.getCell(indexXround, indexYround) != null) {
+            return false;
+
+        } else {
+
+            return true;
+        }
     }
 
 
@@ -156,7 +208,7 @@ public class Player extends Sprite{
         return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2);
     }
     public float getY(float playerYpos) {
-        return playerYpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2);
+        return playerYpos + (rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
     }
 
     public void dispose() {
