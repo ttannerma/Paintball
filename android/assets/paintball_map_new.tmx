@@ -5,12 +5,12 @@
  </tileset>
  <layer name="whole_map_ground" width="32" height="18">
   <data encoding="base64" compression="zlib">
-   eJxjZGBgYBzFGIBS/YQAPv20tJcY+0l1x0DaTy4YrOFP63RHrj3D3X56u4la9uMzl1T7ccmR6z5S7KcVJtV+UtSREnbkmEupv0mN45GIAYiKAYU=
+   eJztwwENAAAMw6DOv+kLOSSsmqrqowcuFgJB
   </data>
  </layer>
- <layer name="ground_and_walls" width="32" height="18">
+ <layer name="walls" width="32" height="18">
   <data encoding="base64" compression="zlib">
-   eJztlNsKgDAIQK3VYF33/1+bPQyGKVvtFpRwXjb0iIgA7WNBRgbzMC8Gv3aPdAwq4JfyJAah9u9/l98iGpka+G2Et6Q/NPMv+umdMUxeLv8O17tHPUp4z7X/tIfafteDm/cm/NH3O/j+GVkTaqX6W/TA7fnZg65E7I0rHQfLJQPo
+   eJxjYBh4wAPErFgwJ5n6iMHIZjPhMJ+ZgP249OECLDjMHrV/cNkvAMRsQMw1APYLEGEvLe0nFOYj0X70cgZWdtDCfn4GzHIP3R5mHOLUsB+bG+htP8wNsPDmwyGHLk4KQLafG4h5KTCLUvsHwg3Y0jnIDWx0wsSWcbQGAIH5AuU=
   </data>
  </layer>
  <layer name="red_gate" width="32" height="18">

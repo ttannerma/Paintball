@@ -36,6 +36,10 @@ public class PaintBall extends ApplicationAdapter {
 	boolean blueColor;
 	boolean redColor;
 	boolean purpleColor;
+	boolean upLeftCollision;
+	boolean downLeftCollision;
+	boolean upRightCollision;
+	boolean downRightCollision;
 	int timer = 100;
     TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
