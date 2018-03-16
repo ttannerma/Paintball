@@ -1,23 +1,21 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 /**
  * Contains implementation of the player
  * Created by sauli on 2/23/2018.
  */
-public class Player extends Sprite {
+public class Player extends Sprite{
 
     private Texture texture;
     public Rectangle playerRectangle;
@@ -25,7 +23,8 @@ public class Player extends Sprite {
     private TextureRegion currentFrame;
     private SpriteBatch batch;
     private Animation<TextureRegion> rolling;
-    TiledMap tiledMap;
+    TextureData texData;
+    Pixmap map;
 
     int i = 0;
 
@@ -36,22 +35,19 @@ public class Player extends Sprite {
     private float speedMul = 20;
     private int animationFrame = 1;
     private float timer = 0;
-    boolean upLeftCollision;
-    boolean downLeftCollision;
-    boolean upRightCollision;
-    boolean downRightCollision;
-
 
     public Player (float x, float y) {
         texture = new Texture(Gdx.files.internal("sketch_ball.png"));
         playerRegion = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
         TextureRegion[] rollingAnimation = convertTo1D(playerRegion);
         rolling = new Animation<TextureRegion>(1 / 60f, rollingAnimation);
-        playerRectangle = new Rectangle(x, y, rolling.getKeyFrame(0).getRegionWidth() / 10, texture.getHeight() / 10);
+        playerRectangle = new Rectangle(x, y, rolling.getKeyFrame(0).getRegionWidth(), texture.getHeight());
         currentFrame = rolling.getKeyFrames()[1];
+        texData = texture.getTextureData();
+        texData.prepare();
         setX(x);
         setY(y);
-        tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
+
     }
 
     private TextureRegion[] convertTo1D(TextureRegion[][] region) {
@@ -62,7 +58,6 @@ public class Player extends Sprite {
                 animation[index++] = region[i][j];
             }
         }
-
         return animation;
     }
 
@@ -74,56 +69,45 @@ public class Player extends Sprite {
         float speed = 50 * Gdx.graphics.getDeltaTime();
         timer = timer - 5 * speed * Gdx.graphics.getDeltaTime();
 
-
         if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() > 0) {
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) - speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
-            if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
+            if(Gdx.input.getAccelerometerY() < negativeThreshold) {
                 x += (-1 * speed);
             }
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2),playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10  / 2 + speed);
-            if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
+            if(Gdx.input.getAccelerometerZ() > positiveThreshold) {
                 y += speed;
             }
         }
 
         if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() > 0 ) {
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) + speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
-            if(Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
+            if(Gdx.input.getAccelerometerY() > positiveThreshold) {
                 x += speed;
             }
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2), playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2+ speed);
-            if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
+            if(Gdx.input.getAccelerometerZ() > positiveThreshold) {
                 y += speed;
             }
         }
 
-
         if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() < 0 ) {
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) + speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
-            if(Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
+            if(Gdx.input.getAccelerometerY() > positiveThreshold) {
                 x += speed;
             }
-
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2), playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10  / 2 - speed);
-            if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
+            if(Gdx.input.getAccelerometerZ() < negativeThreshold) {
                 y += (-1 * speed);
             }
         }
 
         if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() < 0) {
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) - speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
-            if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
+            if(Gdx.input.getAccelerometerY() < negativeThreshold) {
                 x += (-1 * speed);
             }
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2), playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2 - speed);
-            if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
+            if(Gdx.input.getAccelerometerZ() < negativeThreshold) {
                 y += (-1 * speed);
             }
         }
@@ -152,49 +136,35 @@ public class Player extends Sprite {
             currentFrame = rolling.getKeyFrames()[1];
         }
 
+		if(i <= 0) {
+			i = 100;
+
+			map = texture.getTextureData().consumePixmap();
+
+			for(int y = 0; y < map.getHeight(); y++) {
+				for(int x = 0; x < map.getWidth(); x++) {
+
+					map.setColor(Color.BLUE);
+					map.fillRectangle(x, y, 1,1);
+				}
+			}
+			texture = new Texture(map);
+		}
+
         i++;
         Gdx.app.log("TAG", Integer.toString(i));
         batch.begin();
         batch.draw(currentFrame, playerRectangle.x, playerRectangle.y,
                 playerRectangle.getHeight() /2,
                 playerRectangle.getWidth() /2,
-                playerRectangle.width, playerRectangle.height, 1, 1, -x);
+                playerRectangle.width, playerRectangle.height,
+                0.1f,0.1f, -x);
         batch.end();
         playerXpos = playerRectangle.x;
         playerYpos = playerRectangle.y;
 
         yValueLastTime = y;
     }
-
-    public void getMyCorners(float pX, float pY) {
-
-        float downYpos = pY;
-        float upYpos = rolling.getKeyFrame(0).getRegionHeight() / 10 / 2 + downYpos;
-        float leftXpos = pX;
-        float rightXpos = rolling.getKeyFrame(0).getRegionWidth() / 10 / 2 + leftXpos;
-
-        upLeftCollision = isFree(leftXpos, upYpos);
-        downLeftCollision = isFree(leftXpos, downYpos);
-        upRightCollision = isFree(rightXpos, upYpos);
-        downRightCollision = isFree(rightXpos, downYpos);
-    }
-
-    private boolean isFree(float x, float y) {
-
-        int indexXround = (int)(x / 32);
-        int indexYround = (int)(y / 32);
-
-        TiledMapTileLayer wallCells = (TiledMapTileLayer) tiledMap.getLayers().get("walls");
-
-        if(wallCells.getCell(indexXround, indexYround) != null) {
-            return false;
-
-        } else {
-
-            return true;
-        }
-    }
-
 
     public void setX(float x) {
         this.x = x;
@@ -205,10 +175,10 @@ public class Player extends Sprite {
     }
 
     public float getX(float playerXpos) {
-        return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2);
+        return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 2);
     }
     public float getY(float playerYpos) {
-        return playerYpos + (rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+        return playerYpos + (rolling.getKeyFrame(0).getRegionWidth() / 2);
     }
 
     public void dispose() {
