@@ -14,7 +14,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 
 /**
- * Contains implementation of the player
+ * Contains implementation of the player and collision detection to walls.
  * Created by sauli on 2/23/2018.
  */
 public class Player extends Sprite {
@@ -77,12 +77,12 @@ public class Player extends Sprite {
 
         if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() > 0) {
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) - speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+            getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
             if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
                 x += (-1 * speed);
             }
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2),playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10  / 2 + speed);
+            getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
             if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
                 y += speed;
             }
@@ -90,12 +90,12 @@ public class Player extends Sprite {
 
         if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() > 0 ) {
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) + speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+            getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
             if(Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
                 x += speed;
             }
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2), playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2+ speed);
+            getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
             if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
                 y += speed;
             }
@@ -104,12 +104,12 @@ public class Player extends Sprite {
 
         if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() < 0 ) {
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) + speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+            getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
             if(Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
                 x += speed;
             }
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2), playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10  / 2 - speed);
+            getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
             if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
                 y += (-1 * speed);
             }
@@ -117,12 +117,12 @@ public class Player extends Sprite {
 
         if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() < 0) {
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2) - speed,playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+            getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
             if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
                 x += (-1 * speed);
             }
 
-            getMyCorners(playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2), playerYpos + rolling.getKeyFrame(0).getRegionHeight() / 10 / 2 - speed);
+            getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
             if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
                 y += (-1 * speed);
             }
@@ -194,7 +194,6 @@ public class Player extends Sprite {
             return true;
         }
     }
-
 
     public void setX(float x) {
         this.x = x;
