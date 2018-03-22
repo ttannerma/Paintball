@@ -143,8 +143,8 @@ public class PaintBall extends ApplicationAdapter {
 			cell.setCell(3, 9, null);
 
 		} else if(path.equals("blue_gate")) {
-			cell.setCell(14, 2, null);
-			cell.setCell(14, 3, null);
+			cell.setCell(8, 2, null);
+			cell.setCell(8, 3, null);
 		}
 	}
 
