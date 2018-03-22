@@ -1,44 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="32" tileheight="32" infinite="0" nextobjectid="39">
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="32" height="18" tilewidth="32" tileheight="32" infinite="0" nextobjectid="40">
  <tileset firstgid="1" name="paintball_tileset" tilewidth="32" tileheight="32" tilecount="72" columns="8">
   <image source="Sprite_sheet.png" trans="ffffff" width="256" height="288"/>
  </tileset>
- <layer name="whole_map_ground" width="32" height="18">
+ <layer name="whole_map_ground" width="32" height="18" locked="1">
   <data encoding="base64" compression="zlib">
    eJztwwENAAAMw6DOv+kLOSSsmqrqowcuFgJB
   </data>
  </layer>
- <layer name="walls" width="32" height="18">
+ <layer name="walls" width="32" height="18" locked="1">
   <data encoding="base64" compression="zlib">
    eJxjYBh4wAPErFgwJ5n6iMHIZjPhMJ+ZgP249OECLDjMHrV/cNkvAMRsQMw1APYLEGEvLe0nFOYj0X70cgZWdtDCfn4GzHIP3R5mHOLUsB+bG+htP8wNsPDmwyGHLk4KQLafG4h5KTCLUvsHwg3Y0jnIDWx0wsSWcbQGAIH5AuU=
   </data>
  </layer>
- <layer name="red_gate" width="32" height="18">
+ <layer name="red_gate" width="32" height="18" locked="1">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUjGRgAMSKQKwExPoD7JZRMApGwSigFwAALN0Aow==
   </data>
  </layer>
- <layer name="purple_gate" width="32" height="18">
+ <layer name="purple_gate" width="32" height="18" locked="1">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUjIJRMAoGF1AfYPtNBth+4wG2X2OA7acHAAAzJwC3
   </data>
  </layer>
- <layer name="blue_gate" width="32" height="18">
+ <layer name="blue_gate" width="32" height="18" locked="1">
   <data encoding="base64" compression="zlib">
-   eJxjYBgFo2AUjIJRMAqGDlAfYPt1Bth+7QG2X2OA7acWAAAGvwCn
+   eJxjYBgFo2AUjIJRMAoGH1AfYPt1Bth+7QG2X2OA7ac1AAAWTwCn
   </data>
  </layer>
- <layer name="blue_puddle" width="32" height="18">
+ <layer name="blue_puddle" width="32" height="18" locked="1">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2AUjIJRMApGNtAdaAeMAroDAGDkAC4=
   </data>
  </layer>
- <layer name="red_puddle" width="32" height="18">
+ <layer name="red_puddle" width="32" height="18" locked="1">
   <data encoding="base64" compression="zlib">
    eJxjYBgFo2DwAdWBdsAoGAWjYBSMgmENAPYIACY=
   </data>
  </layer>
- <objectgroup name="map_walls_object">
+ <objectgroup name="map_walls_object" locked="1">
   <object id="1" x="32" y="33" width="18.6667" height="440.333"/>
   <object id="2" x="31" y="31" width="228.333" height="19"/>
   <object id="3" x="238.333" y="35" width="15.6667" height="188"/>
@@ -67,19 +67,19 @@
   <object id="30" x="448" y="511.5" width="31.5" height="11"/>
   <object id="31" x="875" y="56" width="10" height="359.5"/>
  </objectgroup>
- <objectgroup name="red_puddle_object">
+ <objectgroup name="red_puddle_object" locked="1">
   <object id="21" x="192" y="160" width="33" height="33"/>
  </objectgroup>
- <objectgroup name="purple_gate_object">
+ <objectgroup name="purple_gate_object" locked="1">
   <object id="34" x="224" y="448" width="32.25" height="63.75"/>
  </objectgroup>
- <objectgroup name="blue_gate_object">
-  <object id="35" x="448" y="448" width="32" height="63.75"/>
+ <objectgroup name="blue_gate_object" locked="1">
+  <object id="39" x="256.75" y="447.75" width="31.25" height="64"/>
  </objectgroup>
- <objectgroup name="red_gate_object">
+ <objectgroup name="red_gate_object" locked="1">
   <object id="38" x="64" y="256" width="63.75" height="32.25"/>
  </objectgroup>
- <objectgroup name="blue_puddle_object">
+ <objectgroup name="blue_puddle_object" locked="1">
   <object id="22" x="95" y="448" width="33" height="34"/>
  </objectgroup>
 </map>

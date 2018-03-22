@@ -124,7 +124,7 @@ public class PaintBall extends ApplicationAdapter {
 
 	private void clearPurpleGate() {
 
-		// Gets red gate texture layer.
+		// Gets purple gate texture layer.
 		TiledMapTileLayer cell = (TiledMapTileLayer)tiledMap.getLayers().get("purple_gate");
 
 		// Sets texture to null.
@@ -144,18 +144,18 @@ public class PaintBall extends ApplicationAdapter {
 
 	private void clearBlueGate() {
 
-		// Gets red gate texture layer.
+		// Gets blue gate texture layer.
 		TiledMapTileLayer cell = (TiledMapTileLayer)tiledMap.getLayers().get("blue_gate");
 
 		// Sets texture to null.
-		cell.setCell(14, 2, null);
-		cell.setCell(14, 3, null);
+		cell.setCell(8, 2, null);
+		cell.setCell(8, 3, null);
 	}
 
 
 	public boolean checkRedPaintCollision(boolean redColor) {
 
-		// Gets worlds wall rectangle layer.
+		// Gets red puddle rectangle layer.
 		MapLayer collisionObjectLayer = tiledMap.getLayers().get("red_puddle_object");
 
 		// All the objects of the layer.
@@ -178,7 +178,7 @@ public class PaintBall extends ApplicationAdapter {
 
 	public boolean checkBluePaintCollision(boolean blueColor) {
 
-		// Gets worlds wall rectangle layer.
+		// Gets blue puddle rectangle layer.
 		MapLayer collisionObjectLayer = tiledMap.getLayers().get("blue_puddle_object");
 
 		// All the objects of the layer.
