@@ -51,6 +51,7 @@ public class Player extends Sprite {
     boolean downLeftCollision;
     boolean upRightCollision;
     boolean downRightCollision;
+    boolean redColor;
 
 
     @Override
@@ -78,6 +79,7 @@ public class Player extends Sprite {
         setX(x);
         setY(y);
         tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
+        redColor = false;
     }
 
     public void setupTextureRegion() {
@@ -121,81 +123,98 @@ public class Player extends Sprite {
             x = x + speed;
         }
 
-
-
         if(Gdx.input.getAccelerometerY() < 5 && Gdx.input.getAccelerometerZ() > 5) {
 
-            getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
-            if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
-                x += (-1 * speed);
-            }
+            if(!checkRedGateCollision()) {
+                
+                getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
+                if (Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
+                    x += (-1 * speed);
+                }
 
-            getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
-            if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
-                y += speed;
+                getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
+                if (Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
+                    y += speed;
+                }
             }
         }
 
         if(Gdx.input.getAccelerometerY() > 5 && Gdx.input.getAccelerometerZ() > 5 ) {
 
-            getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
-            if(Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
-                x += speed;
-            }
+            if(!checkRedGateCollision()) {
 
-            getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
-            if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
-                y += speed;
+                getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
+                if (Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
+                    x += speed;
+                }
+
+                getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
+                if (Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
+                    y += speed;
+                }
             }
         }
 
 
         if(Gdx.input.getAccelerometerY() > 5 && Gdx.input.getAccelerometerZ() < 5) {
 
-            getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
-            if(Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
-                x += speed;
-            }
+            if(!checkRedGateCollision()) {
 
-            getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
-            if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
-                y += (-1 * speed);
+                getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
+                if (Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
+                    x += speed;
+                }
+
+                getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
+                if (Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
+                    y += (-1 * speed);
+                }
             }
         }
 
         if(Gdx.input.getAccelerometerY() < 5 && Gdx.input.getAccelerometerZ() < 5) {
 
-            getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
-            if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
-                x += (-1 * speed);
-            }
+            if(!checkRedGateCollision()) {
 
-            getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
-            if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
-                y += (-1 * speed);
+                getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
+                if (Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
+                    x += (-1 * speed);
+                }
+
+                getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
+                if (Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
+                    y += (-1 * speed);
+                }
             }
         }
+
         playerRectangle.setPosition(x, y);
         Gdx.app.log("TAG", "x: " + Float.toString(x) + " y: " + Float.toString(y));
 
         if(yValueLastTime > y && timer <= 0) {
             currentFrame = rolling.getKeyFrames()[animationFrame];
+
             if(animationFrame >= 3) {
                 animationFrame = 0;
             } else {
                 animationFrame++;
             }
+
             timer = 1;
 
         } else if (yValueLastTime < y && timer <= 0) {
             currentFrame = rolling.getKeyFrames()[animationFrame];
             animationFrame--;
+
             if(animationFrame <= 0) {
                 animationFrame = 3;
+
             } else {
                 animationFrame--;
             }
+
             timer = 1;
+
         } else {
             currentFrame = rolling.getKeyFrames()[1];
         }
@@ -212,6 +231,33 @@ public class Player extends Sprite {
         playerYpos = playerRectangle.y;
 
         yValueLastTime = y;
+    }
+
+    private boolean checkRedGateCollision() {
+
+        if(redColor) {
+            return false;
+        }
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("red_gate_object");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("RED GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void getMyCorners(float pX, float pY) {
@@ -241,6 +287,14 @@ public class Player extends Sprite {
 
             return true;
         }
+    }
+
+    public void setRed(boolean redColored) {
+        redColor = redColored;
+    }
+
+    public boolean getRed(boolean redColor) {
+        return redColor;
     }
 
     public void setX(float x) {

@@ -130,17 +130,19 @@ public class PaintBall extends ApplicationAdapter {
 
 	private void clearGate(String path) {
 
-		// Gets red gate texture layer.
+		// Gets the gates texture layer.
 		TiledMapTileLayer cell = (TiledMapTileLayer)tiledMap.getLayers().get(path);
 
+		// Sets texture to null.
 		if(path.equals("purple_gate")) {
-			// Sets texture to null.
 			cell.setCell(7, 2, null);
 			cell.setCell(7, 3, null);
 
 		} else if(path.equals("red_gate")) {
 			cell.setCell(2, 9, null);
 			cell.setCell(3, 9, null);
+			boolean redColorSet = true;
+			player.setRed(redColorSet);
 
 		} else if(path.equals("blue_gate")) {
 			cell.setCell(8, 2, null);
