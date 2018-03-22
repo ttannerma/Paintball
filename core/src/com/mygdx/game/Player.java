@@ -1,7 +1,10 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -19,12 +22,17 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
  */
 public class Player extends Sprite {
 
-    private Texture texture;
+    private Texture texture, originalTexture;
     public Rectangle playerRectangle;
     private TextureRegion[][] playerRegion;
+    private TextureRegion[] rollingAnimation;
     private TextureRegion currentFrame;
     private SpriteBatch batch;
     private Animation<TextureRegion> rolling;
+
+
+
+    private boolean colorChanged = false;
     TiledMap tiledMap;
 
     int i = 0;
@@ -42,16 +50,39 @@ public class Player extends Sprite {
     boolean downRightCollision;
 
 
+    @Override
+    public Texture getTexture() {
+        return texture;
+    }
+
+    @Override
+    public void setTexture(Texture texture) {
+        this.texture = texture;
+    }
+
+    public Texture getOriginalTexture() {
+        return originalTexture;
+    }
+
+    public void setOriginalTexture(Texture originalTexture) {
+        this.originalTexture = originalTexture;
+    }
+
     public Player (float x, float y) {
-        texture = new Texture(Gdx.files.internal("sketch_ball.png"));
-        playerRegion = TextureRegion.split(texture, texture.getWidth() / 4, texture.getHeight());
-        TextureRegion[] rollingAnimation = convertTo1D(playerRegion);
-        rolling = new Animation<TextureRegion>(1 / 60f, rollingAnimation);
-        playerRectangle = new Rectangle(x, y, rolling.getKeyFrame(0).getRegionWidth() / 10, texture.getHeight() / 10);
-        currentFrame = rolling.getKeyFrames()[1];
+        setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
+        setOriginalTexture(texture);
+        setupTextureRegion();
         setX(x);
         setY(y);
         tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
+    }
+
+    public void setupTextureRegion() {
+        playerRegion = TextureRegion.split(getTexture(), getTexture().getWidth() / 4, getTexture().getHeight());
+        rollingAnimation = convertTo1D(playerRegion);
+        rolling = new Animation<TextureRegion>(1 / 60f, rollingAnimation);
+        playerRectangle = new Rectangle(x, y, rolling.getKeyFrame(0).getRegionWidth() / 10, getTexture().getHeight() / 10);
+        currentFrame = rolling.getKeyFrames()[1];
     }
 
     private TextureRegion[] convertTo1D(TextureRegion[][] region) {
@@ -71,11 +102,25 @@ public class Player extends Sprite {
     public void render(SpriteBatch batch) {
         float positiveThreshold = 2;
         float negativeThreshold = -2;
-        float speed = 50 * Gdx.graphics.getDeltaTime();
+        float speed = 60 * Gdx.graphics.getDeltaTime();
         timer = timer - 5 * speed * Gdx.graphics.getDeltaTime();
 
+        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
+            y = y - speed;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
+            y = y + speed;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+            x = x - speed;
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+            x = x + speed;
+        }
 
-        if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() > 0) {
+
+
+        if(Gdx.input.getAccelerometerY() < 5 && Gdx.input.getAccelerometerZ() > 5) {
 
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
             if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
@@ -88,7 +133,7 @@ public class Player extends Sprite {
             }
         }
 
-        if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() > 0 ) {
+        if(Gdx.input.getAccelerometerY() > 5 && Gdx.input.getAccelerometerZ() > 5 ) {
 
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
             if(Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
@@ -102,7 +147,7 @@ public class Player extends Sprite {
         }
 
 
-        if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() < 0 ) {
+        if(Gdx.input.getAccelerometerY() > 5 && Gdx.input.getAccelerometerZ() < 5) {
 
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
             if(Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
@@ -115,7 +160,7 @@ public class Player extends Sprite {
             }
         }
 
-        if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() < 0) {
+        if(Gdx.input.getAccelerometerY() < 5 && Gdx.input.getAccelerometerZ() < 5) {
 
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
             if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
@@ -208,6 +253,14 @@ public class Player extends Sprite {
     }
     public float getY(float playerYpos) {
         return playerYpos + (rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+    }
+
+    public boolean isColorChanged() {
+        return colorChanged;
+    }
+
+    public void setColorChanged(boolean colorChanged) {
+        this.colorChanged = colorChanged;
     }
 
     public void dispose() {
