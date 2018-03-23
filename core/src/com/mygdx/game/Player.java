@@ -2,9 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -15,8 +12,8 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -32,8 +29,6 @@ public class Player extends Sprite {
     private TextureRegion currentFrame;
     private SpriteBatch batch;
     private Animation<TextureRegion> rolling;
-
-
 
     private boolean colorChanged = false;
     TiledMap tiledMap;
@@ -126,7 +121,7 @@ public class Player extends Sprite {
         if(Gdx.input.getAccelerometerY() < 5 && Gdx.input.getAccelerometerZ() > 5) {
 
             if(!checkRedGateCollision()) {
-                
+
                 getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
                 if (Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
                     x += (-1 * speed);
@@ -249,7 +244,7 @@ public class Player extends Sprite {
 
         // Loop through all rectangles.
         for(RectangleMapObject rectangleObject : rectangleObjects) {
-            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+            Rectangle rectangle = rectangleObject.getRectangle();
 
             if(playerRectangle.overlaps(rectangle)) {
                 Gdx.app.log("RED GATE", "HIT");
