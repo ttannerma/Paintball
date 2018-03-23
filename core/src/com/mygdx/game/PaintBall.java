@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -18,6 +17,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
 
@@ -26,16 +26,16 @@ public class PaintBall extends ApplicationAdapter {
 	//Stuff commented out used for the color change effect.
 
 	SpriteBatch batch;
-	//Texture img;
+	Rectangle rectangle;
 	OrthographicCamera camera;
-	Color randomColor;
-	//TextureData texData;
-	//Pixmap map;
+	Color puddleCol;
+	TextureData texData;
+	Pixmap map;
 	Player player;
 	paintPuddles paintPuddles;
-	boolean blueColor;
-	boolean redColor;
-	boolean purpleColor;
+	boolean blueColorChanged;
+	boolean redColorChanged;
+	boolean purpleColorChanged;
 	boolean upLeftCollision;
 	boolean downLeftCollision;
 	boolean upRightCollision;
@@ -50,17 +50,24 @@ public class PaintBall extends ApplicationAdapter {
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 400f, 200f);
-		randomColor = new Color(0.2f, 0.5f, 0.3f, 1.0f);
+		puddleCol = new Color(0.2f, 0.5f, 0.3f, 1.0f);
 		player = new Player(32 * 3,32 * 14);
 		paintPuddles = new paintPuddles();
 		player.setOriginCenter();
-		//texData = img.getTextureData();
 		//texData.prepare();
-        blueColor = false;
-        redColor = false;
-        purpleColor = false;
+        blueColorChanged = false;
+        redColorChanged = false;
+        purpleColorChanged = false;
         tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+	}
+
+	public void setPuddleCol(Color puddleCol) {
+		this.puddleCol = puddleCol;
+	}
+
+	public Color getPuddleCol() {
+		return puddleCol;
 	}
 
 	@Override
@@ -73,42 +80,17 @@ public class PaintBall extends ApplicationAdapter {
         tiledMapRenderer.render();
 
         batch.begin();
+		redColorChanged = checkPaintCollision(redColorChanged, "red_puddle_object");
+		setColorOfPlayer(redColorChanged,new Color(5f,0f,0f,1f), "red_gate");
+		blueColorChanged = checkPaintCollision(blueColorChanged, "blue_puddle_object");
+		setColorOfPlayer(blueColorChanged,new Color(5f,0f,0f,1f), "blue_gate");
+		setColorOfPlayer(blueColorChanged, redColorChanged,new Color(5f,0f,5f,1f), "purple_gate");
 
-        redColor = checkRedPaintCollision(redColor);
-        blueColor = checkBluePaintCollision(blueColor);
 
-		/*
-		if(timer <= 0) {
-			timer = 10;
+		checkWallCollision();
+		//checkPaintCollision(redColorChanged, "red_puddle_object");
 
-			map = img.getTextureData().consumePixmap();
 
-			for(int y = 0; y < map.getHeight(); y++) {
-				for(int x = 0; x < map.getWidth(); x++) {
-
-					map.setColor(randomColor);
-					map.fillRectangle(x, y, 1,1);
-				}
-			}
-			img = new Texture(map);
-		}
-		*/
-
-		checkRedPaintCollision(redColor);
-
-		if(redColor) {
-			clearRedGate();
-		}
-
-		checkBluePaintCollision(blueColor);
-
-		if(blueColor) {
-			clearBlueGate();
-		}
-
-		if(redColor && blueColor) {
-			clearPurpleGate();
-		}
 
 		batch.end();
 
@@ -122,41 +104,89 @@ public class PaintBall extends ApplicationAdapter {
 		timer--;
 	}
 
-	private void clearPurpleGate() {
-
-		// Gets purple gate texture layer.
-		TiledMapTileLayer cell = (TiledMapTileLayer)tiledMap.getLayers().get("purple_gate");
-
-		// Sets texture to null.
-		cell.setCell(7, 2, null);
-		cell.setCell(7, 3, null);
+	private void setColorOfPlayer(boolean colorBoolean1, Color color, String path) {
+		if(colorBoolean1) {
+			setPuddleCol(color);
+			clearGate(path);
+		}
+		if(player.isColorChanged()) {
+			changeColor(player.getOriginalTexture(), getPuddleCol());
+			player.setupTextureRegion();
+			//player.setColorChanged(false);
+		}
 	}
 
-	private void clearRedGate() {
-
-		// Gets red gate texture layer.
-		TiledMapTileLayer cell = (TiledMapTileLayer)tiledMap.getLayers().get("red_gate");
-
-		// Sets texture to null.
-		cell.setCell(2, 9, null);
-		cell.setCell(3, 9, null);
+	private void setColorOfPlayer(boolean colorBoolean1, boolean colorBoolean2, Color color, String path) {
+		if(colorBoolean1 && colorBoolean2) {
+			setPuddleCol(color);
+			clearGate(path);
+		}
+		if(player.isColorChanged()) {
+			changeColor(player.getOriginalTexture(), getPuddleCol());
+			player.setupTextureRegion();
+			//player.setColorChanged(false);
+		}
 	}
 
-	private void clearBlueGate() {
+	private void clearGate(String path) {
 
-		// Gets blue gate texture layer.
-		TiledMapTileLayer cell = (TiledMapTileLayer)tiledMap.getLayers().get("blue_gate");
+		// Gets the gates texture layer.
+		TiledMapTileLayer cell = (TiledMapTileLayer)tiledMap.getLayers().get(path);
 
 		// Sets texture to null.
-		cell.setCell(14, 2, null);
-		cell.setCell(14, 3, null);
+		if(path.equals("purple_gate")) {
+			cell.setCell(7, 2, null);
+			cell.setCell(7, 3, null);
+
+		} else if(path.equals("red_gate")) {
+			cell.setCell(2, 9, null);
+			cell.setCell(3, 9, null);
+			boolean redColorSet = true;
+			player.setRed(redColorSet);
+
+		} else if(path.equals("blue_gate")) {
+			cell.setCell(8, 2, null);
+			cell.setCell(8, 3, null);
+		}
 	}
 
 
-	public boolean checkRedPaintCollision(boolean redColor) {
+	int colorTimer = 0;
+	public boolean checkPaintCollision(boolean color, String path) {
+		colorTimer--;
+		if(player.isColorChanged() == false && color == true) {
+			return color;
+		}
+		// Gets worlds wall rectangle layer.
+		MapLayer collisionObjectLayer = tiledMap.getLayers().get(path);
 
-		// Gets red paint rectangle layer.
-		MapLayer collisionObjectLayer = tiledMap.getLayers().get("red_puddle_object");
+		// All the objects of the layer.
+		MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+		//Collects all rectangles in an array.
+		Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+		// Loop through all rectangles.
+		for(RectangleMapObject rectangleObject : rectangleObjects) {
+			rectangle = rectangleObject.getRectangle();
+
+			if(player.playerRectangle.overlaps(rectangle)) {
+				color = true;
+				if(player.isColorChanged() == false && colorTimer <= 0) {
+					colorTimer = 500;
+					player.setColorChanged(true);
+				} else
+					player.setColorChanged(false);
+			}
+		}
+
+		return color;
+	}
+
+	public void checkWallCollision() {
+
+		// Gets worlds wall rectangle layer.
+		MapLayer collisionObjectLayer = tiledMap.getLayers().get("map_walls_object");
 
 		// All the objects of the layer.
 		MapObjects mapObjects = collisionObjectLayer.getObjects();
@@ -169,42 +199,48 @@ public class PaintBall extends ApplicationAdapter {
 			com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
 
 			if(player.playerRectangle.overlaps(rectangle)) {
-				redColor = true;
+				Gdx.app.log("TAG", "WALL HIT");
 			}
 		}
-
-		return redColor;
 	}
 
-	public boolean checkBluePaintCollision(boolean blueColor) {
+	Color tempColor = new Color(1,1,1,1);
+	public void changeColor(Texture texture, Color color2) {
 
-		// Gets blue paint rectangle layer.
-		MapLayer collisionObjectLayer = tiledMap.getLayers().get("blue_puddle_object");
+		if(color2 != tempColor) {
+			if (!texture.getTextureData().isPrepared()) {
+				texture.getTextureData().prepare();
+			}
+			map = player.getTexture().getTextureData().consumePixmap();
+			for (int x = 0; x < map.getWidth(); x++) {
+				for (int y = 0; y < map.getHeight(); y++) {
+					Color color = new Color(map.getPixel(x, y));
+					if (color != null) {
+						if (color2.r + color.r <= 1) {
+							color.r = (color2.r + 0.2f) + (color.r - 0.2f);
+						} else color.r = 1;
 
-		// All the objects of the layer.
-		MapObjects mapObjects = collisionObjectLayer.getObjects();
+						if (color2.b + color.b <= 1) {
+							color.b = (color2.b + 0.2f) + (color.b - 0.2f);
+						} else color.b = 1;
 
-		//Collects all rectangles in an array.
-		Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
-
-		// Loop through all rectangles.
-		for(RectangleMapObject rectangleObject : rectangleObjects) {
-			com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
-
-			if(player.playerRectangle.overlaps(rectangle)) {
-				blueColor = true;
+						color.g = color2.g + color.g;
+					}
+					map.setColor(color);
+					map.fillRectangle(x, y, 1, 1);
+					tempColor = color2;
+				}
 			}
 		}
+		tempColor = color2;
 
-		return blueColor;
+		player.setTexture(new Texture(map));
 	}
 	
 	@Override
 	public void dispose () {
 		batch.dispose();
-		//img.dispose();
-		//texData.disposePixmap();
-		//map.dispose();
+		map.dispose();
 		player.dispose();
 		paintPuddles.dispose();
 
