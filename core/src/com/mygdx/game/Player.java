@@ -74,28 +74,29 @@ public class Player extends Sprite {
         float speed = 50 * Gdx.graphics.getDeltaTime();
         timer = timer - 5 * speed * Gdx.graphics.getDeltaTime();
 
-
         if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() > 0) {
-
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
+
             if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
                 x += (-1 * speed);
             }
 
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
+
             if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
                 y += speed;
             }
         }
 
         if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() > 0 ) {
-
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
+
             if(Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
                 x += speed;
             }
 
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
+
             if(Gdx.input.getAccelerometerZ() > positiveThreshold && upLeftCollision && upRightCollision) {
                 y += speed;
             }
@@ -103,30 +104,33 @@ public class Player extends Sprite {
 
 
         if(Gdx.input.getAccelerometerY() > 0 && Gdx.input.getAccelerometerZ() < 0 ) {
-
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
+
             if(Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
                 x += speed;
             }
 
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
+
             if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
                 y += (-1 * speed);
             }
         }
 
         if(Gdx.input.getAccelerometerY() < 0 && Gdx.input.getAccelerometerZ() < 0) {
-
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
+
             if(Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
                 x += (-1 * speed);
             }
 
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
+
             if(Gdx.input.getAccelerometerZ() < negativeThreshold && downLeftCollision && downRightCollision) {
                 y += (-1 * speed);
             }
         }
+
         playerRectangle.setPosition(x, y);
         Gdx.app.log("TAG", "x: " + Float.toString(x) + " y: " + Float.toString(y));
 
@@ -204,10 +208,10 @@ public class Player extends Sprite {
     }
 
     public float getX(float playerXpos) {
-        return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2);
+        return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 4);
     }
     public float getY(float playerYpos) {
-        return playerYpos + (rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
+        return playerYpos + (rolling.getKeyFrame(0).getRegionHeight() / 10 / 4);
     }
 
     public void dispose() {

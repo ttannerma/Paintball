@@ -93,7 +93,7 @@ public class PaintBall extends ApplicationAdapter {
 			img = new Texture(map);
 		}
 		*/
-		checkWallCollision();
+
 		checkRedPaintCollision(redColor);
 
 		if(redColor) {
@@ -124,7 +124,7 @@ public class PaintBall extends ApplicationAdapter {
 
 	private void clearPurpleGate() {
 
-		// Gets red gate texture layer.
+		// Gets purple gate texture layer.
 		TiledMapTileLayer cell = (TiledMapTileLayer)tiledMap.getLayers().get("purple_gate");
 
 		// Sets texture to null.
@@ -144,7 +144,7 @@ public class PaintBall extends ApplicationAdapter {
 
 	private void clearBlueGate() {
 
-		// Gets red gate texture layer.
+		// Gets blue gate texture layer.
 		TiledMapTileLayer cell = (TiledMapTileLayer)tiledMap.getLayers().get("blue_gate");
 
 		// Sets texture to null.
@@ -155,7 +155,7 @@ public class PaintBall extends ApplicationAdapter {
 
 	public boolean checkRedPaintCollision(boolean redColor) {
 
-		// Gets worlds wall rectangle layer.
+		// Gets red paint rectangle layer.
 		MapLayer collisionObjectLayer = tiledMap.getLayers().get("red_puddle_object");
 
 		// All the objects of the layer.
@@ -178,7 +178,7 @@ public class PaintBall extends ApplicationAdapter {
 
 	public boolean checkBluePaintCollision(boolean blueColor) {
 
-		// Gets worlds wall rectangle layer.
+		// Gets blue paint rectangle layer.
 		MapLayer collisionObjectLayer = tiledMap.getLayers().get("blue_puddle_object");
 
 		// All the objects of the layer.
@@ -198,27 +198,6 @@ public class PaintBall extends ApplicationAdapter {
 
 		return blueColor;
 	}
-
-	public void checkWallCollision() {
-
-		// Gets worlds wall rectangle layer.
-		MapLayer collisionObjectLayer = tiledMap.getLayers().get("map_walls_object");
-
-		// All the objects of the layer.
-		MapObjects mapObjects = collisionObjectLayer.getObjects();
-
-		//Collects all rectangles in an array.
-		Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
-
-		// Loop through all rectangles.
-		for(RectangleMapObject rectangleObject : rectangleObjects) {
-			com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
-
-			if(player.playerRectangle.overlaps(rectangle)) {
-				Gdx.app.log("TAG", "WALL HIT");
-			}
-		}
-	}
 	
 	@Override
 	public void dispose () {
@@ -226,9 +205,6 @@ public class PaintBall extends ApplicationAdapter {
 		//img.dispose();
 		//texData.disposePixmap();
 		//map.dispose();
-
-
-
 		player.dispose();
 		paintPuddles.dispose();
 
