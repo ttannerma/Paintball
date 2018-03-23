@@ -20,11 +20,9 @@ import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.utils.Array;
 
-
 public class PaintBall extends ApplicationAdapter {
 
 	//Stuff commented out used for the color change effect.
-
 	SpriteBatch batch;
 	Rectangle rectangle;
 	OrthographicCamera camera;
@@ -44,7 +42,6 @@ public class PaintBall extends ApplicationAdapter {
     TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
 
-	
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
@@ -86,11 +83,8 @@ public class PaintBall extends ApplicationAdapter {
 		setColorOfPlayer(blueColorChanged,new Color(5f,0f,0f,1f), "blue_gate");
 		setColorOfPlayer(blueColorChanged, redColorChanged,new Color(5f,0f,5f,1f), "purple_gate");
 
-
 		checkWallCollision();
 		//checkPaintCollision(redColorChanged, "red_puddle_object");
-
-
 
 		batch.end();
 
@@ -147,9 +141,10 @@ public class PaintBall extends ApplicationAdapter {
 		} else if(path.equals("blue_gate")) {
 			cell.setCell(8, 2, null);
 			cell.setCell(8, 3, null);
+			boolean blueColorSet = true;
+			player.setBlue(blueColorSet);
 		}
 	}
-
 
 	int colorTimer = 0;
 	public boolean checkPaintCollision(boolean color, String path) {
@@ -232,8 +227,8 @@ public class PaintBall extends ApplicationAdapter {
 				}
 			}
 		}
-		tempColor = color2;
 
+		tempColor = color2;
 		player.setTexture(new Texture(map));
 	}
 	
@@ -243,6 +238,8 @@ public class PaintBall extends ApplicationAdapter {
 		map.dispose();
 		player.dispose();
 		paintPuddles.dispose();
+		map.dispose();
+
 
     }
 }
