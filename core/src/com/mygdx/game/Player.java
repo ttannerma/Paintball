@@ -107,6 +107,9 @@ public class Player extends Sprite {
     private float yValueLastTime = 0;
 
     public void render(SpriteBatch batch) {
+
+        redColor = getRed(redColor);
+        blueColor = getBlue(blueColor);
         float positiveThreshold = 2;
         float negativeThreshold = -2;
         float speed = 60 * Gdx.graphics.getDeltaTime();
@@ -225,6 +228,7 @@ public class Player extends Sprite {
             currentFrame = rolling.getKeyFrames()[1];
         }
 
+
         i++;
         Gdx.app.log("TAG", Integer.toString(i));
         batch.begin();
@@ -232,11 +236,36 @@ public class Player extends Sprite {
                 playerRectangle.getHeight() /2,
                 playerRectangle.getWidth() /2,
                 playerRectangle.width, playerRectangle.height, 1, 1, -x);
+
         batch.end();
         playerXpos = playerRectangle.x;
         playerYpos = playerRectangle.y;
 
         yValueLastTime = y;
+    }
+
+    public boolean checkGoalCollision() {
+
+        // Gets the goals rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("goal_object");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("Goal hit", "HIT");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean checkRedGateCollision() {
@@ -327,6 +356,10 @@ public class Player extends Sprite {
     }
     public void setBlue(boolean blueColored) {
         blueColor = blueColored;
+    }
+
+    public boolean getBlue(boolean blueColor) {
+        return blueColor;
     }
 
     public boolean getRed(boolean redColor) {
