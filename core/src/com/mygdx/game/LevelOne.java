@@ -92,6 +92,11 @@ public class LevelOne extends ApplicationAdapter implements Screen {
             host.setScreen(mapFinished);
         }
 
+        // Check for the reset point collision. Returns true if player hits reset point.
+        if (checkResetPointCollision()) {
+            // reset color
+        }
+
         redColorChanged = checkPaintCollision(redColorChanged, "red_puddle_object");
         setColorOfPlayer(redColorChanged,new Color(5f,0f,0f,1f), "red_gate");
         blueColorChanged = checkPaintCollision(blueColorChanged, "blue_puddle_object");
@@ -183,7 +188,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         if(player.isColorChanged() == false && color == true) {
             return color;
         }
-        // Gets worlds wall rectangle layer.
+        // Gets paint puddles rectangle layer.
         MapLayer collisionObjectLayer = tiledMap.getLayers().get(path);
 
         // All the objects of the layer.
@@ -207,6 +212,30 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
 
         return color;
+    }
+
+    public boolean checkResetPointCollision() {
+
+        // Gets reset point rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("reset_point_object");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(player.playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("RESET", "RESET");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void checkWallCollision() {

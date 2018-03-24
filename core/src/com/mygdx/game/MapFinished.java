@@ -80,7 +80,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        message.draw(batch, "Taso suoritettu", 0, 0);
+        message.draw(batch, "Taso suoritettu", width / 2 - 250f, height - 20f);
         batch.end();
 
         stage.act();
