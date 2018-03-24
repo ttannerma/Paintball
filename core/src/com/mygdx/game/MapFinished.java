@@ -24,12 +24,12 @@ public class MapFinished extends ApplicationAdapter implements Screen {
 
     SpriteBatch batch;
     PaintBall host;
-    BitmapFont logo;
+    BitmapFont message;
     OrthographicCamera camera;
 
     float width;
     float height;
-    ShapeRenderer shapeRenderer;
+    //ShapeRenderer shapeRenderer;
 
     Stage stage;
     Skin mySkin;
@@ -37,11 +37,11 @@ public class MapFinished extends ApplicationAdapter implements Screen {
     public MapFinished(final PaintBall host) {
         batch = host.getBatch();
         this.host = host;
-        shapeRenderer = new ShapeRenderer();
+        //shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        logo = new BitmapFont(Gdx.files.internal("font.txt"));
-        logo.getData().setScale(0.7f, 0.7f);
+        message = new BitmapFont(Gdx.files.internal("font.txt"));
+        message.getData().setScale(0.7f, 0.7f);
 
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
@@ -53,7 +53,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button2 = new TextButton("Main menu",mySkin,"small");
+        Button button2 = new TextButton("Palaa valikkoon",mySkin,"small");
         button2.setSize(col_width*4,row_height);
         button2.setPosition(50,60);
         button2.addListener(new InputListener(){
@@ -80,12 +80,11 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        logo.draw(batch, "Map Finished!", width / 2, height - 20f);
+        message.draw(batch, "Taso suoritettu", 0, 0);
         batch.end();
 
         stage.act();
         stage.draw();
-
     }
 
     @Override
@@ -105,11 +104,12 @@ public class MapFinished extends ApplicationAdapter implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
+
         stage.dispose();
     }
 }

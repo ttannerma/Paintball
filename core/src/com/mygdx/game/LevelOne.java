@@ -55,7 +55,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 400f, 200f);
         puddleCol = new Color(0.2f, 0.5f, 0.3f, 1.0f);
-        player = new Player(32 * 22,32 * 3);
+        player = new Player(32 * 4,32 * 14);
         paintPuddles = new paintPuddles();
         player.setOriginCenter();
         //texData.prepare();
@@ -233,7 +233,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     /**
      * This method is causing the lag from the color swap.
      */
-    Color tempColor = new Color(1,1,1,1);
+    Color tempColor = new Color (1,1,1,1);
     public void changeColor(Texture texture, Color color2) {
 
         if(color2 != tempColor) {
@@ -289,7 +289,5 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     @Override
     public void dispose() {
         batch.dispose();
-        player.dispose();
-        paintPuddles.dispose();
     }
 }

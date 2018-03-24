@@ -29,7 +29,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
     float width;
     float height;
-    ShapeRenderer shapeRenderer;
+    //ShapeRenderer shapeRenderer;
 
     Stage stage;
     Skin mySkin;
@@ -37,7 +37,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     public MainMenuScreen(final PaintBall host) {
         batch = host.getBatch();
         this.host = host;
-        shapeRenderer = new ShapeRenderer();
+        //shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         logo = new BitmapFont(Gdx.files.internal("font.txt"));
@@ -53,7 +53,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button2 = new TextButton("PLAY",mySkin,"small");
+        Button button2 = new TextButton("Pelaa",mySkin,"small");
         button2.setSize(col_width*4,row_height);
         button2.setPosition(50,60);
         button2.addListener(new InputListener(){
@@ -78,7 +78,9 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
         Gdx.gl.glClearColor(65/255f, 105/255f,225/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
         batch.begin();
+
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             LevelOne levelOne = new LevelOne(host);
             host.setScreen(levelOne);
@@ -86,6 +88,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
         logo.draw(batch, "Paint Ball Game", width / 2 - 250f, height - 20f);
         batch.end();
+
         stage.act();
         stage.draw();
 
@@ -108,12 +111,11 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 
     @Override
     public void dispose() {
-
         stage.dispose();
     }
 }
