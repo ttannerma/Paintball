@@ -1,25 +1,25 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
+        import com.badlogic.gdx.ApplicationAdapter;
+        import com.badlogic.gdx.Gdx;
+        import com.badlogic.gdx.Screen;
+        import com.badlogic.gdx.graphics.Color;
+        import com.badlogic.gdx.graphics.GL20;
+        import com.badlogic.gdx.graphics.OrthographicCamera;
+        import com.badlogic.gdx.graphics.Pixmap;
+        import com.badlogic.gdx.graphics.Texture;
+        import com.badlogic.gdx.graphics.TextureData;
+        import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+        import com.badlogic.gdx.maps.MapLayer;
+        import com.badlogic.gdx.maps.MapObjects;
+        import com.badlogic.gdx.maps.objects.RectangleMapObject;
+        import com.badlogic.gdx.maps.tiled.TiledMap;
+        import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+        import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+        import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+        import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+        import com.badlogic.gdx.math.Rectangle;
+        import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Teemu on 23.3.2018.
@@ -31,7 +31,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     SpriteBatch batch;
     Rectangle rectangle;
     OrthographicCamera camera;
-    Color puddleCol;
+    String puddleCol;
     TextureData texData;
     Pixmap map;
     Player player;
@@ -54,7 +54,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         this.host = host;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 400f, 200f);
-        puddleCol = new Color(0.2f, 0.5f, 0.3f, 1.0f);
+        puddleCol = "white";
         player = new Player(32 * 4,32 * 14);
         paintPuddles = new paintPuddles();
         player.setOriginCenter();
@@ -93,10 +93,8 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
 
         redColorChanged = checkPaintCollision(redColorChanged, "red_puddle_object");
-        setColorOfPlayer(redColorChanged,new Color(5f,0f,0f,1f), "red_gate");
         blueColorChanged = checkPaintCollision(blueColorChanged, "blue_puddle_object");
-        setColorOfPlayer(blueColorChanged,new Color(5f,0f,0f,1f), "blue_gate");
-        setColorOfPlayer(blueColorChanged, redColorChanged,new Color(5f,0f,5f,1f), "purple_gate");
+        setColorOfPlayer(redColorChanged, blueColorChanged, "purple_gate");
 
 
         checkWallCollision();
@@ -120,30 +118,28 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         return mapFinished;
     }
 
-    public void setPuddleCol(Color puddleCol) {
+    public void setPuddleCol(String puddleCol) {
         this.puddleCol = puddleCol;
     }
 
-    public Color getPuddleCol() {
+    public String getPuddleCol() {
         return puddleCol;
     }
 
-    private void setColorOfPlayer(boolean colorBoolean1, Color color, String path) {
-        if(colorBoolean1) {
-            setPuddleCol(color);
-            clearGate(path);
-        }
-        if(player.isColorChanged()) {
-            changeColor(player.getOriginalTexture(), getPuddleCol());
-            player.setupTextureRegion();
-            //player.setColorChanged(false);
-        }
-    }
 
-    private void setColorOfPlayer(boolean colorBoolean1, boolean colorBoolean2, Color color, String path) {
-        if(colorBoolean1 && colorBoolean2) {
-            setPuddleCol(color);
-            clearGate(path);
+    private void setColorOfPlayer(boolean red, boolean blue, String path) {
+        if(red && !blue) {
+            setPuddleCol("red");
+            clearGate("red_gate");
+        }
+        if(!red && blue) {
+            setPuddleCol("blue");
+            clearGate("blue_gate");
+        }
+        if(red && blue) {
+            setPuddleCol("purple");
+            clearGate("purple_gate");
+            clearGate("blue_gate");
         }
         if(player.isColorChanged()) {
             changeColor(player.getOriginalTexture(), getPuddleCol());
@@ -233,37 +229,19 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     /**
      * This method is causing the lag from the color swap.
      */
-    Color tempColor = new Color (1,1,1,1);
-    public void changeColor(Texture texture, Color color2) {
-
-        if(color2 != tempColor) {
-            if (!texture.getTextureData().isPrepared()) {
-                texture.getTextureData().prepare();
-            }
-            map = player.getTexture().getTextureData().consumePixmap();
-            for (int x = 0; x < map.getWidth(); x++) {
-                for (int y = 0; y < map.getHeight(); y++) {
-                    Color color = new Color(map.getPixel(x, y));
-                    if (color != null) {
-                        if (color2.r + color.r <= 1) {
-                            color.r = (color2.r + 0.2f) + (color.r - 0.2f);
-                        } else color.r = 1;
-
-                        if (color2.b + color.b <= 1) {
-                            color.b = (color2.b + 0.2f) + (color.b - 0.2f);
-                        } else color.b = 1;
-
-                        color.g = color2.g + color.g;
-                    }
-                    map.setColor(color);
-                    map.fillRectangle(x, y, 1, 1);
-                    tempColor = color2;
-                }
-            }
+    public void changeColor(Texture texture, String color) {
+        if(color.equals("red")) {
+            player.setTexture(new Texture(Gdx.files.internal("sketch_ball_red.png")));
         }
-        tempColor = color2;
-
-        player.setTexture(new Texture(map));
+        else if(color.equals("blue")) {
+            player.setTexture(new Texture(Gdx.files.internal("sketch_ball_blue.png")));
+        }
+        else if(color.equals("purple")) {
+            player.setTexture(new Texture(Gdx.files.internal("sketch_ball_purple.png")));
+        }
+        else if(color.equals("green")) {
+            player.setTexture(new Texture(Gdx.files.internal("sketch_ball_green.png")));
+        }
     }
 
     @Override
@@ -291,3 +269,4 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         batch.dispose();
     }
 }
+
