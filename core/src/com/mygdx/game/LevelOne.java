@@ -1,25 +1,25 @@
 package com.mygdx.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.maps.MapLayer;
-import com.badlogic.gdx.maps.MapObjects;
-import com.badlogic.gdx.maps.objects.RectangleMapObject;
-import com.badlogic.gdx.maps.tiled.TiledMap;
-import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.utils.Array;
+        import com.badlogic.gdx.ApplicationAdapter;
+        import com.badlogic.gdx.Gdx;
+        import com.badlogic.gdx.Screen;
+        import com.badlogic.gdx.graphics.Color;
+        import com.badlogic.gdx.graphics.GL20;
+        import com.badlogic.gdx.graphics.OrthographicCamera;
+        import com.badlogic.gdx.graphics.Pixmap;
+        import com.badlogic.gdx.graphics.Texture;
+        import com.badlogic.gdx.graphics.TextureData;
+        import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+        import com.badlogic.gdx.maps.MapLayer;
+        import com.badlogic.gdx.maps.MapObjects;
+        import com.badlogic.gdx.maps.objects.RectangleMapObject;
+        import com.badlogic.gdx.maps.tiled.TiledMap;
+        import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+        import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+        import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+        import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+        import com.badlogic.gdx.math.Rectangle;
+        import com.badlogic.gdx.utils.Array;
 
 /**
  * Created by Teemu on 23.3.2018.
@@ -31,10 +31,11 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     SpriteBatch batch;
     Rectangle rectangle;
     OrthographicCamera camera;
-    Color puddleCol;
+    String puddleCol;
     TextureData texData;
     Pixmap map;
     Player player;
+    paintPuddles paintPuddles;
     boolean blueColorChanged;
     boolean redColorChanged;
     boolean purpleColorChanged;
@@ -46,27 +47,24 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     int timer = 100;
     TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    CollisionDetection collisionDetection;
-    Rectangle playerRectangle;
 
     public LevelOne(final PaintBall host) {
 
-        tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        player = new Player(32 * 4,32 * 14, tiledMapRenderer, tiledMap);
-        collisionDetection = new CollisionDetection(tiledMapRenderer, tiledMap);
         batch = host.getBatch();
         this.host = host;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 400f, 200f);
-        puddleCol = new Color(0.2f, 0.5f, 0.3f, 1.0f);
+        puddleCol = "white";
+        player = new Player(32 * 4,32 * 14);
+        paintPuddles = new paintPuddles();
         player.setOriginCenter();
         //texData.prepare();
         blueColorChanged = false;
         redColorChanged = false;
         purpleColorChanged = false;
         mapFinished = false;
-        playerRectangle = player.playerRectangle;
+        tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
     }
 
@@ -78,7 +76,6 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     @Override
     public void render(float delta) {
 
-        playerRectangle = player.playerRectangle;
         player.rotate(180f);
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -88,16 +85,16 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
         batch.begin();
 
-        // Check for the reset point collision. Returns true if player hits reset point.
-        if (checkResetPointCollision()) {
-            // reset color
+        mapFinished = setMapFinished();
+
+        if(mapFinished) {
+            MapFinished mapFinished = new MapFinished(host);
+            host.setScreen(mapFinished);
         }
 
         redColorChanged = checkPaintCollision(redColorChanged, "red_puddle_object");
-        setColorOfPlayer(redColorChanged,new Color(5f,0f,0f,1f), "red_gate");
         blueColorChanged = checkPaintCollision(blueColorChanged, "blue_puddle_object");
-        setColorOfPlayer(blueColorChanged,new Color(5f,0f,0f,1f), "blue_gate");
-        setColorOfPlayer(blueColorChanged, redColorChanged,new Color(5f,0f,5f,1f), "purple_gate");
+        setColorOfPlayer(redColorChanged, blueColorChanged, "purple_gate");
 
 
         checkWallCollision();
@@ -111,40 +108,38 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         camera.position.y = player.getY(player.playerYpos);
         camera.update();
 
+        //paintPuddles.render(batch);
         timer--;
-
-        mapFinished = collisionDetection.checkGoalCollision(playerRectangle);
-        if(mapFinished) {
-            MapFinished mapFinished = new MapFinished(host);
-            host.setScreen(mapFinished);
-        }
 
     }
 
-    public void setPuddleCol(Color puddleCol) {
+    public boolean setMapFinished() {
+        mapFinished = player.checkGoalCollision();
+        return mapFinished;
+    }
+
+    public void setPuddleCol(String puddleCol) {
         this.puddleCol = puddleCol;
     }
 
-    public Color getPuddleCol() {
+    public String getPuddleCol() {
         return puddleCol;
     }
 
-    private void setColorOfPlayer(boolean colorBoolean1, Color color, String path) {
-        if(colorBoolean1) {
-            setPuddleCol(color);
-            clearGate(path);
-        }
-        if(player.isColorChanged()) {
-            changeColor(player.getOriginalTexture(), getPuddleCol());
-            player.setupTextureRegion();
-            //player.setColorChanged(false);
-        }
-    }
 
-    private void setColorOfPlayer(boolean colorBoolean1, boolean colorBoolean2, Color color, String path) {
-        if(colorBoolean1 && colorBoolean2) {
-            setPuddleCol(color);
-            clearGate(path);
+    private void setColorOfPlayer(boolean red, boolean blue, String path) {
+        if(red && !blue) {
+            setPuddleCol("red");
+            clearGate("red_gate");
+        }
+        if(!red && blue) {
+            setPuddleCol("blue");
+            clearGate("blue_gate");
+        }
+        if(red && blue) {
+            setPuddleCol("purple");
+            clearGate("purple_gate");
+            clearGate("blue_gate");
         }
         if(player.isColorChanged()) {
             changeColor(player.getOriginalTexture(), getPuddleCol());
@@ -184,7 +179,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         if(player.isColorChanged() == false && color == true) {
             return color;
         }
-        // Gets paint puddles rectangle layer.
+        // Gets worlds wall rectangle layer.
         MapLayer collisionObjectLayer = tiledMap.getLayers().get(path);
 
         // All the objects of the layer.
@@ -208,30 +203,6 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
 
         return color;
-    }
-
-    public boolean checkResetPointCollision() {
-
-        // Gets reset point rectangle layer.
-        MapLayer collisionObjectLayer = tiledMap.getLayers().get("reset_point_object");
-
-        // All the objects of the layer.
-        MapObjects mapObjects = collisionObjectLayer.getObjects();
-
-        //Collects all rectangles in an array.
-        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
-
-        // Loop through all rectangles.
-        for(RectangleMapObject rectangleObject : rectangleObjects) {
-            Rectangle rectangle = rectangleObject.getRectangle();
-
-            if(player.playerRectangle.overlaps(rectangle)) {
-                Gdx.app.log("RESET", "RESET");
-                return true;
-            }
-        }
-
-        return false;
     }
 
     public void checkWallCollision() {
@@ -258,40 +229,20 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     /**
      * This method is causing the lag from the color swap.
      */
-    Color tempColor = new Color (1,1,1,1);
-    public void changeColor(Texture texture, Color color2) {
-
-        if(color2 != tempColor) {
-            if (!texture.getTextureData().isPrepared()) {
-                texture.getTextureData().prepare();
-            }
-            map = player.getTexture().getTextureData().consumePixmap();
-            for (int x = 0; x < map.getWidth(); x++) {
-                for (int y = 0; y < map.getHeight(); y++) {
-                    Color color = new Color(map.getPixel(x, y));
-                    if (color != null) {
-                        if (color2.r + color.r <= 1) {
-                            color.r = (color2.r + 0.2f) + (color.r - 0.2f);
-                        } else color.r = 1;
-
-                        if (color2.b + color.b <= 1) {
-                            color.b = (color2.b + 0.2f) + (color.b - 0.2f);
-                        } else color.b = 1;
-
-                        color.g = color2.g + color.g;
-                    }
-
-                    map.setColor(color);
-                    map.fillRectangle(x, y, 1, 1);
-                    tempColor = color2;
-                }
-            }
+    public void changeColor(Texture texture, String color) {
+        if(color.equals("red")) {
+            player.setTexture(new Texture(Gdx.files.internal("sketch_ball_red.png")));
         }
-
-        tempColor = color2;
-        player.setTexture(new Texture(map));
+        else if(color.equals("blue")) {
+            player.setTexture(new Texture(Gdx.files.internal("sketch_ball_blue.png")));
+        }
+        else if(color.equals("purple")) {
+            player.setTexture(new Texture(Gdx.files.internal("sketch_ball_purple.png")));
+        }
+        else if(color.equals("green")) {
+            player.setTexture(new Texture(Gdx.files.internal("sketch_ball_green.png")));
+        }
     }
-
 
     @Override
     public void resize(int width, int height) {
@@ -315,8 +266,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
-        player.dispose();
-        map.dispose();
         batch.dispose();
     }
 }
+
