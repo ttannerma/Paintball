@@ -35,7 +35,6 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     TextureData texData;
     Pixmap map;
     Player player;
-    paintPuddles paintPuddles;
     boolean blueColorChanged;
     boolean redColorChanged;
     boolean purpleColorChanged;
@@ -56,7 +55,6 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         camera.setToOrtho(false, 400f, 200f);
         puddleCol = "white";
         player = new Player(32 * 4,32 * 14);
-        paintPuddles = new paintPuddles();
         player.setOriginCenter();
         //texData.prepare();
         blueColorChanged = false;
@@ -90,6 +88,11 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         if(mapFinished) {
             MapFinished mapFinished = new MapFinished(host);
             host.setScreen(mapFinished);
+        }
+
+        if(checkResetCollision()) {
+            changeColor(player.getOriginalTexture(), "null");
+            player.setupTextureRegion();
         }
 
         redColorChanged = checkPaintCollision(redColorChanged, "red_puddle_object");
@@ -226,9 +229,29 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
     }
 
-    /**
-     * This method is causing the lag from the color swap.
-     */
+    public boolean checkResetCollision() {
+
+        // Gets worlds wall rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("reset_point_object");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(player.playerRectangle.overlaps(rectangle)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     public void changeColor(Texture texture, String color) {
         if(color.equals("red")) {
             player.setTexture(new Texture(Gdx.files.internal("sketch_ball_red.png")));
@@ -241,6 +264,9 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
         else if(color.equals("green")) {
             player.setTexture(new Texture(Gdx.files.internal("sketch_ball_green.png")));
+        }
+        else if(color.equals("null")) {
+            player.setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
         }
     }
 
