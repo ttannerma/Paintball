@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
@@ -33,7 +34,6 @@ public class Player extends Sprite {
     private SpriteBatch batch;
     private Animation<TextureRegion> rolling;
     private boolean colorChanged = false;
-    TiledMap tiledMap;
 
     int i = 0;
     float x;
@@ -53,35 +53,42 @@ public class Player extends Sprite {
     boolean up;
     boolean left;
     boolean right;
+    TiledMapRenderer renderer;
+    TiledMap tiledMap;
 
+    public Player (float x, float y, TiledMapRenderer renderer, TiledMap tiledMap) {
 
-    @Override
-    public Texture getTexture() {
-        return texture;
-    }
-
-    @Override
-    public void setTexture(Texture texture) {
-        this.texture = texture;
-    }
-
-    public Texture getOriginalTexture() {
-        return originalTexture;
-    }
-
-    public void setOriginalTexture(Texture originalTexture) {
-        this.originalTexture = originalTexture;
-    }
-
-    public Player (float x, float y) {
         setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
         setOriginalTexture(texture);
         setupTextureRegion();
         setX(x);
         setY(y);
-        tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
+        this.tiledMap = tiledMap;
+        this.renderer = renderer;
         redColor = false;
         blueColor = false;
+
+    }
+
+    @Override
+    public Texture getTexture() {
+
+        return texture;
+    }
+
+    @Override
+    public void setTexture(Texture texture) {
+
+        this.texture = texture;
+    }
+
+    public Texture getOriginalTexture() {
+
+        return originalTexture;
+    }
+
+    public void setOriginalTexture(Texture originalTexture) {
+        this.originalTexture = originalTexture;
     }
 
     public void setupTextureRegion() {
@@ -110,8 +117,8 @@ public class Player extends Sprite {
 
         redColor = getRed(redColor);
         blueColor = getBlue(blueColor);
-        float positiveThreshold = 2;
-        float negativeThreshold = -2;
+        float positiveThreshold = 1;
+        float negativeThreshold = -1;
         float speed = 60 * Gdx.graphics.getDeltaTime();
         timer = timer - 5 * speed * Gdx.graphics.getDeltaTime();
 
@@ -244,29 +251,6 @@ public class Player extends Sprite {
         yValueLastTime = y;
     }
 
-    public boolean checkGoalCollision() {
-
-        // Gets the goals rectangle layer.
-        MapLayer collisionObjectLayer = tiledMap.getLayers().get("goal_object");
-
-        // All the objects of the layer.
-        MapObjects mapObjects = collisionObjectLayer.getObjects();
-
-        //Collects all rectangles in an array.
-        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
-
-        // Loop through all rectangles.
-        for(RectangleMapObject rectangleObject : rectangleObjects) {
-            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
-
-            if(playerRectangle.overlaps(rectangle)) {
-                Gdx.app.log("Goal hit", "HIT");
-                return true;
-            }
-        }
-
-        return false;
-    }
 
     private boolean checkRedGateCollision() {
 

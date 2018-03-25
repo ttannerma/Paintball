@@ -35,7 +35,6 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     TextureData texData;
     Pixmap map;
     Player player;
-    paintPuddles paintPuddles;
     boolean blueColorChanged;
     boolean redColorChanged;
     boolean purpleColorChanged;
@@ -47,24 +46,27 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     int timer = 100;
     TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
+    CollisionDetection collisionDetection;
+    Rectangle playerRectangle;
 
     public LevelOne(final PaintBall host) {
 
+        tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
+        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        player = new Player(32 * 4,32 * 14, tiledMapRenderer, tiledMap);
+        collisionDetection = new CollisionDetection(tiledMapRenderer, tiledMap);
         batch = host.getBatch();
         this.host = host;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 400f, 200f);
         puddleCol = new Color(0.2f, 0.5f, 0.3f, 1.0f);
-        player = new Player(32 * 4,32 * 14);
-        paintPuddles = new paintPuddles();
         player.setOriginCenter();
         //texData.prepare();
         blueColorChanged = false;
         redColorChanged = false;
         purpleColorChanged = false;
         mapFinished = false;
-        tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
-        tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        playerRectangle = player.playerRectangle;
 
     }
 
@@ -76,6 +78,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     @Override
     public void render(float delta) {
 
+        playerRectangle = player.playerRectangle;
         player.rotate(180f);
         batch.setProjectionMatrix(camera.combined);
         Gdx.gl.glClearColor(1, 0, 0, 1);
@@ -84,13 +87,6 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         tiledMapRenderer.render();
 
         batch.begin();
-
-        mapFinished = setMapFinished();
-
-        if(mapFinished) {
-            MapFinished mapFinished = new MapFinished(host);
-            host.setScreen(mapFinished);
-        }
 
         // Check for the reset point collision. Returns true if player hits reset point.
         if (checkResetPointCollision()) {
@@ -115,14 +111,14 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         camera.position.y = player.getY(player.playerYpos);
         camera.update();
 
-        //paintPuddles.render(batch);
         timer--;
 
-    }
+        mapFinished = collisionDetection.checkGoalCollision(playerRectangle);
+        if(mapFinished) {
+            MapFinished mapFinished = new MapFinished(host);
+            host.setScreen(mapFinished);
+        }
 
-    public boolean setMapFinished() {
-        mapFinished = player.checkGoalCollision();
-        return mapFinished;
     }
 
     public void setPuddleCol(Color puddleCol) {
@@ -284,16 +280,18 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
                         color.g = color2.g + color.g;
                     }
+
                     map.setColor(color);
                     map.fillRectangle(x, y, 1, 1);
                     tempColor = color2;
                 }
             }
         }
-        tempColor = color2;
 
+        tempColor = color2;
         player.setTexture(new Texture(map));
     }
+
 
     @Override
     public void resize(int width, int height) {
@@ -317,6 +315,8 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
+        player.dispose();
+        map.dispose();
         batch.dispose();
     }
 }
