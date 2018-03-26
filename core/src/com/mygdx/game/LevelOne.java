@@ -272,6 +272,8 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
         else if(color.equals("null")) {
             player.setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
+            redColorChanged = false;
+            blueColorChanged = false;
         }
     }
 

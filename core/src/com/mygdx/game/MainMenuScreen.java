@@ -27,6 +27,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     BitmapFont logo;
     OrthographicCamera camera;
 
+    boolean openedFirstTime = true;
+
     float width;
     float height;
     //ShapeRenderer shapeRenderer;
@@ -34,7 +36,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     Stage stage;
     Skin mySkin;
 
-    public MainMenuScreen(final PaintBall host) {
+    public MainMenuScreen(final PaintBall host, boolean openedFirstTime) {
+        this.openedFirstTime = openedFirstTime;
         batch = host.getBatch();
         this.host = host;
         //shapeRenderer = new ShapeRenderer();
@@ -54,8 +57,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         int col_width = Gdx.graphics.getWidth() / 12;
 
         Button button2 = new TextButton("Pelaa",mySkin,"small");
-        button2.setSize(col_width*4,row_height);
-        button2.setPosition(50,60);
+        button2.setSize(col_width * 4, row_height);
+        button2.setPosition(50,160);
         button2.addListener(new InputListener(){
 
             @Override
@@ -65,7 +68,22 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
                 return true;
             }
         });
+
+        Button button3 = new TextButton("Asetukset", mySkin, "small");
+        button3.setSize(col_width * 4, row_height);
+        button3.setPosition(50, 60);
+        button3.addListener(new InputListener()  {
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
+                OptionScreen options = new OptionScreen(host);
+                host.setScreen(options);
+                return true;
+            }
+        });
+
         stage.addActor(button2);
+        stage.addActor(button3);
     }
 
     @Override
@@ -79,11 +97,22 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClearColor(65/255f, 105/255f,225/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        if(openedFirstTime) {
+            LanguageSelectionScreen langScreen = new LanguageSelectionScreen(host);
+            host.setScreen(langScreen);
+
+        }
+
         batch.begin();
 
         if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
             LevelOne levelOne = new LevelOne(host);
             host.setScreen(levelOne);
+        }
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
+            MainMenuScreen mainMenuScreen = new MainMenuScreen(host, false);
+            host.setScreen(mainMenuScreen);
         }
 
         logo.draw(batch, "Paint Ball Game", width / 2 - 250f, height - 20f);

@@ -111,8 +111,8 @@ public class Player extends Sprite {
 
         redColor = getRed(redColor);
         blueColor = getBlue(blueColor);
-        float positiveThreshold = 2;
-        float negativeThreshold = -2;
+        float positiveThreshold = 0;
+        float negativeThreshold = 0;
         float speed = 60 * Gdx.graphics.getDeltaTime();
         timer = timer - 5 * speed * Gdx.graphics.getDeltaTime();
 
@@ -128,6 +128,9 @@ public class Player extends Sprite {
         if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             x = x + speed;
         }
+
+        Gdx.app.log("TAG", Float.toString(Gdx.input.getAccelerometerY()));
+        Gdx.app.log("TAG", Float.toString(Gdx.input.getAccelerometerZ()));
 
         if(Gdx.input.getAccelerometerY() < 1 && Gdx.input.getAccelerometerZ() > 1) {
 
