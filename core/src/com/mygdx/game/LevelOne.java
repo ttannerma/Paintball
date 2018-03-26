@@ -107,11 +107,16 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
         player.render(batch);
 
-        camera.position.x = player.getX(player.playerXpos);
-        camera.position.y = player.getY(player.playerYpos);
+        if(player.getX(player.playerXpos) / 32 >= 7 && player.getX(player.playerXpos) / 32 <= 25) {
+            camera.position.x = player.getX(player.playerXpos);
+        }
+        if(player.getY(player.playerYpos) / 32 >= 4 && player.getY(player.playerYpos) / 32 <= 14.5) {
+            camera.position.y = player.getY(player.playerYpos);
+        }
         camera.update();
 
-        //paintPuddles.render(batch);
+        Gdx.app.log("X AND Y: ", "x: " + player.getX(player.playerXpos) / 32 + " y: " + player.getY(player.playerYpos) / 32);
+
         timer--;
 
     }
