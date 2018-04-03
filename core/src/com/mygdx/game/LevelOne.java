@@ -32,9 +32,8 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     Rectangle rectangle;
     OrthographicCamera camera;
     String puddleCol;
-    TextureData texData;
-    Pixmap map;
     Player player;
+    CollisionDetection collisionDetection;
     boolean blueColorChanged;
     boolean redColorChanged;
     boolean purpleColorChanged;
@@ -56,13 +55,13 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         puddleCol = "white";
         player = new Player(32 * 4,32 * 14);
         player.setOriginCenter();
-        //texData.prepare();
         blueColorChanged = false;
         redColorChanged = false;
         purpleColorChanged = false;
         mapFinished = false;
         tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        collisionDetection = new CollisionDetection(tiledMapRenderer, tiledMap);
 
     }
 
@@ -91,13 +90,13 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
 
         if(checkResetCollision()) {
-            changeColor(player.getOriginalTexture(), "null");
+            changeColor("null");
             player.setupTextureRegion();
         }
 
         redColorChanged = checkPaintCollision(redColorChanged, "red_puddle_object");
         blueColorChanged = checkPaintCollision(blueColorChanged, "blue_puddle_object");
-        setColorOfPlayer(redColorChanged, blueColorChanged, "purple_gate");
+        setColorOfPlayer(redColorChanged, blueColorChanged);
 
 
         checkWallCollision();
@@ -122,7 +121,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     }
 
     public boolean setMapFinished() {
-        mapFinished = player.checkGoalCollision();
+        mapFinished = collisionDetection.checkGoalCollision(player.playerRectangle);
         return mapFinished;
     }
 
@@ -135,12 +134,12 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     }
 
 
-    private void setColorOfPlayer(boolean red, boolean blue, String path) {
+    private void setColorOfPlayer(boolean red, boolean blue) {
         if(red && !blue) {
             setPuddleCol("red");
             clearGate("red_gate");
         }
-        if(!red && blue) {
+        if(blue && !red) {
             setPuddleCol("blue");
             clearGate("blue_gate");
         }
@@ -150,9 +149,8 @@ public class LevelOne extends ApplicationAdapter implements Screen {
             clearGate("blue_gate");
         }
         if(player.isColorChanged()) {
-            changeColor(player.getOriginalTexture(), getPuddleCol());
+            changeColor(getPuddleCol());
             player.setupTextureRegion();
-            //player.setColorChanged(false);
         }
     }
 
@@ -180,10 +178,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
     }
 
-
-    int colorTimer = 0;
     public boolean checkPaintCollision(boolean color, String path) {
-        colorTimer--;
         if(player.isColorChanged() == false && color == true) {
             return color;
         }
@@ -202,8 +197,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
             if(player.playerRectangle.overlaps(rectangle)) {
                 color = true;
-                if(player.isColorChanged() == false && colorTimer <= 0) {
-                    colorTimer = 500;
+                if(player.isColorChanged() == false ) {
                     player.setColorChanged(true);
                 } else
                     player.setColorChanged(false);
@@ -257,7 +251,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         return false;
     }
 
-    public void changeColor(Texture texture, String color) {
+    public void changeColor(String color) {
         if(color.equals("red")) {
             player.setTexture(new Texture(Gdx.files.internal("sketch_ball_red.png")));
         }
