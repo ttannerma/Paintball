@@ -26,7 +26,6 @@ public class CollisionDetection {
         this.renderer = renderer;
     }
 
-
     public boolean checkGoalCollision(Rectangle playersRectangle) {
 
         // Gets the goals rectangle layer.

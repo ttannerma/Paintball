@@ -1,31 +1,32 @@
 
 package com.mygdx.game;
 
-        import com.badlogic.gdx.Gdx;
-        import com.badlogic.gdx.Input;
-        import com.badlogic.gdx.Screen;
-        import com.badlogic.gdx.graphics.Color;
-        import com.badlogic.gdx.graphics.Pixmap;
-        import com.badlogic.gdx.graphics.Texture;
-        import com.badlogic.gdx.graphics.g2d.Animation;
-        import com.badlogic.gdx.graphics.g2d.Sprite;
-        import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-        import com.badlogic.gdx.graphics.g2d.TextureRegion;
-        import com.badlogic.gdx.maps.MapLayer;
-        import com.badlogic.gdx.maps.MapObjects;
-        import com.badlogic.gdx.maps.objects.RectangleMapObject;
-        import com.badlogic.gdx.maps.tiled.TiledMap;
-        import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-        import com.badlogic.gdx.math.MathUtils;
-        import com.badlogic.gdx.math.Rectangle;
-        import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-        import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.utils.Array;
 
 /**
- * Contains implementation of the player and collision detection to walls.
- * Created by sauli on 2/23/2018.
+ * Contains implementation of the player class for level two, modified and then merged with original
+ * player class to be used for every level.
+ * Created by Teemu on 2/23/2018.
  */
-public class Player extends Sprite {
+public class PlayerLevelTwo extends Sprite {
 
     private Texture texture, originalTexture;
     public Rectangle playerRectangle;
@@ -50,11 +51,15 @@ public class Player extends Sprite {
     boolean downRightCollision;
     boolean redColor;
     boolean blueColor;
+    boolean secondRedColor;
     float lastXVelocity = 0;
     float lastYVelocity = 0;
     String collision;
 
-    public Player (float x, float y, TiledMap tiledMap) {
+    float accelY;
+    float accelZ;
+
+    public PlayerLevelTwo (float x, float y, TiledMap tiledMap) {
         setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
         setupTextureRegion();
         setX(x);
@@ -62,6 +67,7 @@ public class Player extends Sprite {
         this.tiledMap = tiledMap;
         redColor = false;
         blueColor = false;
+        secondRedColor = false;
         collision = "walls";
     }
 
@@ -95,117 +101,68 @@ public class Player extends Sprite {
         return animation;
     }
 
-    private float yValueLastTime = 0;
-
     public void render(SpriteBatch batch) {
 
         redColor = getRed(redColor);
         blueColor = getBlue(blueColor);
 
-        float positiveThreshold = 1;
-        float negativeThreshold = -1;
+        checkSecondRedPuddleCollision();
+
+        float posThreshold = 2;
+        float negThreshold = -2;
         float speed = 80 * Gdx.graphics.getDeltaTime();
 
-
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            y = y - speed;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            y = y + speed;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            x = x - speed;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            x = x + speed;
-        }
+        accelY = Gdx.input.getAccelerometerY();
+        accelZ = Gdx.input.getAccelerometerZ();
 
 
-        //Gdx.app.log("TAG", Float.toString(Gdx.input.getAccelerometerY()));
-        //Gdx.app.log("TAG", Float.toString(Gdx.input.getAccelerometerZ()));
-
-        if(Gdx.input.getAccelerometerY() < 1 && Gdx.input.getAccelerometerZ() - 4 > 1) {
-
-            getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
-            if (Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
-                Gdx.app.log("TAG", "first");
-                x += (-1 * speed);
-            }
-
-            getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
-            if (Gdx.input.getAccelerometerZ() - 4 > positiveThreshold && upLeftCollision && upRightCollision) {
-                Gdx.app.log("TAG", "second");
-                y += speed;
-            }
-        }
-
-        if(Gdx.input.getAccelerometerY() > 1 && Gdx.input.getAccelerometerZ() - 4 > 1) {
-
+        // y = oikea vasen
+        // z = eteen taakse
+        if(accelY > posThreshold) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
-            if (Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
-                Gdx.app.log("TAG", "third");
-                if (!checkPurpleGateCollision()) {
+            if(upRightCollision && upLeftCollision) {
+                if(!checkPurpleGateCollision() && !checkSecondRedGateCollision()) {
                     x += speed;
                 } else {
                     x += (-1 * speed);
                 }
             }
-
-            getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
-            if (Gdx.input.getAccelerometerZ() - 4 > positiveThreshold && upLeftCollision && upRightCollision) {
-                Gdx.app.log("TAG", "fourth");
-                y += speed;
-            }
         }
 
-
-        if(Gdx.input.getAccelerometerY() > 1 && Gdx.input.getAccelerometerZ() - 4 < 1) {
-
-            getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
-            if (Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
-                Gdx.app.log("TAG", "sixth");
-                if(!checkPurpleGateCollision()) {
-                    x += speed;
-                } else {
-                    x += (-1 * speed);
-                }
-            }
-
-            getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
-            if (Gdx.input.getAccelerometerZ() - 4 < negativeThreshold && downLeftCollision && downRightCollision) {
-                Gdx.app.log("TAG", "seventh");
-                if(!checkRedGateCollision()) {
-                    y += (-1 * speed);
-                } else {
-                    y += speed;
-                }
-            }
-        }
-
-        if(Gdx.input.getAccelerometerY() < 1 && Gdx.input.getAccelerometerZ() - 4 < 1) {
-
+        if(accelY < negThreshold) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
-            if (Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
-                Gdx.app.log("TAG", "eight");
-                x += (-1 * speed);
-            }
-
-            getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
-            if (Gdx.input.getAccelerometerZ() - 4 < negativeThreshold && downLeftCollision && downRightCollision) {
-                Gdx.app.log("TAG", "ninth");
-                if(!checkRedGateCollision()) {
-                    y += (-1 * speed);
+            if(downLeftCollision && upLeftCollision) {
+                if(!checkRedGateCollision() && !checkSecondRedGateCollision()) {
+                    x += (-1 * speed);
                 } else {
+                    x += speed;
+                }
+            }
+        }
+
+        if(accelZ > posThreshold) {
+            getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
+            if(upLeftCollision && upRightCollision) {
+                if(!checkSecondRedGateCollision()) {
                     y += speed;
                 }
+            } else {
+                y += (-1 * speed);
+            }
+        }
+
+        if(accelZ < negThreshold) {
+            getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
+            if(downLeftCollision && downRightCollision) {
+                y += (-1 * speed);
             }
         }
 
         playerRectangle.setPosition(x, y);
-        Gdx.app.log("TAG", "x: " + Float.toString(x) + " y: " + Float.toString(y));
+        //Gdx.app.log("TAG", "x: " + Float.toString(x) + " y: " + Float.toString(y));
 
         currentFrame = rolling.getKeyFrames()[0];
-            //animationFrame--;
+        //animationFrame--;
 
         batch.begin();
         batch.draw(currentFrame, playerRectangle.x, playerRectangle.y,
@@ -219,9 +176,36 @@ public class Player extends Sprite {
 
     }
 
+    private boolean checkSecondRedGateCollision() {
+
+        if(secondRedColor) {
+            return false;
+        }
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("second_red_gate_obj");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("RED GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     private boolean checkRedGateCollision() {
 
-        if(redColor) {
+        if(redColor && !blueColor) {
             return false;
         }
         // Gets red gate rectangle layer.
@@ -246,12 +230,33 @@ public class Player extends Sprite {
         return false;
     }
 
+    public void checkSecondRedPuddleCollision() {
+
+        // Gets worlds wall rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("second_red_puddle_obj");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                secondRedColor = true;
+            }
+        }
+    }
+
     private boolean checkPurpleGateCollision() {
 
-        if(blueColor && redColor) {
+        if(redColor && blueColor) {
             return false;
         }
-        // Gets purple gate rectangle layer.
+        // Gets red gate rectangle layer.
         MapLayer collisionObjectLayer = tiledMap.getLayers().get("purple_gate_object");
 
         // All the objects of the layer.
@@ -284,6 +289,8 @@ public class Player extends Sprite {
         downLeftCollision = isFree(leftXpos, downYpos, collision);
         upRightCollision = isFree(rightXpos, upYpos, collision);
         downRightCollision = isFree(rightXpos, downYpos, collision);
+
+        Gdx.app.log("COLLSION!", "hit" + upLeftCollision + downLeftCollision + downRightCollision + upRightCollision);
     }
 
     private boolean isFree(float x, float y, String collision) {
@@ -302,6 +309,10 @@ public class Player extends Sprite {
         }
     }
 
+    public void setSecondRedColor(boolean redColored) {
+        secondRedColor = redColored;
+    }
+    public boolean getSecondRedColor() { return secondRedColor; }
     public void setRed(boolean redColored) {
         redColor = redColored;
     }
@@ -344,4 +355,3 @@ public class Player extends Sprite {
 
     }
 }
-

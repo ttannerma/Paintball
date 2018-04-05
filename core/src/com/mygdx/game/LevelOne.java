@@ -51,15 +51,17 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         batch = host.getBatch();
         this.host = host;
         camera = new OrthographicCamera();
+
         camera.setToOrtho(false, 400f, 200f);
         puddleCol = "white";
-        player = new Player(32 * 4,32 * 14);
+        player = new Player(32 * 4,32 * 14, tiledMap);
+        tiledMap = new TmxMapLoader().load("tutorial_level.tmx");
         player.setOriginCenter();
         blueColorChanged = false;
         redColorChanged = false;
         purpleColorChanged = false;
         mapFinished = false;
-        tiledMap = new TmxMapLoader().load("paintball_map_new.tmx");
+
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         collisionDetection = new CollisionDetection(tiledMapRenderer, tiledMap);
 
@@ -100,7 +102,6 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
 
         checkWallCollision();
-        //checkPaintCollision(redColorChanged, "red_puddle_object");
 
         batch.end();
 
