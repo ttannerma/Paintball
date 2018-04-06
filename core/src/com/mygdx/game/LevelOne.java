@@ -54,8 +54,8 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
         camera.setToOrtho(false, 400f, 200f);
         puddleCol = "white";
-        player = new Player(32 * 4,32 * 14, tiledMap);
         tiledMap = new TmxMapLoader().load("tutorial_level.tmx");
+        player = new Player(32 * 4,32 * 14, tiledMap);
         player.setOriginCenter();
         blueColorChanged = false;
         redColorChanged = false;

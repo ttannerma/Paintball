@@ -16,33 +16,27 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-import java.util.logging.Level;
-
 /**
  * Created by Teemu on 23.3.2018.
  */
 
-public class MainMenuScreen extends ApplicationAdapter implements Screen {
+public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
-    SpriteBatch batch;
     PaintBall host;
-    BitmapFont logo;
     OrthographicCamera camera;
-
-    boolean openedFirstTime = true;
-
-    float width;
-    float height;
-    //ShapeRenderer shapeRenderer;
-
+    SpriteBatch batch;
+    BitmapFont logo;
     Stage stage;
     Skin mySkin;
 
-    public MainMenuScreen(final PaintBall host, boolean openedFirstTime) {
-        this.openedFirstTime = openedFirstTime;
+
+    float width;
+    float height;
+
+    public LevelSelectionScreen(final PaintBall host) {
+
         batch = host.getBatch();
         this.host = host;
-        //shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         logo = new BitmapFont(Gdx.files.internal("font.txt"));
@@ -58,32 +52,46 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button2 = new TextButton("Pelaa",mySkin,"small");
-        button2.setSize(col_width * 4, row_height);
-        button2.setPosition(50,160);
-        button2.addListener(new InputListener(){
+        Button button1 = new TextButton("Level 1",mySkin,"small");
+        button1.setSize(col_width * 4, row_height);
+        button1.setPosition(50,160);
+        button1.addListener(new InputListener(){
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                LevelSelectionScreen levelSelectionScreen = new LevelSelectionScreen(host);
-                host.setScreen(levelSelectionScreen);
+                LevelOne levelone = new LevelOne(host);
+                host.setScreen(levelone);
                 return true;
             }
         });
 
-        Button button3 = new TextButton("Asetukset", mySkin, "small");
+        Button button2 = new TextButton("Level 2", mySkin, "small");
+        button2.setSize(col_width * 4, row_height);
+        button2.setPosition(50, 60);
+        button2.addListener(new InputListener()  {
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
+                LevelTwo leveltwo = new LevelTwo(host);
+                host.setScreen(leveltwo);
+                return true;
+            }
+        });
+
+        Button button3 = new TextButton("Main Menu", mySkin, "small");
         button3.setSize(col_width * 4, row_height);
-        button3.setPosition(50, 60);
+        button3.setPosition(50, 260);
         button3.addListener(new InputListener()  {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                OptionScreen options = new OptionScreen(host);
-                host.setScreen(options);
+                MainMenuScreen mainMenuScreen = new MainMenuScreen(host, true);
+                host.setScreen(mainMenuScreen);
                 return true;
             }
         });
 
+        stage.addActor(button1);
         stage.addActor(button2);
         stage.addActor(button3);
     }
@@ -99,30 +107,13 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClearColor(65/255f, 105/255f,225/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(openedFirstTime) {
-            LanguageSelectionScreen langScreen = new LanguageSelectionScreen(host);
-            host.setScreen(langScreen);
-
-        }
-
         batch.begin();
 
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            LevelOne levelOne = new LevelOne(host);
-            host.setScreen(levelOne);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            MainMenuScreen mainMenuScreen = new MainMenuScreen(host, false);
-            host.setScreen(mainMenuScreen);
-        }
-
-        logo.draw(batch, "Paint Ball Game", width / 2 - 250f, height - 20f);
+        logo.draw(batch, "Level Selection", width / 2 - 250f, height - 20f);
         batch.end();
 
         stage.act();
         stage.draw();
-
     }
 
     @Override

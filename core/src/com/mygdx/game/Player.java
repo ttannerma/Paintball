@@ -126,13 +126,13 @@ public class Player extends Sprite {
 
         if(Gdx.input.getAccelerometerY() < 1 && Gdx.input.getAccelerometerZ() - 4 > 1) {
 
-            getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
+            getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
             if (Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
                 Gdx.app.log("TAG", "first");
                 x += (-1 * speed);
             }
 
-            getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
+            getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
             if (Gdx.input.getAccelerometerZ() - 4 > positiveThreshold && upLeftCollision && upRightCollision) {
                 Gdx.app.log("TAG", "second");
                 y += speed;
@@ -141,7 +141,7 @@ public class Player extends Sprite {
 
         if(Gdx.input.getAccelerometerY() > 1 && Gdx.input.getAccelerometerZ() - 4 > 1) {
 
-            getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
+            getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
             if (Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
                 Gdx.app.log("TAG", "third");
                 if (!checkPurpleGateCollision()) {
@@ -151,7 +151,7 @@ public class Player extends Sprite {
                 }
             }
 
-            getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
+            getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
             if (Gdx.input.getAccelerometerZ() - 4 > positiveThreshold && upLeftCollision && upRightCollision) {
                 Gdx.app.log("TAG", "fourth");
                 y += speed;
@@ -161,7 +161,7 @@ public class Player extends Sprite {
 
         if(Gdx.input.getAccelerometerY() > 1 && Gdx.input.getAccelerometerZ() - 4 < 1) {
 
-            getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
+            getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
             if (Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
                 Gdx.app.log("TAG", "sixth");
                 if(!checkPurpleGateCollision()) {
@@ -171,7 +171,7 @@ public class Player extends Sprite {
                 }
             }
 
-            getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
+            getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
             if (Gdx.input.getAccelerometerZ() - 4 < negativeThreshold && downLeftCollision && downRightCollision) {
                 Gdx.app.log("TAG", "seventh");
                 if(!checkRedGateCollision()) {
@@ -184,13 +184,13 @@ public class Player extends Sprite {
 
         if(Gdx.input.getAccelerometerY() < 1 && Gdx.input.getAccelerometerZ() - 4 < 1) {
 
-            getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
+            getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
             if (Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
                 Gdx.app.log("TAG", "eight");
                 x += (-1 * speed);
             }
 
-            getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
+            getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
             if (Gdx.input.getAccelerometerZ() - 4 < negativeThreshold && downLeftCollision && downRightCollision) {
                 Gdx.app.log("TAG", "ninth");
                 if(!checkRedGateCollision()) {
@@ -273,25 +273,25 @@ public class Player extends Sprite {
         return false;
     }
 
-    public void getMyCorners(float pX, float pY, String collision) {
+    public void getMyCorners(float pX, float pY) {
 
         float downYpos = pY;
         float upYpos = rolling.getKeyFrame(0).getRegionHeight() / 10 / 2 + downYpos;
         float leftXpos = pX;
         float rightXpos = rolling.getKeyFrame(0).getRegionWidth() / 10 / 2 + leftXpos;
 
-        upLeftCollision = isFree(leftXpos, upYpos, collision);
-        downLeftCollision = isFree(leftXpos, downYpos, collision);
-        upRightCollision = isFree(rightXpos, upYpos, collision);
-        downRightCollision = isFree(rightXpos, downYpos, collision);
+        upLeftCollision = isFree(leftXpos, upYpos);
+        downLeftCollision = isFree(leftXpos, downYpos);
+        upRightCollision = isFree(rightXpos, upYpos);
+        downRightCollision = isFree(rightXpos, downYpos);
     }
 
-    private boolean isFree(float x, float y, String collision) {
+    private boolean isFree(float x, float y) {
 
         int indexXround = (int)(x / 32);
         int indexYround = (int)(y / 32);
 
-        TiledMapTileLayer wallCells = (TiledMapTileLayer) tiledMap.getLayers().get(collision);
+        TiledMapTileLayer wallCells = (TiledMapTileLayer) tiledMap.getLayers().get("walls");
 
         if(wallCells.getCell(indexXround, indexYround) != null) {
             return false;
