@@ -52,6 +52,8 @@ public class Player extends Sprite {
     boolean blueColor;
     float lastXVelocity = 0;
     float lastYVelocity = 0;
+    float accelY;
+    float accelZ;
     String collision;
 
     public Player (float x, float y, TiledMap tiledMap) {
@@ -102,28 +104,57 @@ public class Player extends Sprite {
         redColor = getRed(redColor);
         blueColor = getBlue(blueColor);
 
-        float positiveThreshold = 1;
-        float negativeThreshold = -1;
+        float posThreshold = 2;
+        float negThreshold = -2;
         float speed = 80 * Gdx.graphics.getDeltaTime();
-
-
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            y = y - speed;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            y = y + speed;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            x = x - speed;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            x = x + speed;
-        }
-
 
         //Gdx.app.log("TAG", Float.toString(Gdx.input.getAccelerometerY()));
         //Gdx.app.log("TAG", Float.toString(Gdx.input.getAccelerometerZ()));
 
+        accelY = Gdx.input.getAccelerometerY();
+        accelZ = Gdx.input.getAccelerometerZ();
+
+
+        // y = oikea vasen
+        // z = eteen taakse
+        if(accelY > posThreshold) {
+            getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
+            if(upRightCollision && upLeftCollision) {
+                if(!checkPurpleGateCollision()) {
+                    x += speed;
+                } else {
+                    x += (-1 * speed);
+                }
+            }
+        }
+
+        if(accelY < negThreshold) {
+            getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
+            if(downLeftCollision && upLeftCollision) {
+
+                x += (-1 * speed);
+            }
+        }
+
+        if(accelZ > posThreshold) {
+            getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
+            if(upLeftCollision && upRightCollision) {
+
+                y += speed;
+            }
+        }
+
+        if(accelZ < negThreshold) {
+            getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
+            if(downLeftCollision && downRightCollision) {
+                if(!checkRedGateCollision()) {
+                    y += (-1 * speed);
+                }
+            }
+        }
+
+        // Wanha liikkumismenetelmä. Säästin varmuudeks jos haluat pitää tän.
+        /*
         if(Gdx.input.getAccelerometerY() < 1 && Gdx.input.getAccelerometerZ() - 4 > 1) {
 
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
@@ -200,6 +231,7 @@ public class Player extends Sprite {
                 }
             }
         }
+        */
 
         playerRectangle.setPosition(x, y);
         Gdx.app.log("TAG", "x: " + Float.toString(x) + " y: " + Float.toString(y));
