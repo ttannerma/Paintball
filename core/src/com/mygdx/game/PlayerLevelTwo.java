@@ -22,8 +22,7 @@ import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Contains implementation of the player class for level two, modified and then merged with original
- * player class to be used for every level.
+ * Contains implementation of the player class for level two.
  * Created by Teemu on 2/23/2018.
  */
 public class PlayerLevelTwo extends Sprite {
@@ -52,6 +51,14 @@ public class PlayerLevelTwo extends Sprite {
     boolean redColor;
     boolean blueColor;
     boolean secondRedColor;
+    boolean whiteColor;
+    boolean cyanColor;
+    boolean blackColor;
+    boolean brownColor;
+    boolean yellowColor;
+    boolean orangeColor;
+    boolean secondWhiteColor;
+    boolean pinkColor;
     float lastXVelocity = 0;
     float lastYVelocity = 0;
     String collision;
@@ -68,6 +75,14 @@ public class PlayerLevelTwo extends Sprite {
         redColor = false;
         blueColor = false;
         secondRedColor = false;
+        whiteColor = false;
+        cyanColor = false;
+        blackColor = false;
+        brownColor = false;
+        orangeColor = false;
+        yellowColor = false;
+        secondWhiteColor = false;
+        pinkColor = false;
         collision = "walls";
     }
 
@@ -132,7 +147,7 @@ public class PlayerLevelTwo extends Sprite {
         if(accelY < negThreshold) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
             if(downLeftCollision && upLeftCollision) {
-                if(!checkRedGateCollision() && !checkSecondRedGateCollision()) {
+                if(!checkRedGateCollision()) {
                     x += (-1 * speed);
                 } else {
                     x += speed;
@@ -143,7 +158,7 @@ public class PlayerLevelTwo extends Sprite {
         if(accelZ > posThreshold) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
             if(upLeftCollision && upRightCollision) {
-                if(!checkSecondRedGateCollision()) {
+                if(!checkSecondRedGateCollision() && !checkCyanGateCollision() && !checkBrownGateCollision() && !checkOrangeGateCollision() && !checkPinkGateCollision()) {
                     y += speed;
                 }
             } else {
@@ -153,8 +168,10 @@ public class PlayerLevelTwo extends Sprite {
 
         if(accelZ < negThreshold) {
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
-            if(downLeftCollision && downRightCollision) {
+            if(downLeftCollision && downRightCollision && !checkSecondWhiteGateCollision()) {
                 y += (-1 * speed);
+            } else {
+                y += speed;
             }
         }
 
@@ -174,6 +191,141 @@ public class PlayerLevelTwo extends Sprite {
         playerXpos = playerRectangle.x;
         playerYpos = playerRectangle.y;
 
+    }
+
+    private boolean checkPinkGateCollision() {
+
+        if(pinkColor) {
+            return false;
+        }
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("pink_gate_obj");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("PINK GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkSecondWhiteGateCollision() {
+
+        if(secondWhiteColor) {
+            return false;
+        }
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("white_gate_obj");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("WHITE GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkOrangeGateCollision() {
+
+        if(orangeColor) {
+            return false;
+        }
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("orange_gate_obj");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("ORANGE GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkBrownGateCollision() {
+
+        if(brownColor) {
+            return false;
+        }
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("brown_gate_obj");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("BROWN GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkCyanGateCollision() {
+
+        if(cyanColor) {
+            return false;
+        }
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("cyan_gate_obj");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("CYAN GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean checkSecondRedGateCollision() {
@@ -312,12 +464,35 @@ public class PlayerLevelTwo extends Sprite {
     public void setSecondRedColor(boolean redColored) {
         secondRedColor = redColored;
     }
-    public boolean getSecondRedColor() { return secondRedColor; }
+    public void setCyan(boolean cyanColored){
+        cyanColor = cyanColored;
+    }
+    public void setPink(boolean pinkColored) {
+        pinkColor = pinkColored;
+    }
     public void setRed(boolean redColored) {
         redColor = redColored;
     }
     public void setBlue(boolean blueColored) {
         blueColor = blueColored;
+    }
+    public void setWhite(boolean whiteColored) {
+        whiteColor = whiteColored;
+    }
+    public void setSecondWhite(boolean secondWhiteColored) {
+        secondWhiteColor = secondWhiteColored;
+    }
+    public void setBrown(boolean brownColored) {
+        brownColor = brownColored;
+    }
+    public void setOrange(boolean orangeColored) {
+        orangeColor = orangeColored;
+    }
+    public void setBlack(boolean blackColored) {
+        blackColor = blackColored;
+    }
+    public void setYellow(boolean yellowColored) {
+        yellowColor = yellowColored;
     }
 
     public boolean getBlue(boolean blueColor) {

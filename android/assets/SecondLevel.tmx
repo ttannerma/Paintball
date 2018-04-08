@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="45" height="66" tilewidth="32" tileheight="32" infinite="0" nextobjectid="106">
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="45" height="66" tilewidth="32" tileheight="32" infinite="0" nextobjectid="128">
  <tileset firstgid="1" name="mapobjects" tilewidth="32" tileheight="32" tilecount="60" columns="10">
   <image source="map_objects.png" trans="ffffff" width="320" height="192"/>
  </tileset>
@@ -8,7 +8,7 @@
  </tileset>
  <layer name="groundtiles" width="45" height="66">
   <data encoding="base64" compression="zlib">
-   eJztmVsOhCAMRbsxpUtxaS7FpU0HX8TggIKlZu5J+mNm9Eh4XJAIAAAAAACAa7CUIxpSJb8b25ruiM/UZVQvzmzEO9f5W6617AKcdYCzDhadmX7PvzKHkTXnK+0IZzjDGc5w9vd6kzNpOvO81g2lvprOq7c8b7xTy/uqO5fgGvSNUuD8HEx7fl2yqq9+7uPmzg6YvBt1ibJydiAOWb6WvN1hPs6p1n0czjrAWQfe81TuvDHJf6YmsgGc6W3Fd4WDHBj69/NexV9nQ75H3pI3QuCsA5x1+HdnprxvkaXfKWs638kGscyeeq+zvdWdPVYN5xp1pe0rtfO2Fh/X6SecueBs6CwzxO4ZyxvWz5ZiY9D6/Bf6rWMwHJfWnUv7sxZvdObEWGfD2T/FB4uBz3M=
+   eJztzssNgAAIBFEas3dL8+QNEwx/nUn2CHkiRERElNnhWEceb4c7wlvtjjRXuT9kPg3baFbdmDFjxrzEbPVixowZ81uzdos51qx6B5sfvY1m1zDXmCvsmDFjxowZ85/NWe6KNpqj3ZVtNN9hjvubOcyYMWPGPHOYe82ZbTSLwTXRLIrFugv9XcJh
   </data>
  </layer>
  <objectgroup name="walls_object">
@@ -25,10 +25,6 @@
   <object id="26" x="1142" y="2057.33" width="254.667" height="12"/>
   <object id="27" x="1384" y="1800.67" width="12.6667" height="254.667"/>
   <object id="28" x="1226.67" y="1797.33" width="158" height="17.3333"/>
-  <object id="29" x="1226" y="1903.33" width="10" height="68.6667"/>
-  <object id="30" x="1238" y="1961.33" width="60" height="10.6667"/>
-  <object id="31" x="1289.33" y="1901.33" width="11.3333" height="60"/>
-  <object id="32" x="1226.67" y="1898" width="74" height="14.6667"/>
   <object id="33" x="1226.67" y="1517.33" width="10.6667" height="280"/>
   <object id="34" x="1131.33" y="1517.33" width="10" height="284"/>
   <object id="35" x="1238.67" y="1514" width="88.6667" height="12.6667"/>
@@ -56,29 +52,24 @@
   <object id="60" x="1045.33" y="1192" width="88" height="12.6667"/>
   <object id="61" x="1224" y="494.667" width="16" height="848"/>
   <object id="62" x="1126.67" y="1064" width="16" height="278.667"/>
-  <object id="63" x="648" y="1064" width="477.333" height="13.3333"/>
-  <object id="64" x="642.667" y="1036" width="21.3333" height="21.3333"/>
-  <object id="65" x="620" y="1036" width="20" height="8"/>
-  <object id="66" x="616" y="716" width="12" height="318.667"/>
-  <object id="67" x="625.333" y="714.667" width="506.667" height="12"/>
-  <object id="68" x="741.333" y="813.333" width="21.3333" height="74.6667"/>
-  <object id="69" x="725.333" y="973.333" width="288" height="6.66667"/>
   <object id="70" x="1001.33" y="844" width="9.33333" height="126.667"/>
   <object id="71" x="873.333" y="728.667" width="10.6667" height="242"/>
   <object id="72" x="1006.67" y="836.667" width="38" height="20.6667"/>
   <object id="73" x="1098.67" y="834.667" width="42" height="25.3333"/>
   <object id="74" x="1132.67" y="566.667" width="8" height="268"/>
-  <object id="75" x="970" y="578.667" width="75.3333" height="24.6667"/>
   <object id="76" x="875.333" y="459.333" width="10.6667" height="254.667"/>
   <object id="77" x="1195.33" y="488.667" width="30" height="10.6667"/>
   <object id="78" x="1192" y="458.667" width="14.6667" height="28"/>
   <object id="79" x="888" y="456.667" width="304" height="12"/>
+  <object id="113" x="873.5" y="971.5" width="136.5" height="9.5"/>
+  <object id="114" x="874.5" y="981.5" width="12.5" height="96"/>
+  <object id="115" x="885.5" y="1066" width="251.5" height="12"/>
+  <object id="119" x="886.5" y="586" width="159.5" height="15"/>
+  <object id="122" x="1227" y="1794" width="10" height="122"/>
+  <object id="123" x="1291" y="1868" width="40" height="135"/>
  </objectgroup>
  <objectgroup name="red_gate_object">
   <object id="80" x="519" y="1783" width="18" height="117"/>
- </objectgroup>
- <objectgroup name="fourth_red_puddle_obj">
-  <object id="100" x="895.333" y="671.333" width="32.6667" height="32.6667"/>
  </objectgroup>
  <objectgroup name="purple_gate_object">
   <object id="81" x="741.5" y="1781" width="19" height="117.5"/>
@@ -87,8 +78,10 @@
   <object id="82" x="896" y="1824" width="33" height="32"/>
   <object id="94" x="1247.5" y="1216" width="33.5" height="32.5"/>
   <object id="95" x="1088" y="1216.5" width="31.5" height="31"/>
+  <object id="121" x="1152" y="1087.33" width="64" height="32.3333"/>
+  <object id="127" x="1152.5" y="1632" width="64" height="32"/>
  </objectgroup>
- <objectgroup name="light_blue_gate_obj">
+ <objectgroup name="cyan_gate_obj">
   <object id="96" x="1141" y="1286.67" width="86.6667" height="17.3333"/>
  </objectgroup>
  <objectgroup name="brown_gate_obj">
@@ -125,7 +118,7 @@
   </layer>
   <layer name="white" width="45" height="66">
    <data encoding="base64" compression="zlib">
-   eJzt1kERAAAIw7B5wr83ZMDdEgV9NgEAAAAA+GuuAwCAal4EAAAAaLWyVABn
+   eJzt1UERAAAIw7B5wr83ZHBAoqC/JgAAAAAAsF9NBwBwkr8AAAAAXzVDkABn
   </data>
   </layer>
   <layer name="black" width="45" height="66">
@@ -179,6 +172,9 @@
    eJztzrENADAIA0GGIvtldChSMAFp7qSXXDoCAACAKbvz6n3/vgEAAAAAAAAA2FcLEAFT
   </data>
  </layer>
+ <objectgroup name="white_gate_obj">
+  <object id="118" x="1047.5" y="581.5" width="84" height="19.5"/>
+ </objectgroup>
  <layer name="blue_gate" width="45" height="66">
   <data encoding="base64" compression="zlib">
    eJztwTEBAAAAwqD1T+1pCaAAAAAAAAAAAAAAAOAGLmgAAQ==
@@ -191,7 +187,7 @@
  </layer>
  <layer name="red_gate_second" width="45" height="66">
   <data encoding="base64" compression="zlib">
-   eJzt0MEJACEMRUFxG7U0S7G0zcEG9BLFGfiQ4yOlAAAAAAAAAAAAwDtq7JuLe+TW7Inunt2wKv7dshtW3dhcL2wGzvQDqBkClQ==
+   eJzt0rEJADAMA7DQ/v9TT2uG9oNAhkhg8OjBEQAAAAAAAAAAADDHyuyX7Kd3DdT53/ZroMIFJEMBkg==
   </data>
  </layer>
  <layer name="goal" width="45" height="66">
@@ -204,44 +200,43 @@
  </objectgroup>
  <layer name="star" width="45" height="66">
   <data encoding="base64" compression="zlib">
-   eJzt2DENAAAIA0E2/DtmwAKBhNwp+KlDIwAAAAD25XUA8I5dAQAAAAAm+BoBWgHVFwAW
+   eJztwTEBAAAAwqD1T+1pCaAAAAAAAAAAAAAAAOAGLmgAAQ==
   </data>
  </layer>
  <layer name="reset_point" width="45" height="66">
   <data encoding="base64" compression="zlib">
-   eJzt16ERAAAIA7Huwf57ourRXCJ/g08AAAAAAACAmmMDAADALwF8ttYEAFI=
+   eJzt1rENADAIAzD+6P9/MsBUMbK0sqV8EEWJAAAAAAAA2HE68LKpw3oNAFB8fuBmEwD+lZFdAL4=
   </data>
  </layer>
  <objectgroup name="blue_puddle_object">
   <object id="83" x="352" y="1824" width="32" height="31"/>
+  <object id="111" x="992.667" y="1408" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="red_puddle_object">
   <object id="84" x="577" y="1825" width="31" height="31"/>
- </objectgroup>
- <objectgroup name="conveyor_obj">
-  <object id="85" x="988" y="1811" width="104" height="86"/>
+  <object id="110" x="1056.67" y="1472.67" width="30.6667" height="32"/>
+  <object id="117" x="896.5" y="672" width="31.5" height="32"/>
  </objectgroup>
  <objectgroup name="second_red_puddle_obj">
   <object id="86" x="1281" y="1825" width="31" height="29"/>
  </objectgroup>
  <objectgroup name="second_red_gate_obj">
   <object id="87" x="1142" y="1769" width="85" height="14"/>
-  <object id="104" x="1256" y="1812.67" width="16" height="85.3333"/>
+  <object id="107" x="1235.5" y="1896.5" width="57" height="15.5"/>
  </objectgroup>
  <layer name="pink_gate" width="45" height="66">
   <data encoding="base64" compression="zlib">
    eJztzsEJADAIBEE7iP1XY2kGLMIQZmC570UAAAAAwPvOLWdr+QoAAAAAAAB8rwHVpwDv
   </data>
  </layer>
- <objectgroup name="thid_red_puddle_obj">
-  <object id="88" x="1056.5" y="1472.5" width="31.5" height="31.5"/>
- </objectgroup>
- <objectgroup name="second_blue_puddle_obj">
-  <object id="89" x="992" y="1408" width="32.3333" height="32.3333"/>
+ <objectgroup name="pink_gate_obj">
+  <object id="120" x="1045" y="838.667" width="54.3333" height="18"/>
  </objectgroup>
  <objectgroup name="white_puddle_obj">
   <object id="90" x="993" y="1314" width="30" height="30"/>
-  <object id="99" x="767.333" y="927.333" width="32.6667" height="32"/>
+ </objectgroup>
+ <objectgroup name="second_white_puddle_obj">
+  <object id="116" x="898" y="1023" width="29" height="32"/>
  </objectgroup>
  <objectgroup name="green_puddle_obj">
   <object id="91" x="1280.5" y="1472.5" width="32.5" height="31.5"/>
@@ -252,24 +247,19 @@
  <objectgroup name="black_puddle_obj">
   <object id="93" x="1344.5" y="1312" width="31.5" height="32"/>
  </objectgroup>
- <layer name="conveyorbelt" width="45" height="66">
-  <data encoding="base64" compression="zlib">
-   eJzt0qENwDAMRUEvUxycoo7W0TJaDc1allq6kx4w+8ARAAAAAAAAAAAAwF/MiGuU8l67N705s6OU97110AcdN+cvxCjNBpuBvh7UWQcF
-  </data>
- </layer>
  <layer name="onewaygate" width="45" height="66">
   <data encoding="base64" compression="zlib">
-   eJzt19EJgDAMQEFHcYt2HEfpKI7mKEacIB8SgncQ6OejFEq2DQAA4L9GzHxnxXkV50BKvNmzuiFr9my+qhuyRsPmjuKe9+qGrNmz+ahuyBoNmwG+ZvcCgF783QAAwOMG6MELVw==
+   eJztwTEBAAAAwqD1T+1pCaAAAAAAAAAAAAAAAOAGLmgAAQ==
   </data>
  </layer>
  <layer name="walls" width="45" height="66">
   <data encoding="base64" compression="zlib">
-   eJztmGGOwiAQRjna/qFaT+FRPIpH6VH2KELSJrMsMgNS+qnfSxprwfYVpsNY5wghhBBCCKnDO7dMzl21LfS7Hu26EXwWS7/gfEfxtjrX9t0TzeMs2hGd5zD/MXZnEQMTuLPWTud2EJ21/HtR2k/O/Yx2rhlHrZ3OtmtGZjHXFg8EZ+17jP8tP4fPX1/ouxeZcb6V2kteqPFM5zbkdc5rPZHk3z/HfPlcQ+g5NqOce9bqo5wjPhMT1k3e70jnV5ie7CND5/1Y69f4DNxP4njYv23HUf6DR6JvUmNk91HeHaS+kVJsIHjn4lWL56Nj/FOc9/hNT+g8hto8kMszR2D1RvHdWOvAf+udXB+RfFPepd6Q0HkMdB7DtzvLXNm6WdaOns495snb7qvYv2atR4mtGo9O47y0jlmLh2Vea+b92Tlz9Qb6u6XcM4ie/9L3A+n8oDu3tB/BOzprzzpy7a/xAC+oy18=
+   eJztmO0NwiAQhhnNP1DdwlEcxVE6iqMIiZgLXoGrFA59n4RIytU8wsmXMQAAAAAAAMiwxqzOmGup+LjraNeI91lr4rzzXYt3rbM09khKHmfSrsV5YfL5QnLAKXQuecC5DTM6c/lMi28/xVgtzjP2M5z7kHqE/Uecn/3nw2ZiR5F65LzgvJ8ZndP52WZiXTerPBIPOO8nnD9qz1RanEu4jbpm4Hwcr/uDkOf3hTz39Vt8ruUMHgi+yR6DrWu5O0h9A7nc0ODN5Wspn0fn+K84H/FOS+DcB+k8wM0zI6j11uIbee31PtY7uj5q8k2ZZb9BgXMf4NyHf3emc+XeUrN2tHRuMU627ne9WZh+kqz1I3Lr2/1zo35eJX3myHsxVuJRM66Scd/6Tu4eySV1bWzlA5zbwjlZklezOEvaR1D6r2ve+5d4Ajc3sqE=
   </data>
  </layer>
  <layer name="flowers" width="45" height="66">
   <data encoding="base64" compression="zlib">
-   eJzt1cENwCAMA0AW7P7r8OwXCao65G4CJxgYAwAA+nj+DkBZuoMO9NTp3DvNusOe4JV0H5KyAABnVP/fq+cHuI13mST6eNbqPu2dr6V3LD3fihtmqGgCGe8FHg==
+   eJzt1oEJACAIBMAWbP91WsGgSO1uglcecQwAAPjHfB2AsnQHHaA7HQd2uRsAwE3Vf43q+QG6cZfJRB/Piu7T3rkte8ey54voMENFCxgrBDc=
   </data>
  </layer>
  <layer name="startingpoint" width="45" height="66">
