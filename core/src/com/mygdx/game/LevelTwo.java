@@ -56,7 +56,7 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         camera.setToOrtho(false, 400f, 200f);
         tiledMap = new TmxMapLoader().load("SecondLevel.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        player = new PlayerLevelTwo(32 * 21, 32 * 8, tiledMap);
+        player = new PlayerLevelTwo(32 * 21, 32 * 12, tiledMap);
 
         blueColorChanged = false;
         redColorChanged = false;
@@ -233,40 +233,40 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
 
         // Sets texture to null.
         if(path.equals("purple_gate")) {
-            cell.setCell(23, 7, null);
-            cell.setCell(23, 8, null);
-            cell.setCell(23, 9, null);
+            cell.setCell(23, 11, null);
+            cell.setCell(23, 12, null);
+            cell.setCell(23, 13, null);
         } else if(path.equals("red_gate")) {
-            cell.setCell(16, 7, null);
-            cell.setCell(16, 8, null);
-            cell.setCell(16, 9, null);
+            cell.setCell(16, 11, null);
+            cell.setCell(16, 12, null);
+            cell.setCell(16, 13, null);
             boolean redColorSet = true;
             player.setRed(redColorSet);
         } else if(path.equals("blue_gate")) {
-            cell.setCell(8, 2, null);
-            cell.setCell(8, 3, null);
+            cell.setCell(8, 6, null);
+            cell.setCell(8, 7, null);
             boolean blueColorSet = true;
             player.setBlue(blueColorSet);
         } else if(path.equals("red_gate_second")) {
-            cell.setCell(39, 6, null);
-            cell.setCell(36, 10, null);
-            cell.setCell(37, 10, null);
+            cell.setCell(39, 10, null);
+            cell.setCell(36, 14, null);
+            cell.setCell(37, 14, null);
             player.setSecondRedColor(true);
         } else if(path.equals("cyan_gate")) {
-            cell.setCell(36, 25, null);
-            cell.setCell(37, 25, null);
+            cell.setCell(36, 29, null);
+            cell.setCell(37, 29, null);
             player.setCyan(true);
         } else if(path.equals("brown_gate")) {
-            cell.setCell(36, 26, null);
-            cell.setCell(37, 26, null);
+            cell.setCell(36, 30, null);
+            cell.setCell(37, 30, null);
         } else if(path.equals("orange_gate")) {
-            cell.setCell(36, 27, null);
-            cell.setCell(37, 27, null);
+            cell.setCell(36, 31, null);
+            cell.setCell(37, 31, null);
         } else if(path.equals("white_gate")) {
-            cell.setCell(33, 47, null);
-            cell.setCell(34, 47, null);
+            cell.setCell(33, 51, null);
+            cell.setCell(34, 51, null);
         } else if(path.equals("pink_gate")) {
-            cell.setCell(33, 39, null);
+            cell.setCell(33, 43, null);
         }
     }
 
