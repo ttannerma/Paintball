@@ -50,6 +50,10 @@ public class Player extends Sprite {
     boolean downRightCollision;
     boolean redColor;
     boolean blueColor;
+    boolean up;
+    boolean down;
+    boolean left;
+    boolean right;
     float lastXVelocity = 0;
     float lastYVelocity = 0;
     float accelY;
@@ -114,10 +118,15 @@ public class Player extends Sprite {
         accelY = Gdx.input.getAccelerometerY();
         accelZ = Gdx.input.getAccelerometerZ();
 
+        up = Gdx.input.isKeyPressed(Input.Keys.UP);
+        down = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        left = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        right = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
+
 
         // y = oikea vasen
         // z = eteen taakse
-        if(accelY > posThreshold) {
+        if(accelY > posThreshold || left) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
             if(upRightCollision && upLeftCollision) {
                 if(!checkPurpleGateCollision()) {
@@ -128,7 +137,7 @@ public class Player extends Sprite {
             }
         }
 
-        if(accelY < negThreshold) {
+        if(accelY < negThreshold || right) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
             if(downLeftCollision && upLeftCollision) {
 
@@ -136,15 +145,14 @@ public class Player extends Sprite {
             }
         }
 
-        if(accelZ > posThreshold) {
+        if(accelZ > posThreshold || up) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
             if(upLeftCollision && upRightCollision) {
-
                 y += speed;
             }
         }
 
-        if(accelZ < negThreshold) {
+        if(accelZ < negThreshold || down) {
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
             if(downLeftCollision && downRightCollision) {
                 if(!checkRedGateCollision()) {

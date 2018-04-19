@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="50" height="38" tilewidth="32" tileheight="32" infinite="0" nextobjectid="60">
+ <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="80" columns="8">
+  <image source="Sprite_sheet_levels.png" trans="ffffff" width="256" height="320"/>
+ </tileset>
+ <tileset firstgid="81" name="objects" tilewidth="32" tileheight="32" tilecount="60" columns="10">
+  <image source="Sprite_sheet_new.png" trans="ffffff" width="320" height="192"/>
+ </tileset>
+ <layer name="ground" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztw0ENAAAMA6Grf9NzsRckrJqqqqqqqqqq7w9eGgdt
+  </data>
+ </layer>
+ <objectgroup name="wall">
+  <object id="1" x="200" y="752" width="16" height="232"/>
+  <object id="2" x="200" y="744" width="328" height="16"/>
+  <object id="4" x="520" y="584" width="16" height="168"/>
+  <object id="6" x="520" y="584" width="176" height="16"/>
+  <object id="8" x="680" y="584" width="16" height="176"/>
+  <object id="9" x="208" y="968" width="720" height="16"/>
+  <object id="11" x="928" y="968" width="312" height="16"/>
+  <object id="12" x="688" y="744" width="200" height="16"/>
+  <object id="13" x="872" y="760" width="16" height="64"/>
+  <object id="14" x="872" y="808" width="232" height="16"/>
+  <object id="15" x="1096" y="624" width="16" height="200"/>
+  <object id="16" x="1224" y="624" width="16" height="360"/>
+  <object id="17" x="936" y="616" width="168" height="16"/>
+  <object id="18" x="936" y="368" width="16" height="264"/>
+  <object id="19" x="936" y="360" width="336" height="16"/>
+  <object id="20" x="1064" y="368" width="16" height="184"/>
+  <object id="21" x="1224" y="360" width="16" height="192"/>
+  <object id="22" x="1224" y="616" width="200" height="16"/>
+  <object id="23" x="1416" y="232" width="16" height="392"/>
+  <object id="24" x="1416" y="136" width="16" height="96"/>
+  <object id="25" x="680" y="136" width="752" height="16"/>
+  <object id="26" x="1256" y="264" width="16" height="96"/>
+  <object id="27" x="880" y="264" width="392" height="16"/>
+  <object id="28" x="872" y="264" width="16" height="208"/>
+  <object id="29" x="712" y="456" width="176" height="16"/>
+  <object id="30" x="712" y="272" width="16" height="200"/>
+  <object id="31" x="616" y="264" width="104" height="16"/>
+  <object id="32" x="616" y="272" width="16" height="200"/>
+  <object id="33" x="456" y="456" width="176" height="16"/>
+  <object id="34" x="456" y="264" width="16" height="208"/>
+  <object id="35" x="296" y="264" width="168" height="16"/>
+  <object id="36" x="296" y="144" width="16" height="136"/>
+  <object id="37" x="296" y="136" width="384" height="16"/>
+ </objectgroup>
+ <objectgroup name="reset">
+  <object id="38" x="256" y="832" width="32" height="32"/>
+  <object id="39" x="1120" y="768" width="32" height="32"/>
+  <object id="40" x="1152" y="768" width="32" height="32"/>
+  <object id="41" x="1184" y="768" width="32" height="32"/>
+  <object id="42" x="544" y="352" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="finnish">
+  <object id="43" x="320" y="192" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="white_paint_one">
+  <object id="44" x="576" y="640" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="yellow_paint_one">
+  <object id="45" x="736" y="768" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="blue_paint_one">
+  <object id="47" x="832" y="768" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="red_paint_one">
+  <object id="48" x="832" y="928" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="red_gate_one">
+  <object id="49" x="528" y="712" width="160" height="16"/>
+ </objectgroup>
+ <objectgroup name="lightblue_gate_one">
+  <object id="50" x="904" y="816" width="16" height="152"/>
+ </objectgroup>
+ <objectgroup name="white_paint_two">
+  <object id="51" x="992" y="416" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="blue_paint_two">
+  <object id="52" x="1120" y="416" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="red_gate_two">
+  <object id="53" x="1072" y="488" width="160" height="16"/>
+ </objectgroup>
+ <objectgroup name="white_gate_two">
+  <object id="54" x="936" y="144" width="16" height="120"/>
+ </objectgroup>
+ <objectgroup name="red_paint_two">
+  <object id="55" x="800" y="160" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="blue_gate_two">
+  <object id="56" x="720" y="328" width="160" height="16"/>
+ </objectgroup>
+ <objectgroup name="pink_gate_two">
+  <object id="57" x="648" y="152" width="16" height="120"/>
+ </objectgroup>
+ <objectgroup name="black_paint_two">
+  <object id="58" x="768" y="384" width="32" height="32"/>
+ </objectgroup>
+ <objectgroup name="black_gate_two">
+  <object id="59" x="424" y="144" width="16" height="128"/>
+ </objectgroup>
+ <layer name="wall" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztl0EOhSAMRLsVPSRH+0fxaJq4MfyhoC2IZl7CxgJloIUqQgixMImsQeTXqUWt7WuJd3UExz2xYlkLdfhjWcsE4hjF6TmPFLsa/6Vc8N5TNF+4YPfw4QF1/N/jM4ip+YirKr8WLDpS25V9pw5M5g5L7en9A9fypA4L1DG2jgX0Qd/QWC9QLVyqSUeskTIxsWpjMndATPrAGga9KR7c0VEzT+88oA59Hi8dtf+yKF7RG1nK/1Y6WpyrNuebdOTOCZ3ryDqe8E8dY/n/ig4tJxu0bvUHIYQQHzZhxmCb
+  </data>
+ </layer>
+ <layer name="finnish" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7BZxb8JLOwjIa2CJgC/zHUAAAAAAACgtIgPAGI=
+  </data>
+ </layer>
+ <layer name="white_gate_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJzt00ENACAQA8FKRQz4QCqIuOQImVGwfTQBXjKT3d1QYdnxlF923H+M7gYAAAAAAKh0AKX+BXg=
+  </data>
+ </layer>
+ <layer name="red_paint_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAeBgdsAAB
+  </data>
+ </layer>
+ <layer name="blue_gate_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzjEKADAIBEFfa76Zp2kd7IUwA9tcdREAALPszlNvd/MTAAAAAMBPCu2NAyk=
+  </data>
+ </layer>
+ <layer name="red_gate_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzrENADAIA0FmJAtnNKjTUKJId9I3rhwBAAAwy+489XY3PwEAAAD8rgDjggKx
+  </data>
+ </layer>
+ <layer name="blue_paint_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzkERAAAIA6CVtX8FU+z0AQlIAADgt7kOAAAAAEDJApuFAGY=
+  </data>
+ </layer>
+ <layer name="red_gate_one" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzrENADAIA0FmJAtnNKhTI5HiTvrGlSMAAAAAmJTdeertbn4CAAD+VObwArE=
+  </data>
+ </layer>
+ <layer name="red_paint_one" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7BZxL8ZDOwnIa2CJgAAAAAA8N9cBwCgWDZuAFI=
+  </data>
+ </layer>
+ <layer name="white_paint_one" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7B5xzgadpGQVkETAAAA4Iu5DgAAAFBZK3EAhA==
+  </data>
+ </layer>
+ <layer name="lightblue_gate_one" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJzt00ENACAQA8FK5QuqkAoeIDlCZhRsH00AAAAAgN/0ZFY33DDseIodb9k/b9UNAJxb/EoF+w==
+  </data>
+ </layer>
+ <layer name="blue_paint_one" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzjEBAAAMAiDL2r+CMXYMEpAAAAAAAL0OAADw0gBFlABm
+  </data>
+ </layer>
+ <layer name="yellow_paint_one" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzjEBAAAMAiAbr/+3GB5CAhIAAAAA2HTtAAAA8x60GABw
+  </data>
+ </layer>
+ <layer name="reset" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJzt0CEKAAAIBEH/6/+71WAxCTID24+LAAD4I68HAADwWraY+QYAYKcAs+MCGA==
+  </data>
+ </layer>
+ <layer name="pink_gate_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztz4ENABAQBMHr9JWmVIkaBGGmgt0E2KWSfrphhebjKu2Rj5orAAAAAADwlwGSiwS/
+  </data>
+ </layer>
+ <layer name="red_paint_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzjENAAAIA7BZxL8ZROwgJK2CJgC9uQ4AAAAAAAA8tCbMAFI=
+  </data>
+ </layer>
+ <layer name="white_paint_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzjEBAAAIA6B1t7gtpgckIAEAgF/mOgAAAAAAJQvdWwCE
+  </data>
+ </layer>
+ <layer name="black_paint_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJztzgEJAAAIA7DXtr0lDiJsCZYAAPDJXAcAAAAAgJoFiqcAeg==
+  </data>
+ </layer>
+ <layer name="black_gate_two" width="50" height="38">
+  <data encoding="base64" compression="zlib">
+   eJzt00ENACAQA8FKRQeYQSqIuOQImVGwfTQBKs1kdzdUWHY85Zcd9x+juwEAAAAAAF5yACu5BUY=
+  </data>
+ </layer>
+</map>
