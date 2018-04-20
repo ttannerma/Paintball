@@ -24,6 +24,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
     PaintBall host;
     SpriteBatch batch;
     OrthographicCamera camera;
+    PlayerLevelThree player;
 
     public LevelThree(final PaintBall host) {
 
@@ -33,6 +34,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         camera.setToOrtho(false, 400f, 200f);
         tiledMap = new TmxMapLoader().load("Map_Three.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
+        player = new PlayerLevelThree(32 * 18, 32 * 8, tiledMap);
 
     }
 
@@ -51,21 +53,13 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         tiledMapRenderer.render();
 
         batch.begin();
-
-        if(Gdx.input.isKeyPressed(Input.Keys.DOWN)) {
-            camera.position.y += 32;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
-            camera.position.y -= 32;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
-            camera.position.x += 32;
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
-            camera.position.x -= 32;
-        }
+        camera.position.x = player.getX(player.playerXpos);
+        camera.position.y = player.getY(player.playerYpos);
+        camera.update();
 
         batch.end();
+
+        player.render(batch);
     }
 
     @Override

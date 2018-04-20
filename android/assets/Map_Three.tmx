@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="50" height="38" tilewidth="32" tileheight="32" infinite="0" nextobjectid="60">
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="50" height="36" tilewidth="32" tileheight="32" infinite="0" nextobjectid="60">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="80" columns="8">
   <image source="Sprite_sheet_levels.png" trans="ffffff" width="256" height="320"/>
  </tileset>
  <tileset firstgid="81" name="objects" tilewidth="32" tileheight="32" tilecount="60" columns="10">
   <image source="Sprite_sheet_new.png" trans="ffffff" width="320" height="192"/>
  </tileset>
- <layer name="ground" width="50" height="38">
+ <layer name="ground" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztw0ENAAAMA6Grf9NzsRckrJqqqqqqqqqq7w9eGgdt
+   eJztwwENAAAMw6DOv+kLOSSsmqqqqqqqqvriARB9Bwk=
   </data>
  </layer>
- <objectgroup name="wall">
+ <objectgroup name="walls_object">
   <object id="1" x="200" y="752" width="16" height="232"/>
   <object id="2" x="200" y="744" width="328" height="16"/>
   <object id="4" x="520" y="584" width="16" height="168"/>
@@ -46,154 +46,144 @@
   <object id="36" x="296" y="144" width="16" height="136"/>
   <object id="37" x="296" y="136" width="384" height="16"/>
  </objectgroup>
- <objectgroup name="reset">
+ <objectgroup name="reset_object">
   <object id="38" x="256" y="832" width="32" height="32"/>
   <object id="39" x="1120" y="768" width="32" height="32"/>
   <object id="40" x="1152" y="768" width="32" height="32"/>
   <object id="41" x="1184" y="768" width="32" height="32"/>
   <object id="42" x="544" y="352" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="finnish">
+ <objectgroup name="finnish_object">
   <object id="43" x="320" y="192" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="white_paint_one">
+ <objectgroup name="white_paint_one_object">
   <object id="44" x="576" y="640" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="yellow_paint_one">
-  <object id="45" x="736" y="768" width="32" height="32"/>
- </objectgroup>
- <objectgroup name="blue_paint_one">
+ <objectgroup name="blue_paint_one_object">
   <object id="47" x="832" y="768" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="red_paint_one">
+ <objectgroup name="red_paint_one_object">
   <object id="48" x="832" y="928" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="red_gate_one">
+ <objectgroup name="red_gate_one_object">
   <object id="49" x="528" y="712" width="160" height="16"/>
  </objectgroup>
- <objectgroup name="lightblue_gate_one">
+ <objectgroup name="lightblue_gate_one_object">
   <object id="50" x="904" y="816" width="16" height="152"/>
  </objectgroup>
- <objectgroup name="white_paint_two">
+ <objectgroup name="white_paint_two_object">
   <object id="51" x="992" y="416" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="blue_paint_two">
+ <objectgroup name="blue_paint_two_object">
   <object id="52" x="1120" y="416" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="red_gate_two">
+ <objectgroup name="red_gate_two_object">
   <object id="53" x="1072" y="488" width="160" height="16"/>
  </objectgroup>
- <objectgroup name="white_gate_two">
+ <objectgroup name="white_gate_two_object">
   <object id="54" x="936" y="144" width="16" height="120"/>
  </objectgroup>
- <objectgroup name="red_paint_two">
+ <objectgroup name="red_paint_two_object">
   <object id="55" x="800" y="160" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="blue_gate_two">
+ <objectgroup name="blue_gate_two_object">
   <object id="56" x="720" y="328" width="160" height="16"/>
  </objectgroup>
- <objectgroup name="pink_gate_two">
+ <objectgroup name="pink_gate_object">
   <object id="57" x="648" y="152" width="16" height="120"/>
  </objectgroup>
- <objectgroup name="black_paint_two">
+ <objectgroup name="black_paint_two_object">
   <object id="58" x="768" y="384" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="black_gate_two">
-  <object id="59" x="424" y="144" width="16" height="128"/>
- </objectgroup>
- <layer name="wall" width="50" height="38">
+ <objectgroup name="black_gate_two_object"/>
+ <layer name="walls" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztl0EOhSAMRLsVPSRH+0fxaJq4MfyhoC2IZl7CxgJloIUqQgixMImsQeTXqUWt7WuJd3UExz2xYlkLdfhjWcsE4hjF6TmPFLsa/6Vc8N5TNF+4YPfw4QF1/N/jM4ip+YirKr8WLDpS25V9pw5M5g5L7en9A9fypA4L1DG2jgX0Qd/QWC9QLVyqSUeskTIxsWpjMndATPrAGga9KR7c0VEzT+88oA59Hi8dtf+yKF7RG1nK/1Y6WpyrNuebdOTOCZ3ryDqe8E8dY/n/ig4tJxu0bvUHIYQQHzZhxmCb
+   eJztl0EOhSAMRLsVPSRH8yge7f/EjcGhoC2IZl7CxgJloIUqQgixMIlsQWTt1KLW/muJd3UExz2xYlkLdfhjWcsE4hjF6TGPFLsa/6Vc8N5TNF+4YPfw4QF1nO/xGcTUvMdVlV8LFh2p7cq+Uwcmc4el9vT+gWt5UocF6hhbxwL6oG9orBeoFi7VpCPWSJmY2LQxmTsgJn1gDYPeFA/u6KiZp3ceUIc+j5eO2n9ZFK/ojSzlfysdLc5Vm/NNOnLnhM51ZB1P+KeOsfx/RYeWkw1at/qDEPJefma9YJs=
   </data>
  </layer>
- <layer name="finnish" width="50" height="38">
+ <layer name="finnish" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7BZxb8JLOwjIa2CJgC/zHUAAAAAAACgtIgPAGI=
+   eJztzgENAAAIA6BXtX8JY9w5SEAC8Mu0AwAAAAAAcNgC7uAAYg==
   </data>
  </layer>
- <layer name="white_gate_two" width="50" height="38">
+ <layer name="white_gate_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJzt00ENACAQA8FKRQz4QCqIuOQImVGwfTQBXjKT3d1QYdnxlF923H+M7gYAAAAAAKh0AKX+BXg=
+   eJzt00ENACAQA8FKRQz4QCqIIDkgMwq2jybATXoyqxtOGHZc5Zcd+x+tugEAAAAA4HULGgYFeA==
   </data>
  </layer>
- <layer name="red_paint_two" width="50" height="38">
+ <layer name="red_paint_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztwTEBAAAAwqD1T20MH6AAAAAAAAAAeBgdsAAB
+   eJztwQEBAAAAgiD/r25IQAEAAAAAAAAvBhwgAAE=
   </data>
  </layer>
- <layer name="blue_gate_two" width="50" height="38">
+ <layer name="blue_gate_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzjEKADAIBEFfa76Zp2kd7IUwA9tcdREAALPszlNvd/MTAAAAAMBPCu2NAyk=
+   eJztzqERADAIBEGqJW2mNNAZHCJmd+bMq48AAJhld556uz8/AQAAAAA7Bf0yAyk=
   </data>
  </layer>
- <layer name="red_gate_two" width="50" height="38">
+ <layer name="red_gate_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzrENADAIA0FmJAtnNKjTUKJId9I3rhwBAAAwy+489XY3PwEAAAD8rgDjggKx
+   eJztzqERADAIBEFqJA2nNNAxDCpmd+bMq48AAACYZXeeers/PwEAAAB7Ba62ArE=
   </data>
  </layer>
- <layer name="blue_paint_two" width="50" height="38">
+ <layer name="blue_paint_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzkERAAAIA6CVtX8FU+z0AQlIAADgt7kOAAAAAEDJApuFAGY=
+   eJztzgENAAAIA6CXtX8FY9w5SEACAAC3TTsAAAAA8MgC/BYAZg==
   </data>
  </layer>
- <layer name="red_gate_one" width="50" height="38">
+ <layer name="red_gate_one" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzrENADAIA0FmJAtnNKhTI5HiTvrGlSMAAAAAmJTdeertbn4CAAD+VObwArE=
+   eJztziEOADAIBEHeSD/cp4GpQZPUzCRrTl0EAAAAAJuyO6Pe7s9PAADwFLIkArE=
   </data>
  </layer>
- <layer name="red_paint_one" width="50" height="38">
+ <layer name="red_paint_one" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7BZxL8ZDOwnIa2CJgAAAAAA8N9cBwCgWDZuAFI=
+   eJztzgENAAAIA6BXtH8ZY9w5SEACAAAAAAD/TTsAcMQCtj8AUg==
   </data>
  </layer>
- <layer name="white_paint_one" width="50" height="38">
+ <layer name="white_paint_one" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7B5xzgadpGQVkETAAAA4Iu5DgAAAFBZK3EAhA==
+   eJztzgENAAAIA6B3t7gx7hwkIAEAAAC+mHYAAAA4bwFdIgCE
   </data>
  </layer>
- <layer name="lightblue_gate_one" width="50" height="38">
+ <layer name="lightblue_gate_one" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJzt00ENACAQA8FK5QuqkAoeIDlCZhRsH00AAAAAgN/0ZFY33DDseIodb9k/b9UNAJxb/EoF+w==
+   eJzt00ENACAQA8FK5QuqkAoiSA7IjILtowkAAAAA8JuezOqGE4YdV7HjLvvnrboBeNMCo5MF+w==
   </data>
  </layer>
- <layer name="blue_paint_one" width="50" height="38">
+ <layer name="blue_paint_one" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzjEBAAAMAiDL2r+CMXYMEpAAAAAAAL0OAADw0gBFlABm
+   eJztzjEBAAAMAiDL2r+CLbYHEpAAAAAAAP0OAAAcGaYlAGY=
   </data>
  </layer>
- <layer name="yellow_paint_one" width="50" height="38">
+ <layer name="reset" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzjEBAAAMAiAbr/+3GB5CAhIAAAAA2HTtAAAA8x60GABw
+   eJzt0CEKAAAIBEH/6/+71WBXZAa2HxcBAPBHbg8AAOC1bDHzDQDcV242Ahg=
   </data>
  </layer>
- <layer name="reset" width="50" height="38">
+ <layer name="pink_gate_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJzt0CEKAAAIBEH/6/+71WAxCTID24+LAAD4I68HAADwWraY+QYAYKcAs+MCGA==
+   eJztzwkNACAQBLF1ekhDKgka+EJaBTMJcEol/XbDCs3HU9onHzVXAAAAAADYbQAnsgS/
   </data>
  </layer>
- <layer name="pink_gate_two" width="50" height="38">
+ <layer name="red_paint_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztz4ENABAQBMHr9JWmVIkaBGGmgt0E2KWSfrphhebjKu2Rj5orAAAAAADwlwGSiwS/
+   eJztzjENAAAIA7BZxL8ZLCzh4GkVNAG4m+8AAAAAAABQWaadAFI=
   </data>
  </layer>
- <layer name="red_paint_two" width="50" height="38">
+ <layer name="white_paint_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzjENAAAIA7BZxL8ZROwgJK2CJgC9uQ4AAAAAAAA8tCbMAFI=
+   eJztzgENAAAIA6B3t7gx7hwkIAEAgFumHQAAAAB4bAEPGwCE
   </data>
  </layer>
- <layer name="white_paint_two" width="50" height="38">
+ <layer name="black_paint_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzjEBAAAIA6B1t7gtpgckIAEAgF/mOgAAAAAAJQvdWwCE
+   eJztzgEJAAAMA6DVfvvHGANNYAIAwJJrBwAAAACY9sv4AHo=
   </data>
  </layer>
- <layer name="black_paint_two" width="50" height="38">
+ <layer name="black_gate_two" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzgEJAAAIA7DXtr0lDiJsCZYAAPDJXAcAAAAAgJoFiqcAeg==
-  </data>
- </layer>
- <layer name="black_gate_two" width="50" height="38">
-  <data encoding="base64" compression="zlib">
-   eJzt00ENACAQA8FKRQeYQSqIuOQImVGwfTQBKs1kdzdUWHY85Zcd9x+juwEAAAAAAF5yACu5BUY=
+   eJztzwENACAMwLBLRccxg1QQ8eRAWgVbBFApI1Z3Q4Xp4yrnY3Q3VMhPPgAAAAAAXrYBUUcFBg==
   </data>
  </layer>
 </map>
