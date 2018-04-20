@@ -52,9 +52,9 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
         int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button1 = new TextButton("Level 1",mySkin,"small");
+        Button button1 = new TextButton("Tutorial level",mySkin,"small");
         button1.setSize(col_width * 4, row_height);
-        button1.setPosition(50,160);
+        button1.setPosition(50,60);
         button1.addListener(new InputListener(){
 
             @Override
@@ -67,7 +67,7 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
         Button button2 = new TextButton("Level 2", mySkin, "small");
         button2.setSize(col_width * 4, row_height);
-        button2.setPosition(50, 60);
+        button2.setPosition(50, 160);
         button2.addListener(new InputListener()  {
 
             @Override
@@ -80,7 +80,7 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
         Button button3 = new TextButton("Main Menu", mySkin, "small");
         button3.setSize(col_width * 4, row_height);
-        button3.setPosition(50, 260);
+        button3.setPosition(width / 2, 60);
         button3.addListener(new InputListener()  {
 
             @Override
@@ -91,9 +91,23 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
             }
         });
 
+        Button button4 = new TextButton("Level 3", mySkin, "small");
+        button4.setSize(col_width * 4, row_height);
+        button4.setPosition(50, 260);
+        button4.addListener(new InputListener()  {
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
+                LevelThree levelThree = new LevelThree(host);
+                host.setScreen(levelThree);
+                return true;
+            }
+        });
+
         stage.addActor(button1);
         stage.addActor(button2);
         stage.addActor(button3);
+        stage.addActor(button4);
     }
 
     @Override

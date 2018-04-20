@@ -59,6 +59,10 @@ public class PlayerLevelTwo extends Sprite {
     boolean orangeColor;
     boolean secondWhiteColor;
     boolean pinkColor;
+    boolean up;
+    boolean down;
+    boolean left;
+    boolean right;
     float lastXVelocity = 0;
     float lastYVelocity = 0;
     String collision;
@@ -129,11 +133,15 @@ public class PlayerLevelTwo extends Sprite {
 
         accelY = Gdx.input.getAccelerometerY();
         accelZ = Gdx.input.getAccelerometerZ();
+        up = Gdx.input.isKeyPressed(Input.Keys.UP);
+        down = Gdx.input.isKeyPressed(Input.Keys.DOWN);
+        left = Gdx.input.isKeyPressed(Input.Keys.LEFT);
+        right = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
 
 
         // y = oikea vasen
         // z = eteen taakse
-        if(accelY > posThreshold) {
+        if(accelY > posThreshold || right) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
             if(upRightCollision && upLeftCollision) {
                 if(!checkPurpleGateCollision() && !checkSecondRedGateCollision()) {
@@ -144,7 +152,7 @@ public class PlayerLevelTwo extends Sprite {
             }
         }
 
-        if(accelY < negThreshold) {
+        if(accelY < negThreshold || left) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
             if(downLeftCollision && upLeftCollision) {
                 if(!checkRedGateCollision()) {
@@ -155,7 +163,7 @@ public class PlayerLevelTwo extends Sprite {
             }
         }
 
-        if(accelZ > posThreshold) {
+        if(accelZ > posThreshold || up) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
             if(upLeftCollision && upRightCollision) {
                 if(!checkSecondRedGateCollision() && !checkCyanGateCollision() && !checkBrownGateCollision() && !checkOrangeGateCollision() && !checkPinkGateCollision()) {
@@ -166,7 +174,7 @@ public class PlayerLevelTwo extends Sprite {
             }
         }
 
-        if(accelZ < negThreshold) {
+        if(accelZ < negThreshold || down) {
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
             if(downLeftCollision && downRightCollision && !checkSecondWhiteGateCollision()) {
                 y += (-1 * speed);

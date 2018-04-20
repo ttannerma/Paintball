@@ -99,7 +99,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClearColor(65/255f, 105/255f,225/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-        if(openedFirstTime) {
+        if(!openedFirstTime) {
             LanguageSelectionScreen langScreen = new LanguageSelectionScreen(host);
             host.setScreen(langScreen);
 
