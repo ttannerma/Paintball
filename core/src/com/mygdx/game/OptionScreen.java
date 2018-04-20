@@ -101,7 +101,7 @@ public class OptionScreen implements Screen {
             host.setScreen(mainMenuScreen);
         }
 
-        logo.draw(batch, "Aseteukse", width / 2 - 250f, height - 20f);
+        logo.draw(batch, "Aseteukset", width / 2 - 250f, height - 20f);
         batch.end();
 
         stage.act();
@@ -126,11 +126,11 @@ public class OptionScreen implements Screen {
 
     @Override
     public void hide() {
-        dispose();
+
     }
 
     @Override
     public void dispose() {
-        stage.dispose();
+        batch.dispose();
     }
 }

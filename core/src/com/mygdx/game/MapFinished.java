@@ -78,6 +78,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
 
         Gdx.gl.glClearColor(65/255f, 105/255f,225/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
         message.draw(batch, "Taso suoritettu", width / 2 - 250f, height - 20f);

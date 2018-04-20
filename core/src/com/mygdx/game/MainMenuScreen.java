@@ -16,6 +16,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
+import java.util.Map;
 import java.util.logging.Level;
 
 /**
@@ -78,8 +79,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                OptionScreen options = new OptionScreen(host);
-                host.setScreen(options);
+                host.setScreen(new MapFinished(host));
                 return true;
             }
         });
