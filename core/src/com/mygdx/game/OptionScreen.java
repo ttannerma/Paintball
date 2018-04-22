@@ -101,7 +101,7 @@ public class OptionScreen implements Screen {
             host.setScreen(mainMenuScreen);
         }
 
-        logo.draw(batch, "Aseteukset", width / 2 - 250f, height - 20f);
+        logo.draw(batch, "Asetukset", width / 2 - 250f, height - 20f);
         batch.end();
 
         stage.act();

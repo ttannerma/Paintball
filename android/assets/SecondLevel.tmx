@@ -8,7 +8,7 @@
  </tileset>
  <layer name="groundtiles" width="50" height="70">
   <data encoding="base64" compression="zlib">
-   eJztz9ENQlEIREEas3dLswHjI/pALplNzv9OhJmZmd25R1Hdq3J0WyodnZZqR5eF4yjHM9EWx6WFg4ODgyPlyBo4ODg4TnF8NHC0Oi4NBzhShgGO29ri6LB0OaotnY5KS7ejysLBwcHBwcHBwbHT8Y8fHBwT45gVx6w4ZsUxK45ZbXZUbosjvvg41RGJX6c44s2XX3oB2AJEig==
+   eJztz9ENgDAMA9Esxu6MxgTQStSuG52l+05eFWOMMcZW7hLlnsrhtigdTova4bLgOMpxT9TFMbTgwIEDB44px6wBBw4cOE5xfBpwWB1DwwGOKUOAY1ldHA6Ly6G2OB1Ki9uhsuDAgQMHDhw4cPxx7LiNA0d6OLLCkRWOrHBkhSMrHFl1cyjXxVGNHCX4fZejFvz71gO9Nlst
   </data>
  </layer>
  <objectgroup name="walls_object">

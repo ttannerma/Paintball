@@ -79,7 +79,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                host.setScreen(new MapFinished(host));
+                host.setScreen(new OptionScreen(host));
                 return true;
             }
         });
@@ -99,11 +99,13 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClearColor(65/255f, 105/255f,225/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+        /*
         if(!openedFirstTime) {
             LanguageSelectionScreen langScreen = new LanguageSelectionScreen(host);
             host.setScreen(langScreen);
 
         }
+        */
 
         batch.begin();
 

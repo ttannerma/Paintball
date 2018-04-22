@@ -59,10 +59,12 @@ public class PlayerLevelThree extends Sprite {
     boolean orangeColor;
     boolean secondWhiteColor;
     boolean pinkColor;
+    boolean secondBlueColor;
     boolean up;
     boolean down;
     boolean left;
     boolean right;
+    boolean firstRedUsed;
     float lastXVelocity = 0;
     float lastYVelocity = 0;
     String collision;
@@ -77,16 +79,18 @@ public class PlayerLevelThree extends Sprite {
         setY(y);
         this.tiledMap = tiledMap;
         redColor = false;
-        blueColor = false;
         secondRedColor = false;
+        blueColor = false;
+        secondBlueColor = false;
         whiteColor = false;
+        secondWhiteColor = false;
         cyanColor = false;
         blackColor = false;
         brownColor = false;
         orangeColor = false;
         yellowColor = false;
-        secondWhiteColor = false;
         pinkColor = false;
+        firstRedUsed = false;
         collision = "walls";
     }
 
@@ -142,27 +146,26 @@ public class PlayerLevelThree extends Sprite {
         if(accelY > posThreshold || right) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
             if(upRightCollision && upLeftCollision) {
-                x += speed;
+                if(!checkLightblueGateCollision()) {
+                    x += speed;
+                } else {
+                    x += (-1 * speed);
+                }
             }
         }
 
         if(accelY < negThreshold || left) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
             if(downLeftCollision && upLeftCollision) {
-                if(!checkRedGateCollision()) {
-                    x += (-1 * speed);
-                } else {
-                    x += speed;
-                }
+
+                x += (-1 * speed);
             }
         }
 
         if(accelZ > posThreshold || up) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
-            if(upLeftCollision && upRightCollision) {
-                if(!checkPinkGateCollision()) {
-                    y += speed;
-                }
+            if(upLeftCollision && upRightCollision && !checkRedGateCollision()) {
+                y += speed;
             } else {
                 y += (-1 * speed);
             }
@@ -241,7 +244,7 @@ public class PlayerLevelThree extends Sprite {
             com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
 
             if(playerRectangle.overlaps(rectangle)) {
-                Gdx.app.log("CYAN GATE", "HIT");
+                Gdx.app.log("LIGHT BLUE GATE", "HIT");
                 return true;
             }
         }
@@ -251,7 +254,7 @@ public class PlayerLevelThree extends Sprite {
 
     private boolean checkRedGateCollision() {
 
-        if(redColor && !blueColor) {
+        if(redColor && !blueColor || firstRedUsed) {
             return false;
         }
         // Gets red gate rectangle layer.
@@ -288,7 +291,7 @@ public class PlayerLevelThree extends Sprite {
         upRightCollision = isFree(rightXpos, upYpos, collision);
         downRightCollision = isFree(rightXpos, downYpos, collision);
 
-        Gdx.app.log("COLLSION!", "hit" + upLeftCollision + downLeftCollision + downRightCollision + upRightCollision);
+        Gdx.app.log("COLLISION!", "hit" + upLeftCollision + downLeftCollision + downRightCollision + upRightCollision);
     }
 
     private boolean isFree(float x, float y, String collision) {
@@ -307,6 +310,9 @@ public class PlayerLevelThree extends Sprite {
         }
     }
 
+    public void setSecondBlueColor(boolean secondBlueColored) {
+        secondBlueColor = secondBlueColored;
+    }
     public void setSecondRedColor(boolean redColored) {
         secondRedColor = redColored;
     }
@@ -318,6 +324,7 @@ public class PlayerLevelThree extends Sprite {
     }
     public void setRed(boolean redColored) {
         redColor = redColored;
+        firstRedUsed = true;
     }
     public void setBlue(boolean blueColored) {
         blueColor = blueColored;
