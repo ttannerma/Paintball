@@ -45,6 +45,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
     boolean secondBlueChanged;
     boolean redColor;
     boolean blueColor;
+    boolean bluePicked;
     String puddleCol;
 
 
@@ -102,6 +103,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
 
 
         setColorOfPlayer(redColorChanged, blueColorChanged, secondRedColorChanged, whiteColorChanged, blackColorChanged, secondWhiteChanged, secondBlueChanged);
+
 
         if(checkResetCollision()) {
             changeColor("null");
@@ -179,14 +181,16 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             clearGate("blue_gate");
             player.setBlue(true);
         }
-        if(secondBlue && !white && !red) {
+        if(secondBlue && !white && !red && !black) {
             setPuddleCol("blue");
             player.setSecondBlueColor(true);
         }
+
         if(white) {
             setPuddleCol("white");
             player.setWhite(true);
         }
+
         if(blue && white) {
             setPuddleCol("cyan");
             clearGate("lightblue_gate_one");
@@ -212,10 +216,6 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             clearGate("brown_gate");
             player.setBrown(true);
         }
-        if(!red && !blue && !white && !black) {
-            setPuddleCol("yellow");
-            player.setYellow(true);
-        }
         if(secondWhite && !blue && !red) {
             setPuddleCol("white");
             player.setSecondWhite(true);
@@ -231,6 +231,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             changeColor(getPuddleCol());
             player.setupTextureRegion();
         }
+        Gdx.app.log("Colors: ", "red: " + red + "blue: " +  blue + "second Red: " + secondRed + "white: " + white + "black: " + black + "secondWhite :" + secondWhite + "secondblue" + secondBlue);
     }
 
     private void clearGate(String path) {
@@ -309,6 +310,9 @@ public class LevelThree extends ApplicationAdapter implements Screen {
 
     public void changeColor(String color) {
 
+        if(color.equals("null")) {
+
+        }
         if (color.equals("red") || color.equals("secondRed")) {
             player.setTexture(new Texture(Gdx.files.internal("sketch_ball_red.png")));
         } else if (color.equals("blue")) {

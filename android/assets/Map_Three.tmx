@@ -58,7 +58,7 @@
   <object id="43" x="320" y="192" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="white_paint_one_object">
-  <object id="44" x="576.152" y="543.667" width="32" height="32"/>
+  <object id="44" x="544.061" y="544.03" width="32" height="32"/>
  </objectgroup>
  <objectgroup name="blue_paint_one_object">
   <object id="47" x="608.004" y="544.121" width="32" height="32"/>
@@ -107,7 +107,7 @@
    eJztzgENAAAIA6BXtX8JY9w5SEAC8Mu0AwAAAAAAcNgC7uAAYg==
   </data>
  </layer>
- <layer name="white_gate_two" width="50" height="36">
+ <layer name="white_gate_one" width="50" height="36">
   <data encoding="base64" compression="zlib">
    eJzt00ENACAQA8FKRQz4QCqIIDkgMwq2jybATXoyqxtOGHZc5Zcd+x+tugEAAAAA4HULGgYFeA==
   </data>
@@ -144,7 +144,7 @@
  </layer>
  <layer name="white_paint_one" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztzjEBAAAMAiC7r/hieAgJSAAAAGi4dgAAAIBJD5A5AIQ=
+   eJztzjEBAAAIA6B1t7gt5iEkIAEAAKBtrgMAAAC8tZJFAIQ=
   </data>
  </layer>
  <layer name="lightblue_gate_one" width="50" height="36">
