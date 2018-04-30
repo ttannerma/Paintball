@@ -99,7 +99,7 @@
  <objectgroup name="black_gate_two_object"/>
  <layer name="walls" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztmGEOgyAMhfkr7JAcbUfxKB5lJIuJwQej9nVjpl/CH8CW17RYDcFxHA1LCGsM4fmlkXujnCVf1RGJMdGiOYvr4KM5ywLyGOXpsY466938/1QL7Jgie1GwzvDBwHWc7/EEciq982rIrwaNjnpNEnfXgWncYfV6ff/As/xSh4YZdZQYb9J3wYw6Ru32aucB9qM5iT8pDB0W/qzsHus+4TsgV/thD4PeKQxY8RmpGUuQvz2WGjsz6Chzq9aO67jGnXWgnmTvYcHzp56mZdcSiT+rvQxcB28vg7voQN8hrZEE/xCt+g/Hcf6XF95lUgc=
+   eJztmFEOhCAMRPsrXJKj7VE8ikdZko2JwQHBDsqSvoQfwZZpWqiKGIahYRFZncjnoRFKI+4l3NXhiDHRotmL6eCj2csC8hjl6bGOCvPF/L+qBXZMkT3XMM/wwcB0nM9xD3LK//Kqyq8GjY50riXupgOTOcPS+fT8gXt5U4eGEXXEGG+td8GIOmrtXtUO218vu7PoONa9x2dASNbDHgbdKQxY8ampmZ4gf3ssNXZG0BGfrVo7puMeM+tAPcnew4L3Tz1Nzm5PWvz1WsvAdPDWMphFB/oOyQ3f8A+xV/9hGMb/8gWHZlHv
   </data>
  </layer>
  <layer name="finnish" width="50" height="36">

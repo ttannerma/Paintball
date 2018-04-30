@@ -35,14 +35,14 @@ public class LevelThree extends ApplicationAdapter implements Screen {
     Rectangle rectangle;
 
     boolean redColorChanged;
-    boolean blueColorChanged;
-    boolean purpleColorChanged;
     boolean secondRedColorChanged;
+    boolean blueColorChanged;
+    boolean secondBlueChanged;
+    boolean purpleColorChanged;
     boolean whiteColorChanged;
     boolean cyanColorChanged;
     boolean blackColorChanged;
     boolean secondWhiteChanged;
-    boolean secondBlueChanged;
     boolean redColor;
     boolean blueColor;
     boolean bluePicked;
@@ -62,12 +62,14 @@ public class LevelThree extends ApplicationAdapter implements Screen {
 
         blueColorChanged = false;
         redColorChanged = false;
+
         purpleColorChanged = false;
         whiteColorChanged = false;
         cyanColorChanged = false;
         blackColorChanged = false;
         secondWhiteChanged = false;
         secondBlueChanged = false;
+        secondRedColorChanged = false;
 
         redColor = false;
         blueColor = false;
@@ -203,7 +205,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         }
         if(secondRed && !blue) {
             setPuddleCol("secondRed");
-            clearGate("red_gate_second");
+            clearGate("red_gate_two");
             player.setSecondRedColor(true);
         }
 
@@ -221,10 +223,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             player.setSecondWhite(true);
             clearGate("white_gate_one");
         }
-        if(secondWhite && red && !blue) {
+        if(secondWhite && secondRed && !blue) {
             setPuddleCol("pink");
             player.setPink(true);
-            clearGate("pink_gate");
+            clearGate("pink_gate_two");
         }
 
         if(player.isColorChanged()) {
@@ -271,8 +273,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             cell.setCell(29, 28, null);
             cell.setCell(29, 29, null);
             cell.setCell(29, 30, null);
-        } else if(path.equals("pink_gate")) {
-            cell.setCell(33, 43, null);
+        } else if(path.equals("pink_gate_two")) {
+            cell.setCell(20, 28, null);
+            cell.setCell(20, 29, null);
+            cell.setCell(20, 30, null);
         } else if(path.equals("blue_gate")) {
             boolean blueColorSet = true;
             player.setBlue(blueColorSet);

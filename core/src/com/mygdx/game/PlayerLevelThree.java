@@ -156,15 +156,16 @@ public class PlayerLevelThree extends Sprite {
 
         if(accelY < negThreshold || left) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
-            if(downLeftCollision && upLeftCollision) {
-
+            if(downLeftCollision && upLeftCollision && !checkPinkGateCollision()) {
                 x += (-1 * speed);
+            } else {
+                x += speed;
             }
         }
 
         if(accelZ > posThreshold || up) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
-            if(upLeftCollision && upRightCollision && !checkRedGateCollision()) {
+            if(upLeftCollision && upRightCollision && !checkRedGateCollision() && !checkSecondRedGateCollision()){
                 y += speed;
             } else {
                 y += (-1 * speed);
@@ -196,6 +197,33 @@ public class PlayerLevelThree extends Sprite {
         playerXpos = playerRectangle.x;
         playerYpos = playerRectangle.y;
 
+    }
+
+    private boolean checkSecondRedGateCollision() {
+
+        if(secondRedColor) {
+            return false;
+        }
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("red_gate_two_object");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("SECOND RED GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean checkPinkGateCollision() {
