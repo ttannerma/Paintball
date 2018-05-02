@@ -120,9 +120,9 @@ public class LevelThree extends ApplicationAdapter implements Screen {
 
 
             redColorChanged = false;
+            secondRedColorChanged = false;
             blueColorChanged = false;
             secondBlueChanged = false;
-            secondRedColorChanged = false;
             whiteColorChanged = false;
             secondWhiteChanged = false;
             blackColorChanged = false;
@@ -185,14 +185,13 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         }
         if(secondBlue && !white && !red && !black) {
             setPuddleCol("blue");
+            clearGate("blue_gate_two");
             player.setSecondBlueColor(true);
         }
-
         if(white) {
             setPuddleCol("white");
             player.setWhite(true);
         }
-
         if(blue && white) {
             setPuddleCol("cyan");
             clearGate("lightblue_gate_one");
@@ -203,14 +202,14 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             clearGate("purple_gate");
             clearGate("blue_gate");
         }
-        if(secondRed && !blue) {
+        if(secondRed) {
             setPuddleCol("secondRed");
             clearGate("red_gate_two");
             player.setSecondRedColor(true);
         }
-
-        if(black && !blue && !red && !white) {
+        if(black) {
             setPuddleCol("black");
+            clearGate("black_gate_two");
             player.setBlack(true);
         }
         if(black && red && !white && !blue) {
@@ -250,12 +249,17 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             cell.setCell(20, 13, null);
             boolean redColorSet = true;
             player.setRed(redColorSet);
-        } else if(path.equals("secondBlue")) {
+        } else if(path.equals("blue_gate_two")) {
+            cell.setCell(23, 25, null);
+            cell.setCell(24, 25, null);
+            cell.setCell(25, 25, null);
+            cell.setCell(26, 25, null);
             player.setSecondBlueColor(true);
-        } else if(path.equals("red_gate_second")) {
-            cell.setCell(39, 10, null);
-            cell.setCell(36, 14, null);
-            cell.setCell(37, 14, null);
+        } else if(path.equals("red_gate_two")) {
+            cell.setCell(34, 20, null);
+            cell.setCell(35, 20, null);
+            cell.setCell(36, 20, null);
+            cell.setCell(37, 20, null);
             player.setSecondRedColor(true);
         } else if(path.equals("lightblue_gate_one")) {
             cell.setCell(21, 15, null);
@@ -280,6 +284,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         } else if(path.equals("blue_gate")) {
             boolean blueColorSet = true;
             player.setBlue(blueColorSet);
+        } else if(path.equals("black_gate_two")) {
+            cell.setCell(13, 28, null);
+            cell.setCell(13, 29, null);
+            cell.setCell(13, 30, null);
         }
     }
 
@@ -403,5 +411,6 @@ public class LevelThree extends ApplicationAdapter implements Screen {
     @Override
     public void dispose() {
 
+        batch.dispose();
     }
 }

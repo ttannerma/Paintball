@@ -59,6 +59,11 @@ public class PlayerLevelTwo extends Sprite {
     boolean orangeColor;
     boolean secondWhiteColor;
     boolean pinkColor;
+    boolean greenColor;
+    boolean redUsed;
+    boolean secondRedUsed;
+    boolean blueUsed;
+    boolean purpleUsed;
     boolean up;
     boolean down;
     boolean left;
@@ -87,6 +92,11 @@ public class PlayerLevelTwo extends Sprite {
         yellowColor = false;
         secondWhiteColor = false;
         pinkColor = false;
+        greenColor = false;
+        purpleUsed = false;
+        redUsed = false;
+        blueUsed = false;
+        secondRedUsed = false;
         collision = "walls";
     }
 
@@ -138,6 +148,18 @@ public class PlayerLevelTwo extends Sprite {
         left = Gdx.input.isKeyPressed(Input.Keys.LEFT);
         right = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
 
+        if(redColor) {
+            redUsed = true;
+        }
+        if(blueColor) {
+            blueUsed = true;
+        }
+        if(secondRedColor) {
+            secondRedUsed = true;
+        }
+        if(redColor && blueColor) {
+            purpleUsed = true;
+        }
 
         // y = oikea vasen
         // z = eteen taakse
@@ -338,7 +360,7 @@ public class PlayerLevelTwo extends Sprite {
 
     private boolean checkSecondRedGateCollision() {
 
-        if(secondRedColor) {
+        if(secondRedColor || secondRedUsed) {
             return false;
         }
         // Gets red gate rectangle layer.
@@ -365,7 +387,7 @@ public class PlayerLevelTwo extends Sprite {
 
     private boolean checkRedGateCollision() {
 
-        if(redColor && !blueColor) {
+        if(redColor || redUsed) {
             return false;
         }
         // Gets red gate rectangle layer.
@@ -413,7 +435,7 @@ public class PlayerLevelTwo extends Sprite {
 
     private boolean checkPurpleGateCollision() {
 
-        if(redColor && blueColor) {
+        if(redColor && blueColor || purpleUsed) {
             return false;
         }
         // Gets red gate rectangle layer.
@@ -469,6 +491,9 @@ public class PlayerLevelTwo extends Sprite {
         }
     }
 
+    public void setGreen(boolean greenColored) {
+        greenColor = greenColored;
+    }
     public void setSecondRedColor(boolean redColored) {
         secondRedColor = redColored;
     }
