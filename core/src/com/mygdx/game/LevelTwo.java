@@ -3,6 +3,7 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -58,12 +59,14 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
     float height;
     float row_height;
     float col_width;
+    float musicVol;
     String puddleCol;
     Stage stage;
     Skin mySkin;
     BitmapFont logo;
+    Music music;
 
-    public LevelTwo(final PaintBall host) {
+    public LevelTwo(final PaintBall host, float musicVolume) {
 
         batch = host.getBatch();
         this.host = host;
@@ -72,6 +75,13 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         tiledMap = new TmxMapLoader().load("SecondLevel.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         player = new PlayerLevelTwo(32 * 21, 32 * 12, tiledMap, host);
+
+        musicVol = musicVolume;
+        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        music.play();
+        music.setVolume(musicVol);
+        music.setLooping(true);
+
 
         logo = new BitmapFont(Gdx.files.internal("font.txt"));
         logo.getData().setScale(0.7f, 0.7f);
@@ -97,6 +107,7 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
                 host.setScreen(mainMenuScreen);
+                music.dispose();
                 player.dispose();
                 return true;
             }
@@ -453,7 +464,7 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
-
+        music.dispose();
         batch.dispose();
         stage.dispose();
     }

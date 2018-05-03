@@ -4,6 +4,7 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -57,14 +58,16 @@ public class LevelThree extends ApplicationAdapter implements Screen {
     float height;
     float row_height;
     float col_width;
+    float musicVol;
     String puddleCol;
     Stage stage;
     Skin mySkin;
     BitmapFont logo;
+    Music music;
 
 
 
-    public LevelThree(final PaintBall host) {
+    public LevelThree(final PaintBall host, float musicVolume) {
 
         batch = host.getBatch();
         this.host = host;
@@ -73,6 +76,13 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         tiledMap = new TmxMapLoader().load("Map_Three.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
         player = new PlayerLevelThree(32 * 22, 32 * 8, tiledMap, host);
+
+        musicVol = musicVolume;
+        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        music.play();
+        music.setVolume(musicVol);
+        music.setLooping(true);
+
 
         blueColorChanged = false;
         redColorChanged = false;
@@ -112,6 +122,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
                 host.setScreen(mainMenuScreen);
+                music.dispose();
                 player.dispose();
                 return true;
             }
@@ -455,6 +466,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
+        music.dispose();
         batch.dispose();
         stage.dispose();
     }

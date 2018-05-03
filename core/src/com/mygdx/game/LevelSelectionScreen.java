@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -70,7 +69,7 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                LevelOne levelone = new LevelOne(host);
+                LevelOne levelone = new LevelOne(host, musicVol);
                 host.setScreen(levelone);
                 return true;
             }
@@ -83,7 +82,7 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                LevelTwo leveltwo = new LevelTwo(host);
+                LevelTwo leveltwo = new LevelTwo(host, musicVol);
                 host.setScreen(leveltwo);
                 return true;
             }
@@ -109,7 +108,7 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                LevelThree levelThree = new LevelThree(host);
+                LevelThree levelThree = new LevelThree(host, musicVol);
                 host.setScreen(levelThree);
                 return true;
             }

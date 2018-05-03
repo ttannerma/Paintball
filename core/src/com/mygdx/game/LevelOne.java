@@ -3,6 +3,7 @@ package com.mygdx.game;
         import com.badlogic.gdx.ApplicationAdapter;
         import com.badlogic.gdx.Gdx;
         import com.badlogic.gdx.Screen;
+        import com.badlogic.gdx.audio.Music;
         import com.badlogic.gdx.graphics.Color;
         import com.badlogic.gdx.graphics.GL20;
         import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -60,12 +61,20 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     Stage stage;
     Skin mySkin;
     BitmapFont logo;
+    Music music;
+    float musicVol;
 
-    public LevelOne(final PaintBall host) {
+    public LevelOne(final PaintBall host, float musicVolume) {
 
         batch = host.getBatch();
         this.host = host;
         camera = new OrthographicCamera();
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        musicVol = musicVolume;
+        music.play();
+        music.setVolume(musicVol);
+        music.setLooping(true);
 
         camera.setToOrtho(false, 400f, 200f);
         puddleCol = "white";
@@ -76,6 +85,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         redColorChanged = false;
         purpleColorChanged = false;
         mapFinished = false;
+
 
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
 
@@ -103,6 +113,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
                 host.setScreen(mainMenuScreen);
+                music.dispose();
                 player.dispose();
                 return true;
             }
@@ -357,6 +368,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
+        music.dispose();
         batch.dispose();
         stage.dispose();
     }
