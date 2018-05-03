@@ -79,7 +79,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                host.setScreen(new OptionScreen(host));
+                host.setScreen(new SettingsScreen(host));
                 return true;
             }
         });

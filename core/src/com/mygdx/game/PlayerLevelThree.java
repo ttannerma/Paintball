@@ -27,6 +27,7 @@ import com.badlogic.gdx.utils.Array;
  */
 public class PlayerLevelThree extends Sprite {
 
+    PaintBall host;
     private Texture texture, originalTexture;
     public Rectangle playerRectangle;
     private TextureRegion[][] playerRegion;
@@ -38,6 +39,8 @@ public class PlayerLevelThree extends Sprite {
     private CollisionDetection colDetection;
     private boolean colorChanged = false;
     TiledMap tiledMap;
+
+    Settings settings;
 
     int i = 0;
     float x;
@@ -70,16 +73,21 @@ public class PlayerLevelThree extends Sprite {
     boolean blackUsed;
     float lastXVelocity = 0;
     float lastYVelocity = 0;
+    float leftThreshold;
+    float rightThreshhold;
+    float upThreshold;
+    float downThreshold;
     String collision;
 
     float accelY;
     float accelZ;
 
-    public PlayerLevelThree (float x, float y, TiledMap tiledMap) {
+    public PlayerLevelThree (float x, float y, TiledMap tiledMap, PaintBall host) {
         setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
         setupTextureRegion();
         setX(x);
         setY(y);
+        this.host = host;
         this.tiledMap = tiledMap;
         redColor = false;
         secondRedColor = false;
@@ -98,6 +106,11 @@ public class PlayerLevelThree extends Sprite {
         secondBlueUsed = false;
         blackUsed = false;
         collision = "walls";
+
+        leftThreshold = host.settings.getFloat("sensitivityLeft", -2f);
+        upThreshold = host.settings.getFloat("sensitivityUp", 2f);
+        downThreshold = host.settings.getFloat("sensitivityDown", -2f);
+        rightThreshhold = host.settings.getFloat("sensitivityRight", 2f);
     }
 
     @Override
@@ -137,7 +150,10 @@ public class PlayerLevelThree extends Sprite {
 
         float posThreshold = 2;
         float negThreshold = -2;
+
         float speed = 80 * Gdx.graphics.getDeltaTime();
+
+        Gdx.app.log("THRESHOLD VALUES", "UP" + upThreshold + " DOWN" + downThreshold + " LEFT" + leftThreshold + " RIGHT" + rightThreshhold);
 
         accelY = Gdx.input.getAccelerometerY();
         accelZ = Gdx.input.getAccelerometerZ();
@@ -160,7 +176,7 @@ public class PlayerLevelThree extends Sprite {
 
         // y = oikea vasen
         // z = eteen taakse
-        if(accelY > posThreshold || right) {
+        if(accelY > rightThreshhold || right) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
             if(upRightCollision && upLeftCollision) {
                 if(!checkLightblueGateCollision()) {
@@ -171,7 +187,7 @@ public class PlayerLevelThree extends Sprite {
             }
         }
 
-        if(accelY < negThreshold || left) {
+        if(accelY < leftThreshold || left) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
             if(downLeftCollision && upLeftCollision && !checkPinkGateCollision() && !checkBlackGateCollision()) {
                 x += (-1 * speed);
@@ -180,7 +196,7 @@ public class PlayerLevelThree extends Sprite {
             }
         }
 
-        if(accelZ > posThreshold || up) {
+        if(accelZ > upThreshold || up) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
             if(upLeftCollision && upRightCollision && !checkRedGateCollision() && !checkSecondRedGateCollision()){
                 y += speed;
@@ -189,7 +205,7 @@ public class PlayerLevelThree extends Sprite {
             }
         }
 
-        if(accelZ < negThreshold || down) {
+        if(accelZ < downThreshold || down) {
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
             if(downLeftCollision && downRightCollision && !checkBlueGateCollision()) {
                 y += (-1 * speed);

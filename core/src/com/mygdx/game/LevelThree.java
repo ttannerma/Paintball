@@ -58,7 +58,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         camera.setToOrtho(false, 400f, 200f);
         tiledMap = new TmxMapLoader().load("Map_Three.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        player = new PlayerLevelThree(32 * 22, 32 * 8, tiledMap);
+        player = new PlayerLevelThree(32 * 22, 32 * 8, tiledMap, host);
 
         blueColorChanged = false;
         redColorChanged = false;
