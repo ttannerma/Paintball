@@ -2,13 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,8 +15,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
-import java.util.Map;
-import java.util.logging.Level;
 
 /**
  * Created by Teemu on 23.3.2018.
@@ -27,27 +24,34 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
     SpriteBatch batch;
     PaintBall host;
-    BitmapFont logo;
     OrthographicCamera camera;
-
-    boolean openedFirstTime = true;
+    Texture backgroundImage;
+    Music music;
+    Settings settings;
 
     float width;
     float height;
     float row_height;
     float col_width;
+    float musicVol;
 
     Stage stage;
     Skin mySkin;
 
-    public MainMenuScreen(final PaintBall host, boolean openedFirstTime) {
-        this.openedFirstTime = openedFirstTime;
+    public MainMenuScreen(final PaintBall host) {
+
         batch = host.getBatch();
         this.host = host;
+        settings = Settings.getInstance();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
-        logo = new BitmapFont(Gdx.files.internal("font.txt"));
-        logo.getData().setScale(0.7f, 0.7f);
+
+        backgroundImage = new Texture(Gdx.files.internal("main_menu_background.png"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        musicVol = settings.getFloat("volume", 0.5f) / 100f;
+        music.play();
+        music.setVolume(musicVol);
+        music.setLooping(true);
 
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
@@ -79,13 +83,15 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                host.setScreen(new SettingsScreen(host));
+                host.setScreen(new SettingsScreen(host, musicVol));
                 return true;
             }
         });
 
         stage.addActor(button2);
         stage.addActor(button3);
+
+
     }
 
     @Override
@@ -100,18 +106,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.SPACE)) {
-            LevelOne levelOne = new LevelOne(host);
-            host.setScreen(levelOne);
-        }
-
-        if(Gdx.input.isKeyJustPressed(Input.Keys.O)) {
-            MainMenuScreen mainMenuScreen = new MainMenuScreen(host, false);
-            host.setScreen(mainMenuScreen);
-        }
-
-        logo.draw(batch, "Paint Ball Game", width / 2 - 250f, height - 20f);
+        batch.draw(backgroundImage, 0,0, width, height);
         batch.end();
 
         stage.act();
@@ -141,6 +136,9 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
+
+        music.dispose();
+        backgroundImage.dispose();
         stage.dispose();
     }
 }

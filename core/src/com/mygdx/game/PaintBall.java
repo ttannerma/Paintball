@@ -34,8 +34,8 @@ public class PaintBall extends Game{
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
-		MainMenuScreen = new MainMenuScreen(this, true);
-		settingsScreen = new SettingsScreen(this);
+		MainMenuScreen = new MainMenuScreen(this);
+		settingsScreen = new SettingsScreen(this, 0.5f);
 		settings = Settings.getInstance();
 		setScreen(MainMenuScreen);
 	}

@@ -2,29 +2,25 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.ui.CheckBox;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.SelectBox;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.mygdx.game.PaintBall;
 
-import java.awt.Paint;
 
 /**
  * Created by Teemu Tannerma on 2.5.2018.
@@ -33,8 +29,12 @@ public class SettingsScreen implements Screen {
 
     PaintBall host;
     ShapeRenderer shapeRenderer;
+    SpriteBatch batch;
     Stage stage;
     OrthographicCamera camera;
+    Texture backgroundImage;
+    Music music;
+
     public Slider sliderR;
     public Slider sliderL;
     public Slider sliderU;
@@ -66,13 +66,22 @@ public class SettingsScreen implements Screen {
     Settings settings;
     final float MEDIUM_TEXT_SCALE = 0.5f;
 
+    boolean musicPlaying;
+    float musicVol;
 
-    public SettingsScreen(PaintBall host) {
+
+    public SettingsScreen(PaintBall host, float musicVolume) {
+        batch = host.getBatch();
         this.host = host;
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1280,800);
         stage = new Stage(new StretchViewport(camera.viewportWidth,camera.viewportHeight));
+        backgroundImage = new Texture(Gdx.files.internal("settings_menu.png"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        musicVol = musicVolume;
+
+
 
         row_height = camera.viewportHeight / 15;
         col_width = camera.viewportWidth / 12;
@@ -80,7 +89,6 @@ public class SettingsScreen implements Screen {
         height = camera.viewportHeight;
 
         selectBoxSize = camera.viewportWidth * 0.15f;
-
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
@@ -139,7 +147,8 @@ public class SettingsScreen implements Screen {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "back");
-                    MainMenuScreen mainMenuScreen = new MainMenuScreen(host, false);
+                    music.dispose();
+                    MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
                     host.setScreen(mainMenuScreen);
                     settingValues();
             }
@@ -307,6 +316,19 @@ public class SettingsScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClearColor(13/255f,54/255f,70/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+
+        musicPlaying = music.isPlaying();
+
+        if(!musicPlaying) {
+            music.play();
+            music.setVolume(musicVol);
+            music.setLooping(true);
+        }
+
+        batch.begin();
+        batch.draw(backgroundImage, 0,0, width, height);
+        batch.end();
+
         stage.act();
         stage.draw();
     }
@@ -333,6 +355,9 @@ public class SettingsScreen implements Screen {
 
     @Override
     public void dispose() {
+
+        backgroundImage.dispose();
+        batch.dispose();
         stage.dispose();
         mySkin.dispose();
     }

@@ -60,7 +60,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                MainMenuScreen mainMenuScreen = new MainMenuScreen(host, true);
+                MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
                 host.setScreen(mainMenuScreen);
                 return true;
             }

@@ -157,8 +157,6 @@ public class PlayerLevelTwo extends Sprite {
 
         checkSecondRedPuddleCollision();
 
-        float posThreshold = 3;
-        float negThreshold = -1;
         float speed = 80 * Gdx.graphics.getDeltaTime();
 
         accelY = Gdx.input.getAccelerometerY();

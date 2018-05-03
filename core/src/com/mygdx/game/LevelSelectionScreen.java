@@ -4,11 +4,12 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -28,10 +29,13 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
     BitmapFont logo;
     Stage stage;
     Skin mySkin;
+    Texture backgroundImage;
 
+    Music music;
 
     float width;
     float height;
+    float musicVol;
 
     public LevelSelectionScreen(final PaintBall host) {
 
@@ -41,6 +45,13 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
         camera.setToOrtho(false, 800, 480);
         logo = new BitmapFont(Gdx.files.internal("font.txt"));
         logo.getData().setScale(0.7f, 0.7f);
+        backgroundImage = new Texture(Gdx.files.internal("settings_menu.png"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        musicVol = host.settings.getFloat("volume", 0.5f) / 100f;
+        music.play();
+        music.setVolume(musicVol);
+        music.setLooping(true);
+
 
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
@@ -85,7 +96,7 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button){
-                MainMenuScreen mainMenuScreen = new MainMenuScreen(host, true);
+                MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
                 host.setScreen(mainMenuScreen);
                 return true;
             }
@@ -123,7 +134,8 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
         batch.begin();
 
-        logo.draw(batch, "Level Selection", width / 2 - 250f, height - 20f);
+        batch.draw(backgroundImage,0,0, width, height);
+        //logo.draw(batch, "Level Selection", width / 2 - 250f, height - 20f);
         batch.end();
 
         stage.act();
@@ -152,6 +164,8 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
+        music.dispose();
+        backgroundImage.dispose();
         stage.dispose();
     }
 }
