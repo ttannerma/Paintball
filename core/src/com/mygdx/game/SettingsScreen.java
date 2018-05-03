@@ -39,29 +39,15 @@ public class SettingsScreen implements Screen {
     public Slider sliderL;
     public Slider sliderU;
     public Slider sliderD;
-    public CheckBox sliderA;
-    public SelectBox sliderRow;
-    public SelectBox sliderAttribute;
-    public SelectBox sliderRound;
-    public SelectBox sliderStaringDifficulty;
-    public CheckBox sliderUseDifficulty;
-    public CheckBox sliderIncreasingDifficulty;
-    public SelectBox waitingTime;
-    public SelectBox faceShown;
+
     public TextButton calibrate;
-    public TextButton freePlay;
-    public TextButton general;
+
     public TextButton save;
     public TextButton back;
     public Slider sliderV;
     public CheckBox soundEffects;
-    public SelectBox timerSides;
-    public SelectBox timerUp;
-    public SelectBox timerDown;
-    public TextButton clearProfile1;
-    public TextButton clearProfile2;
-    public TextButton clearProfile3;
-    public CheckBox horizontalAxis;
+
+    public CheckBox usingChair;
 
     float selectBoxSize;
 
@@ -71,22 +57,10 @@ public class SettingsScreen implements Screen {
     float width;
 
     private Label calibrateText;
-    private Label sameAttributesText;
-    private Label rowLengthText;
-    private Label roundsText;
-    private Label startingDifficultyText;
-    private Label selectionWaitingTimeText;
-    private Label faceShownText;
+
     private Label volumeText;
     private Label savedText;
     private Label calibratedText;
-    private Label timerSidesText;
-    private Label timerUpText;
-    private Label timerDownText;
-
-    private Texture sensitivityGraphTexture;
-    public Image sensitivityGraphImage;
-
 
     Skin mySkin;
     Settings settings;
@@ -130,7 +104,7 @@ public class SettingsScreen implements Screen {
         buttonCalibrate();
         sliderVolume();
         soundEffects();
-        horizontalAxis();
+        usingChair();
         sliderRight();
         sliderLeft();
         sliderUp();
@@ -148,7 +122,7 @@ public class SettingsScreen implements Screen {
         sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
         sliderU.setValue(settings.getFloat("sensitivityUp", GameData.DEFAULT_SENSITIVITY_UP));
         sliderD.setValue(settings.getFloat("sensitivityDown", GameData.DEFAULT_SENSITIVITY_DOWN));
-        horizontalAxis.setChecked(settings.getBoolean("horizontalAxis", GameData.DEFAULT_HORIZONTAL_AXIS));
+        usingChair.setChecked(settings.getBoolean("gameChair", GameData.DEFAULT_USE_CHAIR));
     }
 
     public void buttonBack() {
@@ -192,13 +166,13 @@ public class SettingsScreen implements Screen {
                 //settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
                 //settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
                 //Gdx.app.log("save", "accel Y: "+ settings.getFloat("zeroPointY"));
-                settings.setFloat("sensitivityRight", sliderR.getValue());
-                settings.setFloat("sensitivityLeft", sliderL.getValue());
-                settings.setFloat("sensitivityUp", sliderU.getValue());
-                settings.setFloat("sensitivityDown", sliderD.getValue());
+                settings.setFloat("sensitivityRight", sliderR.getValue() * 0.7f);
+                settings.setFloat("sensitivityLeft", sliderL.getValue() * 0.7f);
+                settings.setFloat("sensitivityUp", sliderU.getValue() * 0.7f);
+                settings.setFloat("sensitivityDown", sliderD.getValue() * 0.7f);
                 settings.setBoolean("soundEffects", soundEffects.isChecked());
                 settings.setFloat("volume", sliderV.getValue());
-                settings.setBoolean("horizontalAxis", horizontalAxis.isChecked());
+                settings.setBoolean("gameChair", usingChair.isChecked());
 
                 settings.saveSettings();
                 host.updateSettings();
@@ -305,17 +279,21 @@ public class SettingsScreen implements Screen {
 
     public void soundEffects() {
         soundEffects = new CheckBox("Sound Effects", mySkin);
-        soundEffects.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
+        soundEffects.getImageCell().height(100);
+        soundEffects.getImageCell().width(100);
+        soundEffects.getLabel().setFontScale(MEDIUM_TEXT_SCALE * 2);
         soundEffects.setPosition(col_width*8 + selectBoxSize - soundEffects.getWidth()/2, row_height * 11);
         stage.addActor(soundEffects);
     }
 
 
-    public void horizontalAxis() {
-        horizontalAxis = new CheckBox("Horizontal Axis", mySkin);
-        horizontalAxis.getLabel().setFontScale(MEDIUM_TEXT_SCALE);
-        horizontalAxis.setPosition(col_width*8 + selectBoxSize - horizontalAxis.getWidth()/2, row_height * 0.5f);
-        stage.addActor(horizontalAxis);
+    public void usingChair() {
+        usingChair = new CheckBox("Using Exerium GameXR chair", mySkin);
+        usingChair.getImageCell().height(100);
+        usingChair.getImageCell().width(100);
+        usingChair.getLabel().setFontScale(MEDIUM_TEXT_SCALE * 2);
+        usingChair.setPosition(col_width*8 + selectBoxSize - usingChair.getWidth()/2, row_height * 0.5f);
+        stage.addActor(usingChair);
     }
 
     @Override

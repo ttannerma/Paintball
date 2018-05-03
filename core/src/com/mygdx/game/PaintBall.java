@@ -12,7 +12,6 @@ import sun.applet.Main;
 
 public class PaintBall extends Game{
 
-	String language = "";
 
 	public SpriteBatch batch;
 	OrthographicCamera camera;
@@ -27,15 +26,8 @@ public class PaintBall extends Game{
 	float zeroPointX;
 	float zeroPointY;
 	float zeroPointZ;
-	float timerSides;
-	float timerUp;
-	float timerDown;
-	boolean horizontalAxis;
 	boolean soundEffectsOn;
-	float hysteresisRight;
-	float hysteresisLeft;
-	float hysteresisUp;
-	float hysteresisDown;
+
 
 	@Override
 	public void create () {
@@ -68,11 +60,6 @@ public class PaintBall extends Game{
 		zeroPointX = settings.getFloat("zeroPointX", GameData.DEFAULT_ZERO_POINT_X);
 		zeroPointY = settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y);
 		zeroPointZ = settings.getFloat("zeroPointZ", GameData.DEFAULT_ZERO_POINT_Z);
-		horizontalAxis = settings.getBoolean("horizontalAxis", GameData.DEFAULT_HORIZONTAL_AXIS);
-	}
-
-	public void setLanguage(String language) {
-		this.language = language;
 	}
 
 	public SpriteBatch getBatch() {

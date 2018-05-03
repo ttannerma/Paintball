@@ -27,15 +27,16 @@ import com.badlogic.gdx.utils.Array;
  */
 public class PlayerLevelTwo extends Sprite {
 
-    private Texture texture, originalTexture;
+    private Texture texture;
     public Rectangle playerRectangle;
     private TextureRegion[][] playerRegion;
     private TextureRegion[] rollingAnimation;
     private TextureRegion currentFrame;
     private SpriteBatch batch;
     private Animation<TextureRegion> rolling;
+    PaintBall host;
 
-    private CollisionDetection colDetection;
+
     private boolean colorChanged = false;
     TiledMap tiledMap;
 
@@ -68,18 +69,24 @@ public class PlayerLevelTwo extends Sprite {
     boolean down;
     boolean left;
     boolean right;
-    float lastXVelocity = 0;
-    float lastYVelocity = 0;
+    boolean usingGameChair;
+
+    float leftThreshold;
+    float rightThreshhold;
+    float upThreshold;
+    float downThreshold;
+
     String collision;
 
     float accelY;
     float accelZ;
 
-    public PlayerLevelTwo (float x, float y, TiledMap tiledMap) {
+    public PlayerLevelTwo (float x, float y, TiledMap tiledMap, PaintBall host) {
         setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
         setupTextureRegion();
         setX(x);
         setY(y);
+        this.host = host;
         this.tiledMap = tiledMap;
         redColor = false;
         blueColor = false;
@@ -98,6 +105,19 @@ public class PlayerLevelTwo extends Sprite {
         blueUsed = false;
         secondRedUsed = false;
         collision = "walls";
+
+        usingGameChair = host.settings.getBoolean("gameChair", false);
+        leftThreshold = host.settings.getFloat("sensitivityLeft", -2f);
+        upThreshold = host.settings.getFloat("sensitivityUp", 2f);
+        downThreshold = host.settings.getFloat("sensitivityDown", -2f);
+        rightThreshhold = host.settings.getFloat("sensitivityRight", 2f);
+
+        if(usingGameChair) {
+            leftThreshold = -1f;
+            upThreshold = 3.5f;
+            rightThreshhold = 1f;
+            downThreshold = 1.5f;
+        }
     }
 
     @Override
@@ -163,7 +183,7 @@ public class PlayerLevelTwo extends Sprite {
 
         // y = oikea vasen
         // z = eteen taakse
-        if(accelY > posThreshold || right) {
+        if(accelY > rightThreshhold || right) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
             if(upRightCollision && upLeftCollision) {
                 if(!checkPurpleGateCollision() && !checkSecondRedGateCollision()) {
@@ -174,7 +194,7 @@ public class PlayerLevelTwo extends Sprite {
             }
         }
 
-        if(accelY < negThreshold || left) {
+        if(accelY < leftThreshold || left) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
             if(downLeftCollision && upLeftCollision) {
                 if(!checkRedGateCollision()) {
@@ -185,7 +205,7 @@ public class PlayerLevelTwo extends Sprite {
             }
         }
 
-        if(accelZ > posThreshold || up) {
+        if(accelZ > upThreshold || up) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
             if(upLeftCollision && upRightCollision) {
                 if(!checkSecondRedGateCollision() && !checkCyanGateCollision() && !checkBrownGateCollision() && !checkOrangeGateCollision() && !checkPinkGateCollision()) {
@@ -196,7 +216,7 @@ public class PlayerLevelTwo extends Sprite {
             }
         }
 
-        if(accelZ < negThreshold || down) {
+        if(accelZ < downThreshold || down) {
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
             if(downLeftCollision && downRightCollision && !checkSecondWhiteGateCollision()) {
                 y += (-1 * speed);

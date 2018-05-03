@@ -27,19 +27,18 @@ package com.mygdx.game;
  */
 public class Player extends Sprite {
 
-    private Texture texture, originalTexture;
+    private Texture texture;
     public Rectangle playerRectangle;
     private TextureRegion[][] playerRegion;
     private TextureRegion[] rollingAnimation;
     private TextureRegion currentFrame;
-    private SpriteBatch batch;
+
     private Animation<TextureRegion> rolling;
 
-    private CollisionDetection colDetection;
     private boolean colorChanged = false;
     TiledMap tiledMap;
+    PaintBall host;
 
-    int i = 0;
     float x;
     float y;
     float playerYpos;
@@ -54,21 +53,40 @@ public class Player extends Sprite {
     boolean down;
     boolean left;
     boolean right;
-    float lastXVelocity = 0;
-    float lastYVelocity = 0;
+    boolean usingGameChair;
+
+    float leftThreshold;
+    float rightThreshhold;
+    float upThreshold;
+    float downThreshold;
+
     float accelY;
     float accelZ;
     String collision;
 
-    public Player (float x, float y, TiledMap tiledMap) {
+    public Player (float x, float y, TiledMap tiledMap, PaintBall host) {
         setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
         setupTextureRegion();
         setX(x);
         setY(y);
+        this.host = host;
         this.tiledMap = tiledMap;
         redColor = false;
         blueColor = false;
         collision = "walls";
+
+        usingGameChair = host.settings.getBoolean("gameChair", false);
+        leftThreshold = host.settings.getFloat("sensitivityLeft", -2f);
+        upThreshold = host.settings.getFloat("sensitivityUp", 2f);
+        downThreshold = host.settings.getFloat("sensitivityDown", -2f);
+        rightThreshhold = host.settings.getFloat("sensitivityRight", 2f);
+
+        if(usingGameChair) {
+            leftThreshold = -1f;
+            upThreshold = 3.5f;
+            rightThreshhold = 1f;
+            downThreshold = 1.5f;
+        }
     }
 
     @Override
@@ -101,15 +119,11 @@ public class Player extends Sprite {
         return animation;
     }
 
-    private float yValueLastTime = 0;
-
     public void render(SpriteBatch batch) {
 
         redColor = getRed(redColor);
         blueColor = getBlue(blueColor);
 
-        float posThreshold = 2;
-        float negThreshold = -2;
         float speed = 80 * Gdx.graphics.getDeltaTime();
 
         //Gdx.app.log("TAG", Float.toString(Gdx.input.getAccelerometerY()));
@@ -126,7 +140,7 @@ public class Player extends Sprite {
 
         // y = oikea vasen
         // z = eteen taakse
-        if(accelY > posThreshold || left) {
+        if(accelY > leftThreshold || left) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
             if(upRightCollision && upLeftCollision) {
                 if(!checkPurpleGateCollision()) {
@@ -137,7 +151,7 @@ public class Player extends Sprite {
             }
         }
 
-        if(accelY < negThreshold || right) {
+        if(accelY < rightThreshhold || right) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
             if(downLeftCollision && upLeftCollision) {
 
@@ -145,14 +159,14 @@ public class Player extends Sprite {
             }
         }
 
-        if(accelZ > posThreshold || up) {
+        if(accelZ > upThreshold || up) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
             if(upLeftCollision && upRightCollision) {
                 y += speed;
             }
         }
 
-        if(accelZ < negThreshold || down) {
+        if(accelZ < downThreshold || down) {
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
             if(downLeftCollision && downRightCollision) {
                 if(!checkRedGateCollision()) {
@@ -160,86 +174,6 @@ public class Player extends Sprite {
                 }
             }
         }
-
-        // Wanha liikkumismenetelmä. Säästin varmuudeks jos haluat pitää tän.
-        /*
-        if(Gdx.input.getAccelerometerY() < 1 && Gdx.input.getAccelerometerZ() - 4 > 1) {
-
-            getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
-            if (Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
-                Gdx.app.log("TAG", "first");
-                x += (-1 * speed);
-            }
-
-            getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
-            if (Gdx.input.getAccelerometerZ() - 4 > positiveThreshold && upLeftCollision && upRightCollision) {
-                Gdx.app.log("TAG", "second");
-                y += speed;
-            }
-        }
-
-        if(Gdx.input.getAccelerometerY() > 1 && Gdx.input.getAccelerometerZ() - 4 > 1) {
-
-            getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
-            if (Gdx.input.getAccelerometerY() > positiveThreshold && upRightCollision && downRightCollision) {
-                Gdx.app.log("TAG", "third");
-                if (!checkPurpleGateCollision()) {
-                    x += speed;
-                } else {
-                    x += (-1 * speed);
-                }
-            }
-
-            getMyCorners(getX(playerXpos), getY(playerYpos) + speed);
-            if (Gdx.input.getAccelerometerZ() - 4 > positiveThreshold && upLeftCollision && upRightCollision) {
-                Gdx.app.log("TAG", "fourth");
-                y += speed;
-            }
-        }
-
-
-        if(Gdx.input.getAccelerometerY() > 1 && Gdx.input.getAccelerometerZ() - 4 < 1) {
-
-            getMyCorners(getX(playerXpos) + speed, getY(playerYpos));
-            if (Gdx.input.getAccelerometerY() > positiveThreshold && downRightCollision && upRightCollision) {
-                Gdx.app.log("TAG", "sixth");
-                if(!checkPurpleGateCollision()) {
-                    x += speed;
-                } else {
-                    x += (-1 * speed);
-                }
-            }
-
-            getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
-            if (Gdx.input.getAccelerometerZ() - 4 < negativeThreshold && downLeftCollision && downRightCollision) {
-                Gdx.app.log("TAG", "seventh");
-                if(!checkRedGateCollision()) {
-                    y += (-1 * speed);
-                } else {
-                    y += speed;
-                }
-            }
-        }
-
-        if(Gdx.input.getAccelerometerY() < 1 && Gdx.input.getAccelerometerZ() - 4 < 1) {
-
-            getMyCorners(getX(playerXpos) - speed, getY(playerYpos));
-            if (Gdx.input.getAccelerometerY() < negativeThreshold && downLeftCollision && upLeftCollision) {
-                Gdx.app.log("TAG", "eight");
-                x += (-1 * speed);
-            }
-
-            getMyCorners(getX(playerXpos), getY(playerYpos) - speed);
-            if (Gdx.input.getAccelerometerZ() - 4 < negativeThreshold && downLeftCollision && downRightCollision) {
-                Gdx.app.log("TAG", "ninth");
-                if(!checkRedGateCollision()) {
-                    y += (-1 * speed);
-                } else {
-                    y += speed;
-                }
-            }
-        }
-        */
 
         playerRectangle.setPosition(x, y);
         Gdx.app.log("TAG", "x: " + Float.toString(x) + " y: " + Float.toString(y));

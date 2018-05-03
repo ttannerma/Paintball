@@ -5,11 +5,6 @@ package com.mygdx.game;
  */
 
 public class GameData {
-    private int points;
-    private boolean win;
-    private int level;
-    private boolean stillLeaning;
-    int profileUsed;
 
     public static final float DEFAULT_SENSITIVITY_RIGHT = 5f;
     public static final float DEFAULT_SENSITIVITY_LEFT = -5f;
@@ -23,6 +18,5 @@ public class GameData {
     public static final float DEFAULT_VOLUME = 50;
     public static final boolean DEFAULT_SOUND_EFFECTS = true;
 
-    public static final boolean DEFAULT_HORIZONTAL_AXIS = false;
     public static final boolean DEFAULT_USE_CHAIR = false;
 }

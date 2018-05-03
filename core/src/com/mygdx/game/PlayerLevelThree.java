@@ -28,7 +28,7 @@ import com.badlogic.gdx.utils.Array;
 public class PlayerLevelThree extends Sprite {
 
     PaintBall host;
-    private Texture texture, originalTexture;
+    private Texture texture;
     public Rectangle playerRectangle;
     private TextureRegion[][] playerRegion;
     private TextureRegion[] rollingAnimation;
@@ -36,11 +36,10 @@ public class PlayerLevelThree extends Sprite {
     private SpriteBatch batch;
     private Animation<TextureRegion> rolling;
 
-    private CollisionDetection colDetection;
+
     private boolean colorChanged = false;
     TiledMap tiledMap;
 
-    Settings settings;
 
     int i = 0;
     float x;
@@ -71,8 +70,8 @@ public class PlayerLevelThree extends Sprite {
     boolean secondRedUsed;
     boolean secondBlueUsed;
     boolean blackUsed;
-    float lastXVelocity = 0;
-    float lastYVelocity = 0;
+    boolean usingGameChair;
+
     float leftThreshold;
     float rightThreshhold;
     float upThreshold;
@@ -107,10 +106,18 @@ public class PlayerLevelThree extends Sprite {
         blackUsed = false;
         collision = "walls";
 
+        usingGameChair = host.settings.getBoolean("gameChair", false);
         leftThreshold = host.settings.getFloat("sensitivityLeft", -2f);
         upThreshold = host.settings.getFloat("sensitivityUp", 2f);
         downThreshold = host.settings.getFloat("sensitivityDown", -2f);
         rightThreshhold = host.settings.getFloat("sensitivityRight", 2f);
+
+        if(usingGameChair) {
+            leftThreshold = -1f;
+            upThreshold = 3.5f;
+            rightThreshhold = 1f;
+            downThreshold = 1.5f;
+        }
     }
 
     @Override
@@ -497,7 +504,6 @@ public class PlayerLevelThree extends Sprite {
     }
 
     public void dispose() {
-
-        batch.dispose();
+        
     }
 }

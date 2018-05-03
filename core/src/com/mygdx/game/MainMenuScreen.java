@@ -34,7 +34,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
     float width;
     float height;
-    //ShapeRenderer shapeRenderer;
+    float row_height;
+    float col_width;
 
     Stage stage;
     Skin mySkin;
@@ -43,7 +44,6 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         this.openedFirstTime = openedFirstTime;
         batch = host.getBatch();
         this.host = host;
-        //shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         logo = new BitmapFont(Gdx.files.internal("font.txt"));
@@ -56,10 +56,10 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         Gdx.input.setInputProcessor(stage);
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        int row_height = Gdx.graphics.getWidth() / 12;
-        int col_width = Gdx.graphics.getWidth() / 12;
+        row_height = Gdx.graphics.getWidth() / 12;
+        col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button2 = new TextButton("Pelaa",mySkin,"small");
+        Button button2 = new TextButton("Play",mySkin,"small");
         button2.setSize(col_width * 4, row_height);
         button2.setPosition(50,160);
         button2.addListener(new InputListener(){
@@ -72,7 +72,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
             }
         });
 
-        Button button3 = new TextButton("Asetukset", mySkin, "small");
+        Button button3 = new TextButton("Settings", mySkin, "small");
         button3.setSize(col_width * 4, row_height);
         button3.setPosition(50, 60);
         button3.addListener(new InputListener()  {
@@ -98,14 +98,6 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
         Gdx.gl.glClearColor(65/255f, 105/255f,225/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-
-        /*
-        if(!openedFirstTime) {
-            LanguageSelectionScreen langScreen = new LanguageSelectionScreen(host);
-            host.setScreen(langScreen);
-
-        }
-        */
 
         batch.begin();
 
