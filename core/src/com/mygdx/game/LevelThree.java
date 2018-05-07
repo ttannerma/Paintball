@@ -173,7 +173,6 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             player.setSecondWhite(false);
             player.setBlack(false);
 
-
             redColorChanged = false;
             secondRedColorChanged = false;
             blueColorChanged = false;
@@ -185,6 +184,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         }
 
         if(checkGoalCollision()) {
+            music.dispose();
             MapFinished mapFinished = new MapFinished(host);
             host.setScreen(mapFinished);
         }

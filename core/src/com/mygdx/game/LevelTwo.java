@@ -181,6 +181,7 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         }
 
         if(checkGoalCollision()) {
+            music.dispose();
             MapFinished mapFinished = new MapFinished(host);
             host.setScreen(mapFinished);
         }

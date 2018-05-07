@@ -140,6 +140,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         batch.begin();
 
         if(checkGoalCollision()) {
+            music.dispose();
             MapFinished mapFinished = new MapFinished(host);
             host.setScreen(mapFinished);
         }

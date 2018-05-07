@@ -53,12 +53,12 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         music.setVolume(musicVol);
         music.setLooping(true);
 
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
-
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
+
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
 
         row_height = Gdx.graphics.getWidth() / 12;
         col_width = Gdx.graphics.getWidth() / 12;
@@ -102,6 +102,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     @Override
     public void render(float delta) {
 
+        batch.setProjectionMatrix(camera.combined);
+
         Gdx.gl.glClearColor(65/255f, 105/255f,225/255f, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
@@ -138,7 +140,6 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     public void dispose() {
 
         music.dispose();
-        backgroundImage.dispose();
         stage.dispose();
     }
 }

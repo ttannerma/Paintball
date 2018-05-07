@@ -29,7 +29,6 @@ public class MapFinished extends ApplicationAdapter implements Screen {
 
     float width;
     float height;
-    //ShapeRenderer shapeRenderer;
 
     Stage stage;
     Skin mySkin;
@@ -53,7 +52,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button2 = new TextButton("Palaa valikkoon",mySkin,"small");
+        Button button2 = new TextButton("Main Menu",mySkin,"small");
         button2.setSize(col_width*4,row_height);
         button2.setPosition(50,60);
         button2.addListener(new InputListener(){
@@ -81,7 +80,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        message.draw(batch, "Taso suoritettu", width / 2 - 250f, height - 20f);
+        message.draw(batch, "Level completed", width / 2 - 250f, height - 20f);
         batch.end();
 
         stage.act();
