@@ -122,8 +122,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
                 MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
                 host.setScreen(mainMenuScreen);
-                music.dispose();
-                player.dispose();
+                dispose();
                 return true;
             }
         });
@@ -184,7 +183,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         }
 
         if(checkGoalCollision()) {
-            music.dispose();
+            dispose();
             MapFinished mapFinished = new MapFinished(host);
             host.setScreen(mapFinished);
         }
@@ -467,7 +466,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
     @Override
     public void dispose() {
         music.dispose();
-        batch.dispose();
         stage.dispose();
+        player.dispose();
     }
 }

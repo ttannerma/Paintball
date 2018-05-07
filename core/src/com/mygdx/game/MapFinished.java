@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -26,9 +27,12 @@ public class MapFinished extends ApplicationAdapter implements Screen {
     PaintBall host;
     BitmapFont message;
     OrthographicCamera camera;
+    Texture backgroundImage;
 
     float width;
     float height;
+    float row_height;
+    float col_width;
 
     Stage stage;
     Skin mySkin;
@@ -36,14 +40,17 @@ public class MapFinished extends ApplicationAdapter implements Screen {
     public MapFinished(final PaintBall host) {
         batch = host.getBatch();
         this.host = host;
-        //shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         message = new BitmapFont(Gdx.files.internal("font.txt"));
         message.getData().setScale(0.7f, 0.7f);
+        backgroundImage = new Texture(Gdx.files.internal("settings_menu.png"));
 
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
+
+        row_height = Gdx.graphics.getWidth() / 12;
+        col_width = Gdx.graphics.getWidth() / 12;
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -54,7 +61,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
 
         Button button2 = new TextButton("Main Menu",mySkin,"small");
         button2.setSize(col_width*4,row_height);
-        button2.setPosition(50,60);
+        button2.setPosition(0,0);
         button2.addListener(new InputListener(){
 
             @Override
@@ -80,11 +87,13 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        message.draw(batch, "Level completed", width / 2 - 250f, height - 20f);
+        batch.draw(backgroundImage, 0,0, width, height);
+        message.draw(batch, "Level completed", col_width * 3, row_height * 5);
         batch.end();
 
         stage.act();
         stage.draw();
+
     }
 
     @Override

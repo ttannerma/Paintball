@@ -45,7 +45,7 @@ public class SettingsScreen implements Screen {
     public TextButton save;
     public TextButton back;
     public Slider sliderV;
-    public CheckBox soundEffects;
+    public CheckBox language;
 
     public CheckBox usingChair;
 
@@ -111,7 +111,7 @@ public class SettingsScreen implements Screen {
         buttonBack();
         buttonCalibrate();
         sliderVolume();
-        soundEffects();
+        language();
         usingChair();
         sliderRight();
         sliderLeft();
@@ -124,7 +124,7 @@ public class SettingsScreen implements Screen {
     public void settingValues () {
         settings = Settings.getInstance();
 
-        soundEffects.setChecked(settings.getBoolean("soundEffects", GameData.DEFAULT_SOUND_EFFECTS));
+        language.setChecked(settings.getBoolean("language", GameData.DEFAULT_LANGUAGE));
         sliderV.setValue(settings.getFloat("volume", GameData.DEFAULT_VOLUME));
         sliderR.setValue(settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT));
         sliderL.setValue(settings.getFloat("sensitivityLeft", GameData.DEFAULT_SENSITIVITY_LEFT));
@@ -179,7 +179,7 @@ public class SettingsScreen implements Screen {
                 settings.setFloat("sensitivityLeft", sliderL.getValue() * 0.7f);
                 settings.setFloat("sensitivityUp", sliderU.getValue() * 0.7f);
                 settings.setFloat("sensitivityDown", sliderD.getValue() * 0.7f);
-                settings.setBoolean("soundEffects", soundEffects.isChecked());
+                settings.setBoolean("language", language.isChecked());
                 settings.setFloat("volume", sliderV.getValue());
                 settings.setBoolean("gameChair", usingChair.isChecked());
 
@@ -286,13 +286,13 @@ public class SettingsScreen implements Screen {
         stage.addActor(volumeText);
     }
 
-    public void soundEffects() {
-        soundEffects = new CheckBox("Sound Effects", mySkin);
-        soundEffects.getImageCell().height(100);
-        soundEffects.getImageCell().width(100);
-        soundEffects.getLabel().setFontScale(MEDIUM_TEXT_SCALE * 2);
-        soundEffects.setPosition(col_width*8 + selectBoxSize - soundEffects.getWidth()/2, row_height * 11);
-        stage.addActor(soundEffects);
+    public void language() {
+        language = new CheckBox("Language", mySkin);
+        language.getImageCell().height(100);
+        language.getImageCell().width(100);
+        language.getLabel().setFontScale(MEDIUM_TEXT_SCALE * 2);
+        language.setPosition(col_width*8 + selectBoxSize - language.getWidth()/2, row_height * 11);
+        stage.addActor(language);
     }
 
 

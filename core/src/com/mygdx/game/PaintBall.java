@@ -26,7 +26,7 @@ public class PaintBall extends Game{
 	float zeroPointX;
 	float zeroPointY;
 	float zeroPointZ;
-	boolean soundEffectsOn;
+	boolean language;
 
 
 	@Override
@@ -47,7 +47,7 @@ public class PaintBall extends Game{
 
 	public void updateSettings() {
 		settings = Settings.getInstance();
-		soundEffectsOn = settings.getBoolean("soundEffects", GameData.DEFAULT_SOUND_EFFECTS);
+		language = settings.getBoolean("language", GameData.DEFAULT_LANGUAGE);
 		Gdx.app.log("PaintBall", "update settings");
 	}
 

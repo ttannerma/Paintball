@@ -16,7 +16,7 @@ public class GameData {
     public static final float DEFAULT_ZERO_POINT_Z = 0;
 
     public static final float DEFAULT_VOLUME = 50;
-    public static final boolean DEFAULT_SOUND_EFFECTS = true;
+    public static final boolean DEFAULT_LANGUAGE = true;
 
     public static final boolean DEFAULT_USE_CHAIR = false;
 }
