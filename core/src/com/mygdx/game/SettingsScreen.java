@@ -67,6 +67,7 @@ public class SettingsScreen implements Screen {
     final float MEDIUM_TEXT_SCALE = 0.5f;
 
     boolean musicPlaying;
+    boolean useFinnish;
     float musicVol;
 
     String mainMenuText;
@@ -87,6 +88,7 @@ public class SettingsScreen implements Screen {
         savedHoverText = settings.getString("savedHoverText", GameData.DEFAULT_SAVED_EN);
         calibratedHoverText = settings.getString("calibratedHoverText", GameData.DEFAULT_CALIBRATED_EN);
         sensitivityButtonText = settings.getString("sensitivityButtonText", GameData.DEFAULT_SENSITIVITY_TEXT_EN);
+        useFinnish = settings.getBoolean("language", GameData.DEFAULT_LANGUAGE);
 
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
@@ -184,9 +186,14 @@ public class SettingsScreen implements Screen {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "save");
-                //settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
-                //settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
+                settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
+                settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
                 //Gdx.app.log("save", "accel Y: "+ settings.getFloat("zeroPointY"));
                 settings.setFloat("sensitivityRight", sliderR.getValue() * 0.7f);
                 settings.setFloat("sensitivityLeft", sliderL.getValue() * 0.7f);
@@ -195,10 +202,10 @@ public class SettingsScreen implements Screen {
                 settings.setBoolean("language", language.isChecked());
                 settings.setFloat("volume", sliderV.getValue());
                 settings.setBoolean("gameChair", usingChair.isChecked());
-                if(settings.getBoolean("language", false)) {
-                    setEnglish();
-                } else {
+                if(useFinnish) {
                     setFinnish();
+                } else {
+                    setEnglish();
                 }
                 settings.saveSettings();
                 host.updateSettings();
@@ -207,12 +214,6 @@ public class SettingsScreen implements Screen {
                 savedText.toFront();
                 savedText.addAction(Actions.sequence(Actions.alpha(1f),
                         Actions.fadeOut(3.0f), Actions.delay(3f)));
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
-
             }
 
         });
