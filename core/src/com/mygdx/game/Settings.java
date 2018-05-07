@@ -50,6 +50,17 @@ public class Settings {
         return prefs.getBoolean(key);
     }
 
+    public void setString(String key, String value) {
+        prefs.putString(key, value);
+    }
+
+    public String  getString(String key, String defaultValue) {
+        if (!hasKey(key)) {
+            return defaultValue;
+        }
+        return prefs.getString(key);
+    }
+
     public void setBoolean(String key, boolean value) {
         prefs.putBoolean(key, value);
     }

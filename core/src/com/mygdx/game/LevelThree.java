@@ -64,13 +64,13 @@ public class LevelThree extends ApplicationAdapter implements Screen {
     Skin mySkin;
     BitmapFont logo;
     Music music;
+    String buttonText;
 
-
-
-    public LevelThree(final PaintBall host, float musicVolume) {
+    public LevelThree(final PaintBall host, float musicVolume, String buttonText) {
 
         batch = host.getBatch();
         this.host = host;
+        this.buttonText = buttonText;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 400f, 200f);
         tiledMap = new TmxMapLoader().load("Map_Three.tmx");
@@ -113,7 +113,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button2 = new TextButton("Main Menu",mySkin,"small");
+        Button button2 = new TextButton(buttonText,mySkin,"small");
         button2.setSize(col_width * 2, row_height);
         button2.setPosition(width - (width / 4), 0);
         button2.addListener(new InputListener(){

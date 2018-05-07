@@ -27,6 +27,7 @@ public class PaintBall extends Game{
 	float zeroPointY;
 	float zeroPointZ;
 	boolean language;
+	String mainMenu;
 
 
 	@Override
@@ -48,6 +49,7 @@ public class PaintBall extends Game{
 	public void updateSettings() {
 		settings = Settings.getInstance();
 		language = settings.getBoolean("language", GameData.DEFAULT_LANGUAGE);
+
 		Gdx.app.log("PaintBall", "update settings");
 	}
 

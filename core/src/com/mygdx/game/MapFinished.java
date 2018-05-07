@@ -28,11 +28,15 @@ public class MapFinished extends ApplicationAdapter implements Screen {
     BitmapFont message;
     OrthographicCamera camera;
     Texture backgroundImage;
+    Settings settings;
 
     float width;
     float height;
     float row_height;
     float col_width;
+
+    String mapFinishedText;
+    String mainMenuButtonText;
 
     Stage stage;
     Skin mySkin;
@@ -40,6 +44,11 @@ public class MapFinished extends ApplicationAdapter implements Screen {
     public MapFinished(final PaintBall host) {
         batch = host.getBatch();
         this.host = host;
+        settings = Settings.getInstance();
+
+        mapFinishedText = settings.getString("levelCompletedText", GameData.DEFAULT_LEVEL_COMPLETED_EN);
+        mainMenuButtonText = settings.getString("mainMenuButtonText", GameData.DEFAULT_MAIN_MENU_EN);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         message = new BitmapFont(Gdx.files.internal("font.txt"));
@@ -59,7 +68,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button2 = new TextButton("Main Menu",mySkin,"small");
+        Button button2 = new TextButton(mainMenuButtonText, mySkin,"small");
         button2.setSize(col_width*4,row_height);
         button2.setPosition(0,0);
         button2.addListener(new InputListener(){
@@ -88,7 +97,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
 
         batch.begin();
         batch.draw(backgroundImage, 0,0, width, height);
-        message.draw(batch, "Level completed", col_width * 3, row_height * 5);
+        message.draw(batch, mapFinishedText, col_width * 3, row_height * 5);
         batch.end();
 
         stage.act();

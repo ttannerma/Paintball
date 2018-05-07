@@ -69,10 +69,25 @@ public class SettingsScreen implements Screen {
     boolean musicPlaying;
     float musicVol;
 
+    String mainMenuText;
+    String saveButtonText;
+    String savedHoverText;
+    String calibrateButtonText;
+    String calibratedHoverText;
+    String volumeButtonText;
+    String languageButtonText;
+    String usingChairButtonText;
+    String sensitivityButtonText;
 
     public SettingsScreen(PaintBall host, float musicVolume) {
         batch = host.getBatch();
         this.host = host;
+        settings = Settings.getInstance();
+
+        savedHoverText = settings.getString("savedHoverText", GameData.DEFAULT_SAVED_EN);
+        calibratedHoverText = settings.getString("calibratedHoverText", GameData.DEFAULT_CALIBRATED_EN);
+        sensitivityButtonText = settings.getString("sensitivityButtonText", GameData.DEFAULT_SENSITIVITY_TEXT_EN);
+
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
         camera.setToOrtho(false,1280,800);
@@ -80,8 +95,6 @@ public class SettingsScreen implements Screen {
         backgroundImage = new Texture(Gdx.files.internal("settings_menu.png"));
         music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
         musicVol = musicVolume;
-
-
 
         row_height = camera.viewportHeight / 15;
         col_width = camera.viewportWidth / 12;
@@ -92,20 +105,21 @@ public class SettingsScreen implements Screen {
 
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        calibrateText = new Label("Sensitivity", mySkin, "big");
+        calibrateText = new Label(sensitivityButtonText, mySkin, "big");
         calibrateText.setPosition(col_width*5 - calibrateText.getWidth()/2, row_height * 13);
 
-        savedText = new Label("Saved!", mySkin, "big");
+        savedText = new Label(savedHoverText, mySkin, "big");
         savedText.setPosition(col_width - savedText.getWidth()/2, row_height*2);
         savedText.setAlignment(Align.center);
         savedText.setVisible(false);
 
-        calibratedText = new Label("Calibrated!", mySkin, "big");
+        calibratedText = new Label(calibratedHoverText, mySkin, "big");
         calibratedText.setPosition(col_width*1.5f - calibratedText.getWidth()/2, row_height*2);
         calibratedText.setAlignment(Align.center);
         calibratedText.setVisible(false);
 
         stage.addActor(calibrateText);
+
 
         buttonSave();
         buttonBack();
@@ -134,7 +148,9 @@ public class SettingsScreen implements Screen {
     }
 
     public void buttonBack() {
-        back = new TextButton("Main Menu",mySkin,"small");
+        settings = Settings.getInstance();
+        mainMenuText = settings.getString("mainMenuButtonText", GameData.DEFAULT_MAIN_MENU_EN);
+        back = new TextButton(mainMenuText ,mySkin,"small");
         back.setSize(col_width*2,row_height*2);
         back.setPosition(0,height - back.getHeight());
         back.addListener(new ClickListener(){
@@ -159,18 +175,15 @@ public class SettingsScreen implements Screen {
     }
 
     public void buttonSave() {
-        save = new TextButton("SAVE",mySkin);
+        settings = Settings.getInstance();
+        saveButtonText = settings.getString("saveButtonText", GameData.DEFAULT_SAVE_EN);
+        save = new TextButton(saveButtonText ,mySkin);
         save.setSize(col_width*2,row_height*2);
         save.setPosition(0,0);
         save.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
 
-                return true;
-            }
-
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("TAG", "save");
                 //settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
                 //settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
@@ -182,7 +195,11 @@ public class SettingsScreen implements Screen {
                 settings.setBoolean("language", language.isChecked());
                 settings.setFloat("volume", sliderV.getValue());
                 settings.setBoolean("gameChair", usingChair.isChecked());
-
+                if(settings.getBoolean("language", false)) {
+                    setEnglish();
+                } else {
+                    setFinnish();
+                }
                 settings.saveSettings();
                 host.updateSettings();
                 host.updateControls();
@@ -190,6 +207,12 @@ public class SettingsScreen implements Screen {
                 savedText.toFront();
                 savedText.addAction(Actions.sequence(Actions.alpha(1f),
                         Actions.fadeOut(3.0f), Actions.delay(3f)));
+                return true;
+            }
+
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button) {
+
             }
 
         });
@@ -198,7 +221,9 @@ public class SettingsScreen implements Screen {
     }
 
     public void buttonCalibrate() {
-        calibrate = new TextButton("Calibrate", mySkin);
+        settings = Settings.getInstance();
+        calibrateButtonText = settings.getString("calibrateButtonText", GameData.DEFAULT_CALIBRATE_EN);
+        calibrate = new TextButton(calibrateButtonText, mySkin);
         calibrate.setSize(selectBoxSize*2, row_height*2);
         calibrate.setPosition(col_width*5 - calibrate.getWidth()/2, row_height * 2);
         calibrate.addListener(new ClickListener(){
@@ -274,12 +299,15 @@ public class SettingsScreen implements Screen {
     }
 
     private void sliderVolume() {
+        settings = Settings.getInstance();
+        volumeButtonText = settings.getString("volumeButtonText", GameData.DEFAULT_VOLUME_TEXT_EN);
+
         sliderV = new Slider(0f,100f,1f,false, mySkin);
         sliderV.setAnimateInterpolation(Interpolation.smooth);
         //slider.setAnimateDuration(0.1f);
         sliderV.setWidth(selectBoxSize*2);
         sliderV.setPosition(col_width*8, row_height * 13);
-        volumeText = new Label("Volume", mySkin, "big");
+        volumeText = new Label(volumeButtonText, mySkin, "big");
         volumeText.setPosition(col_width *8 + (selectBoxSize*1.5f) - volumeText.getWidth()*1.5f/2, row_height *14);
         volumeText.setFontScale(MEDIUM_TEXT_SCALE);
         stage.addActor(sliderV);
@@ -287,7 +315,10 @@ public class SettingsScreen implements Screen {
     }
 
     public void language() {
-        language = new CheckBox("Language", mySkin);
+        settings = Settings.getInstance();
+        languageButtonText = settings.getString("languageButtonText", GameData.DEFAULT_LANGUAGE_BUTTON_EN);
+
+        language = new CheckBox(languageButtonText, mySkin);
         language.getImageCell().height(100);
         language.getImageCell().width(100);
         language.getLabel().setFontScale(MEDIUM_TEXT_SCALE * 2);
@@ -297,12 +328,51 @@ public class SettingsScreen implements Screen {
 
 
     public void usingChair() {
-        usingChair = new CheckBox("Using Exerium GameXR chair", mySkin);
+        settings = Settings.getInstance();
+        usingChairButtonText = settings.getString("usingChairButtonText", GameData.DEFAULT_USING_CHAIR_TEXT_EN);
+
+        usingChair = new CheckBox(usingChairButtonText, mySkin);
         usingChair.getImageCell().height(100);
         usingChair.getImageCell().width(100);
         usingChair.getLabel().setFontScale(MEDIUM_TEXT_SCALE * 2);
         usingChair.setPosition(col_width*8 + selectBoxSize - usingChair.getWidth()/2, row_height * 0.5f);
         stage.addActor(usingChair);
+    }
+    public void setEnglish() {
+        settings.setString("mainMenuButtonText", GameData.DEFAULT_MAIN_MENU_EN);
+        settings.setString("settingButtonText", GameData.DEFAULT_SETTINGS_EN);
+        settings.setString("levelCompletedText", GameData.DEFAULT_LEVEL_COMPLETED_EN);
+        settings.setString("playButtonText", GameData.DEFAULT_PLAY_EN);
+        settings.setString("saveButtonText", GameData.DEFAULT_SAVE_EN);
+        settings.setString("calibrateButtonText", GameData.DEFAULT_CALIBRATE_EN);
+        settings.setString("volumeButtonText", GameData.DEFAULT_VOLUME_TEXT_EN);
+        settings.setString("languageButtonText", GameData.DEFAULT_LANGUAGE_BUTTON_EN);
+        settings.setString("sensitivityButtonText", GameData.DEFAULT_SENSITIVITY_TEXT_EN);
+        settings.setString("usingChairButtonText", GameData.DEFAULT_USING_CHAIR_TEXT_EN);
+        settings.setString("levelOneButtonText", GameData.DEFAULT_LEVEL_ONE_EN);
+        settings.setString("levelTwoButtonText", GameData.DEFAULT_LEVEL_TWO_EN);
+        settings.setString("levelThreeButtonText", GameData.DEFAULT_LEVEL_THREE_EN);
+        settings.setString("calibratedHoverText", GameData.DEFAULT_CALIBRATED_EN);
+        settings.setString("savedHoverText", GameData.DEFAULT_SAVED_EN);
+        settings.setString("levelCompletedText", GameData.DEFAULT_LEVEL_COMPLETED_EN);
+    }
+
+    public void setFinnish() {
+        settings.setString("mainMenuButtonText", "Valikko");
+        settings.setString("settingButtonText", "Asetukset");
+        settings.setString("levelCompletedText", "Taso suoritettu");
+        settings.setString("playButtonText", "Pelaa");
+        settings.setString("saveButtonText", "Tallenna");
+        settings.setString("calibrateButtonText", "Kalibroi");
+        settings.setString("volumeButtonText", "Volyymi");
+        settings.setString("languageButtonText", "Englannin kieli");
+        settings.setString("sensitivityButtonText", "Herkkyys");
+        settings.setString("usingChairButtonText", "Aseta asetukset Exeriumin GameXR tuolille");
+        settings.setString("levelOneButtonText", "Harjoitus taso");
+        settings.setString("levelTwoButtonText", "Taso 2");
+        settings.setString("levelThreeButtonText", "Taso 3");
+        settings.setString("calibratedHoverText", "Kalibroitu");
+        settings.setString("savedHoverText", "Tallennettu");
     }
 
     @Override

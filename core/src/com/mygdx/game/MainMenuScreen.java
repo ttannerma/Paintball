@@ -34,11 +34,18 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     float row_height;
     float col_width;
     float musicVol;
+    boolean language;
+    String playButtonText;
+    String settingButtonText;
 
     Stage stage;
     Skin mySkin;
 
     public MainMenuScreen(final PaintBall host) {
+
+        settings = Settings.getInstance();
+        playButtonText = settings.getString("playButtonText", GameData.DEFAULT_PLAY_EN);
+        settingButtonText = settings.getString("settingButtonText", GameData.DEFAULT_SETTINGS_EN);
 
         batch = host.getBatch();
         this.host = host;
@@ -63,7 +70,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         row_height = Gdx.graphics.getWidth() / 12;
         col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button2 = new TextButton("Play",mySkin,"small");
+        Button button2 = new TextButton(playButtonText,mySkin,"small");
         button2.setSize(col_width * 4, row_height);
         button2.setPosition(50,160);
         button2.addListener(new InputListener(){
@@ -76,7 +83,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
             }
         });
 
-        Button button3 = new TextButton("Settings", mySkin, "small");
+        Button button3 = new TextButton(settingButtonText, mySkin, "small");
         button3.setSize(col_width * 4, row_height);
         button3.setPosition(50, 60);
         button3.addListener(new InputListener()  {
