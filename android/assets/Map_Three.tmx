@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="50" height="36" tilewidth="32" tileheight="32" infinite="0" nextobjectid="71">
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="50" height="36" tilewidth="32" tileheight="32" infinite="0" nextobjectid="74">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="80" columns="8">
   <image source="Sprite_sheet_levels.png" trans="ffffff" width="256" height="320"/>
  </tileset>
@@ -17,16 +17,13 @@
  <objectgroup name="walls_object">
   <object id="4" x="520" y="522" width="16" height="447.333"/>
   <object id="8" x="680" y="671.5" width="16" height="137"/>
-  <object id="9" x="522.667" y="968" width="405.333" height="16"/>
-  <object id="11" x="928" y="968" width="312" height="16"/>
-  <object id="14" x="1023.97" y="808" width="80.0303" height="16"/>
-  <object id="15" x="1096" y="624" width="16" height="200"/>
-  <object id="16" x="1224" y="624" width="16" height="360"/>
+  <object id="9" x="522.667" y="968" width="362" height="16"/>
+  <object id="16" x="1215.67" y="626.333" width="24.3333" height="199.667"/>
   <object id="18" x="936" y="368" width="16" height="264"/>
   <object id="19" x="936" y="360" width="336" height="16"/>
   <object id="20" x="1064" y="368" width="16" height="184"/>
   <object id="21" x="1224" y="360" width="16" height="192"/>
-  <object id="22" x="1224" y="616" width="200" height="16"/>
+  <object id="22" x="1216.33" y="616" width="207.667" height="16"/>
   <object id="23" x="1416" y="232" width="16" height="392"/>
   <object id="24" x="1416" y="136" width="16" height="96"/>
   <object id="25" x="680" y="136" width="752" height="16"/>
@@ -43,14 +40,16 @@
   <object id="36" x="296" y="144" width="16" height="136"/>
   <object id="37" x="296" y="136" width="384" height="16"/>
   <object id="60" x="537.5" y="521" width="314.333" height="12.3333"/>
-  <object id="65" x="682.424" y="808.727" width="213.727" height="12"/>
+  <object id="65" x="682.424" y="808.727" width="202.727" height="12"/>
   <object id="66" x="872.667" y="820.667" width="14" height="148.667"/>
   <object id="67" x="696.667" y="683.333" width="41.3333" height="14"/>
   <object id="68" x="840.667" y="534" width="16" height="94.6667"/>
-  <object id="69" x="856.333" y="617" width="251.667" height="16"/>
+  <object id="69" x="856.333" y="617" width="223.417" height="16"/>
+  <object id="71" x="887" y="808" width="336" height="18"/>
+  <object id="73" x="1064.75" y="627.75" width="14" height="21.5"/>
  </objectgroup>
  <objectgroup name="reset_object">
-  <object id="39" x="896.5" y="800" width="126.5" height="32"/>
+  <object id="39" x="1088.5" y="607.333" width="127.167" height="32"/>
   <object id="42" x="544" y="352" width="32" height="32"/>
   <object id="63" x="543.75" y="672" width="128.75" height="32.5"/>
  </objectgroup>
@@ -101,7 +100,7 @@
  </objectgroup>
  <layer name="walls" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztmFEOhCAMRPsrXJKj7VE8ikdZko2JwQHBDsqSvoQfwZZpWqiKGIahYRFZncjnoRFKI+4l3NXhiDHRotmL6eCj2csC8hjl6bGOCvPF/L+qBXZMkT3XMM/wwcB0nM9xD3LK//Kqyq8GjY50riXupgOTOcPS+fT8gXt5U4eGEXXEGG+td8GIOmrtXtUO218vu7PoONa9x2dASNbDHgbdKQxY8ampmZ4gf3ssNXZG0BGfrVo7puMeM+tAPcnew4L3Tz1Nzm5PWvz1WsvAdPDWMphFB/oOyQ3f8A+xV/9hGMb/8gWHZlHv
+   eJztl1EOhDAIRPm13UN6tD2KR9mjrMnGxFRaZRlqY+Yl/cIAQ4BWEUKIh0lkSSLvTmdunTWX+V8dCVgTL55cqAOPJ5dJ6WOtT/dz1LA3+/9sFtA11fwlgx0RAwF1HPd4Vnoq//rqUlwPHh2lzVJ36tCp7LDSXu4fNZc7dXgYUcda44/1LhhRx1W/Z7ODjhfl9yk69nOfix1gecNodwoCRH1eQX4taPG2WqL9RlLZNUuE30iow+43ksp8HN4k2xvW8A91uw7Et72hjrF4ig7tP6R2es8uIeRZfAHgVU3u
   </data>
  </layer>
  <layer name="finnish" width="50" height="36">
@@ -161,7 +160,7 @@
  </layer>
  <layer name="reset" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJzt06EKAEAIREH/1//v1wWLFwSZgde3bAQAwB25PQAA+JYlYMaXAIDOA+CkA8Q=
+   eJzt0DEKAEAIA0H/6//76y0FOdAZ2D4kAgBgj/w9AICzskSfLwEAYNYDjzwDxA==
   </data>
  </layer>
  <layer name="pink_gate_two" width="50" height="36">

@@ -72,7 +72,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         camera = new OrthographicCamera();
         this.buttonText = buttonText;
 
-        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("gameplay.wav"));
         musicVol = musicVolume;
         music.play();
         music.setVolume(musicVol);

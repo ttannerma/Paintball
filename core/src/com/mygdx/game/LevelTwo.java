@@ -79,7 +79,7 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         player = new PlayerLevelTwo(32 * 21, 32 * 12, tiledMap, host);
 
         musicVol = musicVolume;
-        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("gameplay.wav"));
         music.play();
         music.setVolume(musicVol);
         music.setLooping(true);
