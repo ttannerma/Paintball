@@ -17,6 +17,7 @@ public class PaintBall extends Game{
 	OrthographicCamera camera;
 	MainMenuScreen MainMenuScreen;
 	SettingsScreen settingsScreen;
+	SplashScreen splashScreen;
 	Settings settings;
 
 	float moveRight;
@@ -37,8 +38,9 @@ public class PaintBall extends Game{
 		batch = new SpriteBatch();
 		MainMenuScreen = new MainMenuScreen(this);
 		settingsScreen = new SettingsScreen(this, 0.5f);
+		splashScreen = new SplashScreen(this);
 		settings = Settings.getInstance();
-		setScreen(MainMenuScreen);
+		setScreen(splashScreen);
 	}
 
 	@Override

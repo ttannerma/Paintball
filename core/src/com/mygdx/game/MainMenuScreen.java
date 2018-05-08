@@ -115,7 +115,7 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
         batch.begin();
-        batch.draw(backgroundImage, 0,0, width, height);
+        batch.draw(backgroundImage, 0,0, camera.viewportWidth, camera.viewportHeight);
         batch.end();
 
         stage.act();
