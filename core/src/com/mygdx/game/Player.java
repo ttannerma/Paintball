@@ -1,29 +1,26 @@
 
 package com.mygdx.game;
-
-        import com.badlogic.gdx.Gdx;
-        import com.badlogic.gdx.Input;
-        import com.badlogic.gdx.Screen;
-        import com.badlogic.gdx.graphics.Color;
-        import com.badlogic.gdx.graphics.Pixmap;
-        import com.badlogic.gdx.graphics.Texture;
-        import com.badlogic.gdx.graphics.g2d.Animation;
-        import com.badlogic.gdx.graphics.g2d.Sprite;
-        import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-        import com.badlogic.gdx.graphics.g2d.TextureRegion;
-        import com.badlogic.gdx.maps.MapLayer;
-        import com.badlogic.gdx.maps.MapObjects;
-        import com.badlogic.gdx.maps.objects.RectangleMapObject;
-        import com.badlogic.gdx.maps.tiled.TiledMap;
-        import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-        import com.badlogic.gdx.math.MathUtils;
-        import com.badlogic.gdx.math.Rectangle;
-        import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-        import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Animation;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.utils.Array;
 
 /**
- * Contains implementation of the player and collision detection to walls.
- * Created by sauli on 2/23/2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 23.3.2018
+ *
+ * Player class for first level.
  */
 public class Player extends Sprite {
 
@@ -64,6 +61,13 @@ public class Player extends Sprite {
     float accelZ;
     String collision;
 
+    /**
+     * Constructor for Player.
+     * @param x
+     * @param y
+     * @param tiledMap
+     * @param host
+     */
     public Player (float x, float y, TiledMap tiledMap, PaintBall host) {
         setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
         setupTextureRegion();
@@ -89,16 +93,27 @@ public class Player extends Sprite {
         }
     }
 
+    /**
+     * Gets current texture for the animation.
+     * @return texture.
+     */
     @Override
     public Texture getTexture() {
         return texture;
     }
 
+    /**
+     * Sets texture for the animation.
+     * @param texture
+     */
     @Override
     public void setTexture(Texture texture) {
         this.texture = texture;
     }
 
+    /**
+     * Animates the players movement.
+     */
     public void setupTextureRegion() {
         playerRegion = TextureRegion.split(getTexture(), getTexture().getWidth() / 1, getTexture().getHeight());
         rollingAnimation = convertTo1D(playerRegion);
@@ -107,6 +122,11 @@ public class Player extends Sprite {
         currentFrame = rolling.getKeyFrames()[0];
     }
 
+    /**
+     * Converts 2d array to 1d.
+     * @param region
+     * @return 1d array
+     */
     private TextureRegion[] convertTo1D(TextureRegion[][] region) {
         TextureRegion[] animation = new TextureRegion[region.length * region[0].length];
         int index = 0;
@@ -193,6 +213,10 @@ public class Player extends Sprite {
 
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkRedGateCollision() {
 
         if(redColor) {
@@ -220,6 +244,10 @@ public class Player extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkPurpleGateCollision() {
 
         if(blueColor && redColor) {
@@ -247,6 +275,11 @@ public class Player extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if players texture's corners collide with tile layers.
+     * @param pX
+     * @param pY
+     */
     public void getMyCorners(float pX, float pY) {
 
         float downYpos = pY;
@@ -260,6 +293,12 @@ public class Player extends Sprite {
         downRightCollision = isFree(rightXpos, downYpos);
     }
 
+    /**
+     * Checks if given coordinates of players textures collide with tile layer.
+     * @param x
+     * @param y
+     * @return
+     */
     private boolean isFree(float x, float y) {
 
         int indexXround = (int)(x / 32);
@@ -276,40 +315,86 @@ public class Player extends Sprite {
         }
     }
 
+    /**
+     * Sets red color.
+     * @param redColored
+     */
     public void setRed(boolean redColored) {
         redColor = redColored;
     }
+
+    /**
+     * Sets blue color.
+     * @param blueColored
+     */
     public void setBlue(boolean blueColored) {
         blueColor = blueColored;
     }
 
+    /**
+     * Gets blue color boolean.
+     * @param blueColor
+     * @return
+     */
     public boolean getBlue(boolean blueColor) {
         return blueColor;
     }
 
+    /**
+     * Gets red color boolean.
+     * @param redColor
+     * @return
+     */
     public boolean getRed(boolean redColor) {
         return redColor;
     }
 
+    /**
+     * Sets player x coordinate.
+     * @param x
+     */
     public void setX(float x) {
         this.x = x;
     }
 
+    /**
+     * Sets player y coordinate.
+     * @param y
+     */
     public void setY(float y) {
         this.y = y;
     }
 
+    /**
+     * Gets player x coordinate.
+     * @param playerXpos
+     * @return
+     */
     public float getX(float playerXpos) {
         return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2);
     }
+
+    /**
+     * Gets player y coordinate.
+     * @param playerYpos
+     * @return
+     */
     public float getY(float playerYpos) {
         return playerYpos + (rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
     }
 
+    /**
+     * Gets boolean whether the color has changed or not.
+     * @return
+     */
     public boolean isColorChanged() {
         return colorChanged;
     }
 
+    /**
+     * Sets boolean for color changing.
+     * @param colorChanged
+     */
     public void setColorChanged(boolean colorChanged) {
         this.colorChanged = colorChanged;
     }

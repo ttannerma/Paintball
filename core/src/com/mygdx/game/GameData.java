@@ -1,9 +1,12 @@
 package com.mygdx.game;
 
 /**
- * Created by Teemu on 2.5.2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 3.4.2018
+ *
+ * Contains default data for settings.
  */
-
 public class GameData {
 
     public static final float DEFAULT_SENSITIVITY_RIGHT = 5f;
@@ -35,9 +38,4 @@ public class GameData {
     public static final String DEFAULT_LEVEL_THREE_EN = "Level 3";
     public static final String DEFAULT_CALIBRATED_EN = "Calibrated";
     public static final String DEFAULT_SAVED_EN = "Saved";
-
-
-
-
-
 }

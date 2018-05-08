@@ -23,7 +23,11 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 
 /**
- * Created by Teemu Tannerma on 2.5.2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 2.5.2018
+ *
+ * A screen that holds all settings for the game.
  */
 public class SettingsScreen implements Screen {
 
@@ -80,6 +84,11 @@ public class SettingsScreen implements Screen {
     String usingChairButtonText;
     String sensitivityButtonText;
 
+    /**
+     * Setting screen constructor.
+     * @param host
+     * @param musicVolume
+     */
     public SettingsScreen(PaintBall host, float musicVolume) {
         batch = host.getBatch();
         this.host = host;
@@ -136,6 +145,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(calibratedText);
     }
 
+    /**
+     * Sets the values for the setting values.
+     */
     public void settingValues () {
         settings = Settings.getInstance();
 
@@ -148,6 +160,9 @@ public class SettingsScreen implements Screen {
         usingChair.setChecked(settings.getBoolean("gameChair", GameData.DEFAULT_USE_CHAIR));
     }
 
+    /**
+     * Creates a button for returning to main menu.
+     */
     public void buttonBack() {
         mainMenuText = settings.getString("mainMenuButtonText", GameData.DEFAULT_MAIN_MENU_EN);
         back = new TextButton(mainMenuText ,mySkin,"small");
@@ -174,6 +189,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(back);
     }
 
+    /**
+     * Creates a save button.
+     */
     public void buttonSave() {
         saveButtonText = settings.getString("saveButtonText", GameData.DEFAULT_SAVE_EN);
         save = new TextButton(saveButtonText ,mySkin);
@@ -223,6 +241,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(save);
     }
 
+    /**
+     * Creates calibration button.
+     */
     public void buttonCalibrate() {
         calibrateButtonText = settings.getString("calibrateButtonText", GameData.DEFAULT_CALIBRATE_EN);
         calibrate = new TextButton(calibrateButtonText, mySkin);
@@ -249,6 +270,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(calibrate);
     }
 
+    /**
+     * Sets accelerometer values
+     */
     public void setZeroPoint() {
 
         settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
@@ -262,6 +286,9 @@ public class SettingsScreen implements Screen {
         Gdx.app.log("SettingsScreen", "zeropointY" + settings.getFloat("zeroPointY", GameData.DEFAULT_ZERO_POINT_Y));
     }
 
+    /**
+     * Creates a slider for right side sensitivity settings.
+     */
     private void sliderRight() {
         sliderR = new Slider(0f,10f,1f,false, mySkin);
         sliderR.setAnimateInterpolation(Interpolation.smooth);
@@ -272,6 +299,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderR);
     }
 
+    /**
+     * Creates a slider for left side sensitivity settings.
+     */
     private void sliderLeft() {
         sliderL = new Slider(-10f,0f,1f,false, mySkin);
         sliderL.setAnimateInterpolation(Interpolation.smooth);
@@ -281,6 +311,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderL);
     }
 
+    /**
+     * Creates a slider for up sensitivity settings.
+     */
     private void sliderUp() {
         sliderU = new Slider(0f,10f,1f,true, mySkin);
         sliderU.setAnimateInterpolation(Interpolation.smooth);
@@ -290,6 +323,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderU);
     }
 
+    /**
+     * Creates a slider for down sensitivity settings.
+     */
     private void sliderDown() {
         sliderD = new Slider(-10f,0f,1f,true, mySkin);
         sliderD.setAnimateInterpolation(Interpolation.smooth);
@@ -299,6 +335,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(sliderD);
     }
 
+    /**
+     * Creates a slider for volume control.
+     */
     private void sliderVolume() {
         volumeButtonText = settings.getString("volumeButtonText", GameData.DEFAULT_VOLUME_TEXT_EN);
 
@@ -314,6 +353,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(volumeText);
     }
 
+    /**
+     * Creates a button for language.
+     */
     public void language() {
         languageButtonText = settings.getString("languageButtonText", GameData.DEFAULT_LANGUAGE_BUTTON_EN);
 
@@ -325,7 +367,9 @@ public class SettingsScreen implements Screen {
         stage.addActor(language);
     }
 
-
+    /**
+     * Creates a button for using chair.
+     */
     public void usingChair() {
         usingChairButtonText = settings.getString("usingChairButtonText", GameData.DEFAULT_USING_CHAIR_TEXT_EN);
 
@@ -336,6 +380,10 @@ public class SettingsScreen implements Screen {
         usingChair.setPosition(col_width*8 + selectBoxSize - usingChair.getWidth()/2, row_height * 0.5f);
         stage.addActor(usingChair);
     }
+
+    /**
+     * Sets String values to English.
+     */
     public void setEnglish() {
         settings.setString("mainMenuButtonText", GameData.DEFAULT_MAIN_MENU_EN);
         settings.setString("settingButtonText", GameData.DEFAULT_SETTINGS_EN);
@@ -355,6 +403,9 @@ public class SettingsScreen implements Screen {
         settings.setString("levelCompletedText", GameData.DEFAULT_LEVEL_COMPLETED_EN);
     }
 
+    /**
+     * Sets String values to Finnish.
+     */
     public void setFinnish() {
         settings.setString("mainMenuButtonText", "Valikko");
         settings.setString("settingButtonText", "Asetukset");

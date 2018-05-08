@@ -1,40 +1,38 @@
 package com.mygdx.game;
 
-        import com.badlogic.gdx.ApplicationAdapter;
-        import com.badlogic.gdx.Gdx;
-        import com.badlogic.gdx.Screen;
-        import com.badlogic.gdx.audio.Music;
-        import com.badlogic.gdx.graphics.Color;
-        import com.badlogic.gdx.graphics.GL20;
-        import com.badlogic.gdx.graphics.OrthographicCamera;
-        import com.badlogic.gdx.graphics.Pixmap;
-        import com.badlogic.gdx.graphics.Texture;
-        import com.badlogic.gdx.graphics.TextureData;
-        import com.badlogic.gdx.graphics.g2d.BitmapFont;
-        import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-        import com.badlogic.gdx.maps.MapLayer;
-        import com.badlogic.gdx.maps.MapObjects;
-        import com.badlogic.gdx.maps.objects.RectangleMapObject;
-        import com.badlogic.gdx.maps.tiled.TiledMap;
-        import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-        import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-        import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-        import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
-        import com.badlogic.gdx.math.Rectangle;
-        import com.badlogic.gdx.scenes.scene2d.InputEvent;
-        import com.badlogic.gdx.scenes.scene2d.InputListener;
-        import com.badlogic.gdx.scenes.scene2d.Stage;
-        import com.badlogic.gdx.scenes.scene2d.ui.Button;
-        import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-        import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-        import com.badlogic.gdx.utils.Array;
-
-        import java.awt.Paint;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.maps.MapLayer;
+import com.badlogic.gdx.maps.MapObjects;
+import com.badlogic.gdx.maps.objects.RectangleMapObject;
+import com.badlogic.gdx.maps.tiled.TiledMap;
+import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
+import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
+import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
+import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.Array;
 
 /**
- * Created by Teemu on 23.3.2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 13.2.2018
+ *
+ * Renders the level one.
  */
-
 public class LevelOne extends ApplicationAdapter implements Screen {
 
     PaintBall host;
@@ -42,29 +40,32 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     Rectangle rectangle;
     OrthographicCamera camera;
     Player player;
-    boolean blueColorChanged;
-    boolean redColorChanged;
-    boolean purpleColorChanged;
-    boolean upLeftCollision;
-    boolean downLeftCollision;
-    boolean upRightCollision;
-    boolean downRightCollision;
-    boolean mapFinished;
-    int timer = 100;
     TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
-    float width;
-    float height;
-    float row_height;
-    float col_width;
-    String puddleCol;
     Stage stage;
     Skin mySkin;
     BitmapFont logo;
     Music music;
+
+    boolean blueColorChanged;
+    boolean redColorChanged;
+    boolean purpleColorChanged;
+    boolean mapFinished;
+    int timer = 100;
+    float width;
+    float height;
+    float row_height;
+    float col_width;
     float musicVol;
+    String puddleCol;
     String buttonText;
 
+    /**
+     * Constructor for LevelOne.
+     * @param host
+     * @param musicVolume
+     * @param buttonText
+     */
     public LevelOne(final PaintBall host, float musicVolume, String buttonText) {
 
         batch = host.getBatch();
@@ -176,8 +177,12 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         Gdx.app.log("X AND Y: ", "x: " + player.getX(player.playerXpos) / 32 + " y: " + player.getY(player.playerYpos) / 32);
 
         timer--;
-
     }
+
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     public boolean checkGoalCollision() {
 
         // Gets the goals rectangle layer.
@@ -202,15 +207,27 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         return false;
     }
 
+    /**
+     * Sets current color that player has.
+     * @param puddleCol
+     */
     public void setPuddleCol(String puddleCol) {
         this.puddleCol = puddleCol;
     }
 
+    /**
+     * Gets players current color.
+     * @return
+     */
     public String getPuddleCol() {
         return puddleCol;
     }
 
-
+    /**
+     * Sets players color.
+     * @param red
+     * @param blue
+     */
     private void setColorOfPlayer(boolean red, boolean blue) {
         if(red && !blue) {
             setPuddleCol("red");
@@ -231,6 +248,10 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
     }
 
+    /**
+     * Clears the gates.
+     * @param path
+     */
     private void clearGate(String path) {
 
         // Gets the gates texture layer.
@@ -255,6 +276,12 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
     }
 
+    /**
+     * Checks if player collides with paint puddle.
+     * @param color
+     * @param path
+     * @return
+     */
     public boolean checkPaintCollision(boolean color, String path) {
         if(player.isColorChanged() == false && color == true) {
             return color;
@@ -284,6 +311,9 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         return color;
     }
 
+    /**
+     * Checks if player collides with named object layer.
+     */
     public void checkWallCollision() {
 
         // Gets worlds wall rectangle layer.
@@ -305,6 +335,10 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         }
     }
 
+    /**
+     * Checks if player has collided with reset point.
+     * @return
+     */
     public boolean checkResetCollision() {
 
         // Gets worlds wall rectangle layer.
@@ -328,6 +362,10 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         return false;
     }
 
+    /**
+     * Changes the players texture according to current color.
+     * @param color
+     */
     public void changeColor(String color) {
         if(color.equals("red")) {
             player.setTexture(new Texture(Gdx.files.internal("sketch_ball_red.png")));

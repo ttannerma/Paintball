@@ -4,12 +4,9 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.TextureData;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
@@ -30,9 +27,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Created by Teemu on 3.4.2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 3.4.2018
+ *
+ * Renders the level two.
  */
-
 public class LevelTwo extends ApplicationAdapter implements Screen {
 
     TiledMap tiledMap;
@@ -67,6 +67,12 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
     Music music;
     String buttonText;
 
+    /**
+     * Constructor for LevelTwo.
+     * @param host
+     * @param musicVolume
+     * @param buttonText
+     */
     public LevelTwo(final PaintBall host, float musicVolume, String buttonText) {
 
         batch = host.getBatch();
@@ -195,6 +201,10 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
 
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkGoalCollision() {
 
         // Gets red gate rectangle layer.
@@ -218,16 +228,35 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         return false;
     }
 
+    /**
+     * Sets current color that player has.
+     * @param puddleCol
+     */
     public void setPuddleCol(String puddleCol) {
 
         this.puddleCol = puddleCol;
     }
 
+    /**
+     * Gets players current color.
+     * @return
+     */
     public String getPuddleCol() {
 
         return puddleCol;
     }
 
+    /**
+     * Sets players color.
+     * @param red
+     * @param blue
+     * @param secondRed
+     * @param white
+     * @param black
+     * @param yellow
+     * @param secondWhite
+     * @param green
+     */
     private void setColorOfPlayer(boolean red, boolean blue, boolean secondRed, boolean white, boolean black, boolean yellow, boolean secondWhite, boolean green) {
         if(red && !blue && !yellow && !white && !black) {
             setPuddleCol("red");
@@ -305,6 +334,10 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         }
     }
 
+    /**
+     * Clears the gates.
+     * @param path
+     */
     private void clearGate(String path) {
 
         // Gets the gates texture layer.
@@ -349,6 +382,12 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         }
     }
 
+    /**
+     * Checks if player collides with paint puddle.
+     * @param color
+     * @param path
+     * @return
+     */
     public boolean checkPaintCollision(boolean color, String path) {
         if(player.isColorChanged() == false && color == true) {
             return color;
@@ -378,6 +417,10 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         return color;
     }
 
+    /**
+     * Changes the players texture according to current color.
+     * @param color
+     */
     public void changeColor(String color) {
 
         if (color.equals("red") || color.equals("secondRed")) {
@@ -414,6 +457,10 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         }
     }
 
+    /**
+     * Checks if player has collided with reset point.
+     * @return
+     */
     public boolean checkResetCollision() {
 
         // Gets worlds wall rectangle layer.
@@ -437,9 +484,18 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         return false;
     }
 
+    /**
+     * Sets red color.
+     * @param redColored
+     */
     public void setRed(boolean redColored) {
         redColor = redColored;
     }
+
+    /**
+     * Sets blue color.
+     * @param blueColored
+     */
     public void setBlue(boolean blueColored) {
         blueColor = blueColored;
     }

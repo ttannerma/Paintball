@@ -3,9 +3,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -16,14 +13,15 @@ import com.badlogic.gdx.maps.MapObjects;
 import com.badlogic.gdx.maps.objects.RectangleMapObject;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Contains implementation of the player class for level two.
- * Created by Teemu on 2/23/2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 11.3.2018
+ *
+ * Player class for second level.
  */
 public class PlayerLevelTwo extends Sprite {
 
@@ -81,6 +79,13 @@ public class PlayerLevelTwo extends Sprite {
     float accelY;
     float accelZ;
 
+    /**
+     * Constructor for PlayerLevelTwo.
+     * @param x
+     * @param y
+     * @param tiledMap
+     * @param host
+     */
     public PlayerLevelTwo (float x, float y, TiledMap tiledMap, PaintBall host) {
         setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
         setupTextureRegion();
@@ -120,16 +125,27 @@ public class PlayerLevelTwo extends Sprite {
         }
     }
 
+    /**
+     * Gets current texture for the animation.
+     * @return texture.
+     */
     @Override
     public Texture getTexture() {
         return texture;
     }
 
+    /**
+     * Sets texture for the animation.
+     * @param texture
+     */
     @Override
     public void setTexture(Texture texture) {
         this.texture = texture;
     }
 
+    /**
+     * Animates the players movement.
+     */
     public void setupTextureRegion() {
         playerRegion = TextureRegion.split(getTexture(), getTexture().getWidth() / 1, getTexture().getHeight());
         rollingAnimation = convertTo1D(playerRegion);
@@ -138,6 +154,11 @@ public class PlayerLevelTwo extends Sprite {
         currentFrame = rolling.getKeyFrames()[0];
     }
 
+    /**
+     * Converts 2d array to 1d.
+     * @param region
+     * @return 1d array
+     */
     private TextureRegion[] convertTo1D(TextureRegion[][] region) {
         TextureRegion[] animation = new TextureRegion[region.length * region[0].length];
         int index = 0;
@@ -179,8 +200,6 @@ public class PlayerLevelTwo extends Sprite {
             purpleUsed = true;
         }
 
-        // y = oikea vasen
-        // z = eteen taakse
         if(accelY > rightThreshhold || right) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
             if(upRightCollision && upLeftCollision) {
@@ -224,10 +243,8 @@ public class PlayerLevelTwo extends Sprite {
         }
 
         playerRectangle.setPosition(x, y);
-        //Gdx.app.log("TAG", "x: " + Float.toString(x) + " y: " + Float.toString(y));
 
         currentFrame = rolling.getKeyFrames()[0];
-        //animationFrame--;
 
         batch.begin();
         batch.draw(currentFrame, playerRectangle.x, playerRectangle.y,
@@ -241,6 +258,10 @@ public class PlayerLevelTwo extends Sprite {
 
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkPinkGateCollision() {
 
         if(pinkColor) {
@@ -268,6 +289,10 @@ public class PlayerLevelTwo extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkSecondWhiteGateCollision() {
 
         if(secondWhiteColor) {
@@ -295,6 +320,10 @@ public class PlayerLevelTwo extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkOrangeGateCollision() {
 
         if(orangeColor) {
@@ -322,6 +351,10 @@ public class PlayerLevelTwo extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkBrownGateCollision() {
 
         if(brownColor) {
@@ -349,6 +382,10 @@ public class PlayerLevelTwo extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkCyanGateCollision() {
 
         if(cyanColor) {
@@ -376,6 +413,10 @@ public class PlayerLevelTwo extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkSecondRedGateCollision() {
 
         if(secondRedColor || secondRedUsed) {
@@ -403,6 +444,10 @@ public class PlayerLevelTwo extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkRedGateCollision() {
 
         if(redColor || redUsed) {
@@ -430,6 +475,10 @@ public class PlayerLevelTwo extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     public void checkSecondRedPuddleCollision() {
 
         // Gets worlds wall rectangle layer.
@@ -451,6 +500,10 @@ public class PlayerLevelTwo extends Sprite {
         }
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkPurpleGateCollision() {
 
         if(redColor && blueColor || purpleUsed) {
@@ -478,6 +531,12 @@ public class PlayerLevelTwo extends Sprite {
         return false;
     }
 
+    /**
+     * Checks if players texture's corners collide with tile layers.
+     * @param pX
+     * @param pY
+     * @param collision
+     */
     public void getMyCorners(float pX, float pY, String collision) {
 
         float downYpos = pY;
@@ -493,6 +552,13 @@ public class PlayerLevelTwo extends Sprite {
         Gdx.app.log("COLLSION!", "hit" + upLeftCollision + downLeftCollision + downRightCollision + upRightCollision);
     }
 
+    /**
+     * Checks if given coordinates of players textures collide with tile layer.
+     * @param x
+     * @param y
+     * @param collision
+     * @return
+     */
     private boolean isFree(float x, float y, String collision) {
 
         int indexXround = (int)(x / 32);
@@ -509,70 +575,166 @@ public class PlayerLevelTwo extends Sprite {
         }
     }
 
+    /**
+     * Sets green color.
+     * @param greenColored
+     */
     public void setGreen(boolean greenColored) {
         greenColor = greenColored;
     }
+
+    /**
+     * Sets second red color.
+     * @param redColored
+     */
     public void setSecondRedColor(boolean redColored) {
         secondRedColor = redColored;
     }
+
+    /**
+     * Sets cyan/light blue color.
+     * @param cyanColored
+     */
     public void setCyan(boolean cyanColored){
         cyanColor = cyanColored;
     }
+
+    /**
+     * Sets pink color.
+     * @param pinkColored
+     */
     public void setPink(boolean pinkColored) {
         pinkColor = pinkColored;
     }
+
+    /**
+     * Sets red color
+     * @param redColored
+     */
     public void setRed(boolean redColored) {
         redColor = redColored;
     }
+
+    /**
+     * Sets blue color.
+     * @param blueColored
+     */
     public void setBlue(boolean blueColored) {
         blueColor = blueColored;
     }
+
+    /**
+     * Sets white color.
+     * @param whiteColored
+     */
     public void setWhite(boolean whiteColored) {
         whiteColor = whiteColored;
     }
+
+    /**
+     * Sets second white color.
+     * @param secondWhiteColored
+     */
     public void setSecondWhite(boolean secondWhiteColored) {
         secondWhiteColor = secondWhiteColored;
     }
+
+    /**
+     * Sets brown color.
+     * @param brownColored
+     */
     public void setBrown(boolean brownColored) {
         brownColor = brownColored;
     }
+
+    /**
+     * Sets orange color.
+     * @param orangeColored
+     */
     public void setOrange(boolean orangeColored) {
         orangeColor = orangeColored;
     }
+
+    /**
+     * Sets black color.
+     * @param blackColored
+     */
     public void setBlack(boolean blackColored) {
         blackColor = blackColored;
     }
+
+    /**
+     * Sets yellow color.
+     * @param yellowColored
+     */
     public void setYellow(boolean yellowColored) {
         yellowColor = yellowColored;
     }
 
+    /**
+     * Gets blue color boolean.
+     * @param blueColor
+     * @return true or false
+     */
     public boolean getBlue(boolean blueColor) {
         return blueColor;
     }
 
+    /**
+     * Gets red color boolean
+     * @param redColor
+     * @return true or false
+     */
     public boolean getRed(boolean redColor) {
         return redColor;
     }
 
+    /**
+     * Sets x position for player.
+     * @param x
+     */
     public void setX(float x) {
         this.x = x;
     }
 
+    /**
+     * Sets y position for player.
+     * @param y
+     */
     public void setY(float y) {
         this.y = y;
     }
 
+    /**
+     * Gets x coordinate.
+     * @param playerXpos
+     * @return x coordinate.
+     */
     public float getX(float playerXpos) {
         return playerXpos + (rolling.getKeyFrame(0).getRegionWidth() / 10 / 2);
     }
+
+    /**
+     * Gets y coordinate.
+     * @param playerYpos
+     * @return y coordinate.
+     */
     public float getY(float playerYpos) {
         return playerYpos + (rolling.getKeyFrame(0).getRegionHeight() / 10 / 2);
     }
 
+    /**
+     * Returns true if color has changed.
+     * @return
+     */
     public boolean isColorChanged() {
         return colorChanged;
     }
 
+    /**
+     * Sets color changed boolean.
+     * @param colorChanged
+     */
     public void setColorChanged(boolean colorChanged) {
         this.colorChanged = colorChanged;
     }

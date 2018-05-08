@@ -17,9 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 
 /**
- * Created by Teemu on 23.3.2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 23.3.2018
+ *
+ * Main menu screen.
  */
-
 public class MainMenuScreen extends ApplicationAdapter implements Screen {
 
     SpriteBatch batch;
@@ -41,6 +44,10 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
     Stage stage;
     Skin mySkin;
 
+    /**
+     * Constructor for MainMenuScreen.
+     * @param host
+     */
     public MainMenuScreen(final PaintBall host) {
 
         settings = Settings.getInstance();

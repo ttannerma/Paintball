@@ -5,11 +5,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-import java.util.Set;
-
-import sun.applet.Main;
-
-
+/**
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 1.2.2018
+ *
+ * Main class.
+ */
 public class PaintBall extends Game{
 
 
@@ -28,15 +30,13 @@ public class PaintBall extends Game{
 	float zeroPointY;
 	float zeroPointZ;
 	boolean language;
-	String mainMenu;
-
 
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false, 800, 480);
 		batch = new SpriteBatch();
-		MainMenuScreen = new MainMenuScreen(this);
+		//MainMenuScreen = new MainMenuScreen(this);
 		settingsScreen = new SettingsScreen(this, 0.5f);
 		splashScreen = new SplashScreen(this);
 		settings = Settings.getInstance();
@@ -48,6 +48,9 @@ public class PaintBall extends Game{
 		super.render();
 	}
 
+    /**
+     * Updates language.
+     */
 	public void updateSettings() {
 		settings = Settings.getInstance();
 		language = settings.getBoolean("language", GameData.DEFAULT_LANGUAGE);
@@ -55,6 +58,9 @@ public class PaintBall extends Game{
 		Gdx.app.log("PaintBall", "update settings");
 	}
 
+    /**
+     * Updates controls.
+     */
 	public void updateControls() {
 		settings = Settings.getInstance();
 		moveRight = settings.getFloat("sensitivityRight", GameData.DEFAULT_SENSITIVITY_RIGHT);
@@ -66,6 +72,10 @@ public class PaintBall extends Game{
 		zeroPointZ = settings.getFloat("zeroPointZ", GameData.DEFAULT_ZERO_POINT_Z);
 	}
 
+    /**
+     * Gets sprite batch.
+     * @return
+     */
 	public SpriteBatch getBatch() {
 		return batch;
 	}

@@ -2,14 +2,12 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -18,7 +16,11 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 /**
- * Created by Teemu on 23.3.2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 23.3.2018
+ *
+ * A screen that displays "map finished" text and a button for returning to main menu.
  */
 
 public class MapFinished extends ApplicationAdapter implements Screen {
@@ -41,6 +43,10 @@ public class MapFinished extends ApplicationAdapter implements Screen {
     Stage stage;
     Skin mySkin;
 
+    /**
+     * Map finished screen constructor
+     * @param host
+     */
     public MapFinished(final PaintBall host) {
         batch = host.getBatch();
         this.host = host;

@@ -17,9 +17,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 
 /**
- * Created by Teemu on 23.3.2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 23.3.2018
+ *
+ * Contains buttons for levels.
  */
-
 public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
 
     PaintBall host;
@@ -41,6 +44,10 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
     String levelThreeButtonText;
     String mainMenuButtonText;
 
+    /**
+     * Constructor for LevelSelectionScreen.
+     * @param host
+     */
     public LevelSelectionScreen(final PaintBall host) {
 
         batch = host.getBatch();

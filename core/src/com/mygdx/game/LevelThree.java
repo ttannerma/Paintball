@@ -2,7 +2,6 @@ package com.mygdx.game;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
@@ -28,9 +27,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 
 /**
- * Created by Teemu on 19.4.2018.
+ * @author Teemu Tannerma
+ * @version 1.6
+ * @since 19.4.2018
+ *
+ * Renders the level three.
  */
-
 public class LevelThree extends ApplicationAdapter implements Screen {
 
     TiledMap tiledMap;
@@ -66,6 +68,12 @@ public class LevelThree extends ApplicationAdapter implements Screen {
     Music music;
     String buttonText;
 
+    /**
+     * Constructor for LevelThree.
+     * @param host
+     * @param musicVolume
+     * @param buttonText
+     */
     public LevelThree(final PaintBall host, float musicVolume, String buttonText) {
 
         batch = host.getBatch();
@@ -194,6 +202,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         stage.draw();
     }
 
+    /**
+     * Checks if player rectangle collides with named object layer.
+     * @return true if collision is happening.
+     */
     private boolean checkGoalCollision() {
 
         // Gets red gate rectangle layer.
@@ -217,16 +229,34 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         return false;
     }
 
+    /**
+     * Sets current color that player has.
+     * @param puddleCol
+     */
     public void setPuddleCol(String puddleCol) {
 
         this.puddleCol = puddleCol;
     }
 
+    /**
+     * Gets players current color.
+     * @return
+     */
     public String getPuddleCol() {
 
         return puddleCol;
     }
 
+    /**
+     * Sets players color.
+     * @param red
+     * @param blue
+     * @param secondRed
+     * @param white
+     * @param black
+     * @param secondWhite
+     * @param secondBlue
+     */
     private void setColorOfPlayer(boolean red, boolean blue, boolean secondRed, boolean white, boolean black, boolean secondWhite, boolean secondBlue) {
         if(red && !blue && !white && !black) {
             setPuddleCol("red");
@@ -294,6 +324,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         Gdx.app.log("Colors: ", "red: " + red + "blue: " +  blue + "second Red: " + secondRed + "white: " + white + "black: " + black + "secondWhite :" + secondWhite + "secondblue" + secondBlue);
     }
 
+    /**
+     * Clears the gates.
+     * @param path
+     */
     private void clearGate(String path) {
 
         // Gets the gates texture layer.
@@ -350,6 +384,12 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         }
     }
 
+    /**
+     * Checks if player collides with paint puddle.
+     * @param color
+     * @param path
+     * @return
+     */
     public boolean checkPaintCollision(boolean color, String path) {
         if(player.isColorChanged() == false && color == true) {
             return color;
@@ -379,6 +419,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         return color;
     }
 
+    /**
+     * Changes the players texture according to current color.
+     * @param color
+     */
     public void changeColor(String color) {
 
         if(color.equals("null")) {
@@ -417,6 +461,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         }
     }
 
+    /**
+     * Checks if player has collided with reset point.
+     * @return
+     */
     public boolean checkResetCollision() {
 
         // Gets worlds wall rectangle layer.
@@ -440,9 +488,18 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         return false;
     }
 
+    /**
+     * Sets red color.
+     * @param redColored
+     */
     public void setRed(boolean redColored) {
         redColor = redColored;
     }
+
+    /**
+     * Sets blue color.
+     * @param blueColored
+     */
     public void setBlue(boolean blueColored) {
         blueColor = blueColored;
     }

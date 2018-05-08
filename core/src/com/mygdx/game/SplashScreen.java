@@ -16,14 +16,15 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
  * @author Teemu Tannerma
  * @version 1.6
  * @since 8.5.2018
+ *
+ * A screen which displays logos for the game.
  */
-
 public class SplashScreen implements Screen {
 
     PaintBall host;
     Texture exerium;
     Texture tiko;
-    Texture ihanPihalla;
+    Texture paintBall;
     Texture tamk;
     Stage stage;
     private OrthographicCamera camera;
@@ -32,14 +33,17 @@ public class SplashScreen implements Screen {
     float height;
     private Image splashImageExerium;
     private Image splashImageTiko;
-    private Image splashImageIhanPihalla;
+    private Image splashImagePaintBall;
     private Image splashImageTamk;
     private Texture backgroundImage;
     SpriteBatch batch;
 
     private int splashScreenTime;
 
-
+    /**
+     * Splash screen constructor.
+     * @param host
+     */
     public SplashScreen(PaintBall host) {
         this.host = host;
         camera = new OrthographicCamera();
@@ -66,16 +70,16 @@ public class SplashScreen implements Screen {
         splashImageTamk.setPosition(camera.viewportWidth/4*3-tamk.getWidth()*0.4f/2, camera.viewportHeight/4*1 - tamk.getHeight()*0.4f/2);
         splashImageTamk.setSize(tamk.getWidth()*0.4f, tamk.getHeight()*0.4f);
 
-        ihanPihalla = new Texture("softcoregames_logo.png");
-        splashImageIhanPihalla = new Image(ihanPihalla);
-        splashImageIhanPihalla.setPosition(camera.viewportWidth/4 - ihanPihalla.getWidth()/2, camera.viewportHeight/2 - ihanPihalla.getHeight() /2);
-        splashImageIhanPihalla.setSize(ihanPihalla.getWidth(),ihanPihalla.getHeight());
+        paintBall = new Texture("softcoregames_logo.png");
+        splashImagePaintBall = new Image(paintBall);
+        splashImagePaintBall.setPosition(camera.viewportWidth/4 - paintBall.getWidth()/2, camera.viewportHeight/2 - paintBall.getHeight() /2);
+        splashImagePaintBall.setSize(paintBall.getWidth(),paintBall.getHeight());
 
         splashImageExerium.addAction(Actions.sequence(Actions.alpha(0f),
                 Actions.fadeIn(1.0f), Actions.delay(0.5f)));
         splashImageTiko.addAction(Actions.sequence(Actions.alpha(0f),
                 Actions.fadeIn(1.0f), Actions.delay(0.5f)));
-        splashImageIhanPihalla.addAction(Actions.sequence(Actions.alpha(0f),
+        splashImagePaintBall.addAction(Actions.sequence(Actions.alpha(0f),
                 Actions.fadeIn(1.0f), Actions.delay(0.5f)));
         splashImageTamk.addAction(Actions.sequence(Actions.alpha(0f),
                 Actions.fadeIn(1.0f), Actions.delay(0.5f)));
@@ -86,7 +90,7 @@ public class SplashScreen implements Screen {
 
         stage.addActor(splashImageExerium);
         stage.addActor(splashImageTiko);
-        stage.addActor(splashImageIhanPihalla);
+        stage.addActor(splashImagePaintBall);
         stage.addActor(splashImageTamk);
     }
 
