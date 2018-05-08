@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 /**
  * @author Teemu Tannerma
@@ -39,6 +40,8 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
     float width;
     float height;
     float musicVol;
+    float col_width;
+    float row_height;
     String levelOneButtonText;
     String levelTwoButtonText;
     String levelThreeButtonText;
@@ -71,19 +74,19 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
         music.setLooping(true);
 
 
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
+        width = camera.viewportWidth;
+        height = camera.viewportHeight;
 
-        stage = new Stage();
+        col_width = width / 12;
+        row_height = height / 12;
+
+        stage = new Stage(new StretchViewport(width, height));
         Gdx.input.setInputProcessor(stage);
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        int row_height = Gdx.graphics.getWidth() / 12;
-        int col_width = Gdx.graphics.getWidth() / 12;
-
         Button button1 = new TextButton(levelOneButtonText,mySkin,"small");
-        button1.setSize(col_width * 4, row_height);
-        button1.setPosition(50,60);
+        button1.setSize(col_width * 3, row_height * 2);
+        button1.setPosition(col_width,row_height * 7);
         button1.addListener(new InputListener(){
 
             @Override
@@ -95,8 +98,8 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
         });
 
         Button button2 = new TextButton(levelTwoButtonText, mySkin, "small");
-        button2.setSize(col_width * 4, row_height);
-        button2.setPosition(50, 160);
+        button2.setSize(col_width * 3, row_height * 2);
+        button2.setPosition(col_width, row_height * 4);
         button2.addListener(new InputListener()  {
 
             @Override
@@ -107,9 +110,10 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
             }
         });
 
+
         Button button3 = new TextButton(mainMenuButtonText, mySkin, "small");
-        button3.setSize(col_width * 4, row_height);
-        button3.setPosition(width / 2, 60);
+        button3.setSize(col_width * 3, row_height * 2);
+        button3.setPosition(col_width * 8, row_height);
         button3.addListener(new InputListener()  {
 
             @Override
@@ -121,8 +125,8 @@ public class LevelSelectionScreen extends ApplicationAdapter implements Screen {
         });
 
         Button button4 = new TextButton(levelThreeButtonText, mySkin, "small");
-        button4.setSize(col_width * 4, row_height);
-        button4.setPosition(50, 260);
+        button4.setSize(col_width * 3, row_height * 2);
+        button4.setPosition(col_width, row_height);
         button4.addListener(new InputListener()  {
 
             @Override

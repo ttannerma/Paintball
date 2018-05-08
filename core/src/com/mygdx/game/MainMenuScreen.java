@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 
 
 /**
@@ -67,19 +68,19 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         music.setVolume(musicVol);
         music.setLooping(true);
 
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(camera.viewportWidth, camera.viewportHeight));
         Gdx.input.setInputProcessor(stage);
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
+        width = camera.viewportWidth;
+        height = camera.viewportHeight;
 
-        row_height = Gdx.graphics.getWidth() / 12;
-        col_width = Gdx.graphics.getWidth() / 12;
+        col_width = width / 12;
+        row_height = height / 12;
 
-        Button button2 = new TextButton(playButtonText,mySkin,"small");
-        button2.setSize(col_width * 4, row_height);
-        button2.setPosition(50,160);
+        Button button2 = new TextButton(playButtonText,mySkin, "small");
+        button2.setSize(col_width * 3, row_height * 2);
+        button2.setPosition(col_width, row_height * 4);
         button2.addListener(new InputListener(){
 
             @Override
@@ -91,8 +92,8 @@ public class MainMenuScreen extends ApplicationAdapter implements Screen {
         });
 
         Button button3 = new TextButton(settingButtonText, mySkin, "small");
-        button3.setSize(col_width * 4, row_height);
-        button3.setPosition(50, 60);
+        button3.setSize(col_width * 3, row_height * 2);
+        button3.setPosition(col_width, row_height);
         button3.addListener(new InputListener()  {
 
             @Override
