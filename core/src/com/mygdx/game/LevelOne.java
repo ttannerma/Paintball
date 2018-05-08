@@ -3,12 +3,14 @@ package com.mygdx.game;
         import com.badlogic.gdx.ApplicationAdapter;
         import com.badlogic.gdx.Gdx;
         import com.badlogic.gdx.Screen;
+        import com.badlogic.gdx.audio.Music;
         import com.badlogic.gdx.graphics.Color;
         import com.badlogic.gdx.graphics.GL20;
         import com.badlogic.gdx.graphics.OrthographicCamera;
         import com.badlogic.gdx.graphics.Pixmap;
         import com.badlogic.gdx.graphics.Texture;
         import com.badlogic.gdx.graphics.TextureData;
+        import com.badlogic.gdx.graphics.g2d.BitmapFont;
         import com.badlogic.gdx.graphics.g2d.SpriteBatch;
         import com.badlogic.gdx.maps.MapLayer;
         import com.badlogic.gdx.maps.MapObjects;
@@ -19,7 +21,15 @@ package com.mygdx.game;
         import com.badlogic.gdx.maps.tiled.TmxMapLoader;
         import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
         import com.badlogic.gdx.math.Rectangle;
+        import com.badlogic.gdx.scenes.scene2d.InputEvent;
+        import com.badlogic.gdx.scenes.scene2d.InputListener;
+        import com.badlogic.gdx.scenes.scene2d.Stage;
+        import com.badlogic.gdx.scenes.scene2d.ui.Button;
+        import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+        import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
         import com.badlogic.gdx.utils.Array;
+
+        import java.awt.Paint;
 
 /**
  * Created by Teemu on 23.3.2018.
@@ -31,9 +41,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     SpriteBatch batch;
     Rectangle rectangle;
     OrthographicCamera camera;
-    String puddleCol;
     Player player;
-    CollisionDetection collisionDetection;
     boolean blueColorChanged;
     boolean redColorChanged;
     boolean purpleColorChanged;
@@ -45,25 +53,73 @@ public class LevelOne extends ApplicationAdapter implements Screen {
     int timer = 100;
     TiledMap tiledMap;
     TiledMapRenderer tiledMapRenderer;
+    float width;
+    float height;
+    float row_height;
+    float col_width;
+    String puddleCol;
+    Stage stage;
+    Skin mySkin;
+    BitmapFont logo;
+    Music music;
+    float musicVol;
+    String buttonText;
 
-    public LevelOne(final PaintBall host) {
+    public LevelOne(final PaintBall host, float musicVolume, String buttonText) {
 
         batch = host.getBatch();
         this.host = host;
         camera = new OrthographicCamera();
+        this.buttonText = buttonText;
+
+        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        musicVol = musicVolume;
+        music.play();
+        music.setVolume(musicVol);
+        music.setLooping(true);
 
         camera.setToOrtho(false, 400f, 200f);
         puddleCol = "white";
         tiledMap = new TmxMapLoader().load("tutorial_level.tmx");
-        player = new Player(32 * 4,32 * 14, tiledMap);
+        player = new Player(32 * 4,32 * 14, tiledMap, host);
         player.setOriginCenter();
         blueColorChanged = false;
         redColorChanged = false;
         purpleColorChanged = false;
         mapFinished = false;
 
+
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        collisionDetection = new CollisionDetection(tiledMapRenderer, tiledMap);
+
+        logo = new BitmapFont(Gdx.files.internal("font.txt"));
+        logo.getData().setScale(0.7f, 0.7f);
+
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
+        row_height = camera.viewportHeight / 15;
+        col_width = camera.viewportWidth / 12;
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
+
+        int row_height = Gdx.graphics.getWidth() / 12;
+        int col_width = Gdx.graphics.getWidth() / 12;
+
+        Button button2 = new TextButton(buttonText,mySkin,"small");
+        button2.setSize(col_width * 2, row_height);
+        button2.setPosition(width - (width / 4), 0);
+        button2.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
+                host.setScreen(mainMenuScreen);
+                dispose();
+                return true;
+            }
+        });
+        stage.addActor(button2);
 
     }
 
@@ -84,9 +140,8 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
         batch.begin();
 
-        mapFinished = setMapFinished();
-
-        if(mapFinished) {
+        if(checkGoalCollision()) {
+            dispose();
             MapFinished mapFinished = new MapFinished(host);
             host.setScreen(mapFinished);
         }
@@ -95,6 +150,7 @@ public class LevelOne extends ApplicationAdapter implements Screen {
             changeColor("null");
             player.setupTextureRegion();
         }
+
 
         redColorChanged = checkPaintCollision(redColorChanged, "red_puddle_object");
         blueColorChanged = checkPaintCollision(blueColorChanged, "blue_puddle_object");
@@ -106,6 +162,8 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         batch.end();
 
         player.render(batch);
+        stage.act();
+        stage.draw();
 
         if(player.getX(player.playerXpos) / 32 >= 7 && player.getX(player.playerXpos) / 32 <= 25) {
             camera.position.x = player.getX(player.playerXpos);
@@ -120,10 +178,28 @@ public class LevelOne extends ApplicationAdapter implements Screen {
         timer--;
 
     }
+    public boolean checkGoalCollision() {
 
-    public boolean setMapFinished() {
-        mapFinished = collisionDetection.checkGoalCollision(player.playerRectangle);
-        return mapFinished;
+        // Gets the goals rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("goal_object");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(player.playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("Goal hit", "HIT");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public void setPuddleCol(String puddleCol) {
@@ -294,7 +370,9 @@ public class LevelOne extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
-        batch.dispose();
+        music.dispose();
+        stage.dispose();
+        player.dispose();
     }
 }
 

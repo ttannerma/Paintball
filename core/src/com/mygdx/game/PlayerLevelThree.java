@@ -27,7 +27,8 @@ import com.badlogic.gdx.utils.Array;
  */
 public class PlayerLevelThree extends Sprite {
 
-    private Texture texture, originalTexture;
+    PaintBall host;
+    private Texture texture;
     public Rectangle playerRectangle;
     private TextureRegion[][] playerRegion;
     private TextureRegion[] rollingAnimation;
@@ -35,9 +36,10 @@ public class PlayerLevelThree extends Sprite {
     private SpriteBatch batch;
     private Animation<TextureRegion> rolling;
 
-    private CollisionDetection colDetection;
+
     private boolean colorChanged = false;
     TiledMap tiledMap;
+
 
     int i = 0;
     float x;
@@ -65,18 +67,26 @@ public class PlayerLevelThree extends Sprite {
     boolean left;
     boolean right;
     boolean firstRedUsed;
-    float lastXVelocity = 0;
-    float lastYVelocity = 0;
+    boolean secondRedUsed;
+    boolean secondBlueUsed;
+    boolean blackUsed;
+    boolean usingGameChair;
+
+    float leftThreshold;
+    float rightThreshhold;
+    float upThreshold;
+    float downThreshold;
     String collision;
 
     float accelY;
     float accelZ;
 
-    public PlayerLevelThree (float x, float y, TiledMap tiledMap) {
+    public PlayerLevelThree (float x, float y, TiledMap tiledMap, PaintBall host) {
         setTexture(new Texture(Gdx.files.internal("sketch_ball.png")));
         setupTextureRegion();
         setX(x);
         setY(y);
+        this.host = host;
         this.tiledMap = tiledMap;
         redColor = false;
         secondRedColor = false;
@@ -91,7 +101,23 @@ public class PlayerLevelThree extends Sprite {
         yellowColor = false;
         pinkColor = false;
         firstRedUsed = false;
+        secondRedUsed = false;
+        secondBlueUsed = false;
+        blackUsed = false;
         collision = "walls";
+
+        usingGameChair = host.settings.getBoolean("gameChair", false);
+        leftThreshold = host.settings.getFloat("sensitivityLeft", -2f);
+        upThreshold = host.settings.getFloat("sensitivityUp", 2f);
+        downThreshold = host.settings.getFloat("sensitivityDown", -2f);
+        rightThreshhold = host.settings.getFloat("sensitivityRight", 2f);
+
+        if(usingGameChair) {
+            leftThreshold = -1f;
+            upThreshold = 3.5f;
+            rightThreshhold = 1f;
+            downThreshold = 1.5f;
+        }
     }
 
     @Override
@@ -131,7 +157,10 @@ public class PlayerLevelThree extends Sprite {
 
         float posThreshold = 2;
         float negThreshold = -2;
+
         float speed = 80 * Gdx.graphics.getDeltaTime();
+
+        Gdx.app.log("THRESHOLD VALUES", "UP" + upThreshold + " DOWN" + downThreshold + " LEFT" + leftThreshold + " RIGHT" + rightThreshhold);
 
         accelY = Gdx.input.getAccelerometerY();
         accelZ = Gdx.input.getAccelerometerZ();
@@ -140,10 +169,21 @@ public class PlayerLevelThree extends Sprite {
         left = Gdx.input.isKeyPressed(Input.Keys.LEFT);
         right = Gdx.input.isKeyPressed(Input.Keys.RIGHT);
 
+        if(secondRedColor) {
+            secondRedUsed = true;
+        }
+
+        if(secondBlueColor) {
+            secondBlueUsed = true;
+        }
+
+        if(blackColor) {
+            blackUsed = true;
+        }
 
         // y = oikea vasen
         // z = eteen taakse
-        if(accelY > posThreshold || right) {
+        if(accelY > rightThreshhold || right) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
             if(upRightCollision && upLeftCollision) {
                 if(!checkLightblueGateCollision()) {
@@ -154,26 +194,27 @@ public class PlayerLevelThree extends Sprite {
             }
         }
 
-        if(accelY < negThreshold || left) {
+        if(accelY < leftThreshold || left) {
             getMyCorners(getX(playerXpos) - speed, getY(playerYpos), collision);
-            if(downLeftCollision && upLeftCollision) {
-
+            if(downLeftCollision && upLeftCollision && !checkPinkGateCollision() && !checkBlackGateCollision()) {
                 x += (-1 * speed);
+            } else {
+                x += speed;
             }
         }
 
-        if(accelZ > posThreshold || up) {
+        if(accelZ > upThreshold || up) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
-            if(upLeftCollision && upRightCollision && !checkRedGateCollision()) {
+            if(upLeftCollision && upRightCollision && !checkRedGateCollision() && !checkSecondRedGateCollision()){
                 y += speed;
             } else {
                 y += (-1 * speed);
             }
         }
 
-        if(accelZ < negThreshold || down) {
+        if(accelZ < downThreshold || down) {
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
-            if(downLeftCollision && downRightCollision) {
+            if(downLeftCollision && downRightCollision && !checkBlueGateCollision()) {
                 y += (-1 * speed);
             } else {
                 y += speed;
@@ -196,6 +237,89 @@ public class PlayerLevelThree extends Sprite {
         playerXpos = playerRectangle.x;
         playerYpos = playerRectangle.y;
 
+    }
+
+    private boolean checkBlackGateCollision() {
+
+        if(blackColor || blackUsed) {
+            return false;
+        }
+
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("black_gate_two_object");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("BLACK GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkBlueGateCollision() {
+
+        if(secondBlueColor || secondBlueUsed) {
+            return false;
+        }
+
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("blue_gate_two_object");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("BLUE GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    private boolean checkSecondRedGateCollision() {
+
+        if(secondRedColor || secondRedUsed) {
+            return false;
+        }
+        // Gets red gate rectangle layer.
+        MapLayer collisionObjectLayer = tiledMap.getLayers().get("red_gate_two_object");
+
+        // All the objects of the layer.
+        MapObjects mapObjects = collisionObjectLayer.getObjects();
+
+        //Collects all rectangles in an array.
+        Array<RectangleMapObject> rectangleObjects = mapObjects.getByType(RectangleMapObject.class);
+
+        // Loop through all rectangles.
+        for(RectangleMapObject rectangleObject : rectangleObjects) {
+            com.badlogic.gdx.math.Rectangle rectangle = rectangleObject.getRectangle();
+
+            if(playerRectangle.overlaps(rectangle)) {
+                Gdx.app.log("SECOND RED GATE", "HIT");
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private boolean checkPinkGateCollision() {

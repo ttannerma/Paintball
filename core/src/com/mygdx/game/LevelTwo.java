@@ -3,12 +3,14 @@ package com.mygdx.game;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.TextureData;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
@@ -19,6 +21,12 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -44,19 +52,68 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
     boolean blackColorChanged;
     boolean yellowColorChanged;
     boolean secondWhiteChanged;
+    boolean greenColorChanged;
     boolean redColor;
     boolean blueColor;
+    float width;
+    float height;
+    float row_height;
+    float col_width;
+    float musicVol;
     String puddleCol;
+    Stage stage;
+    Skin mySkin;
+    BitmapFont logo;
+    Music music;
+    String buttonText;
 
-    public LevelTwo(final PaintBall host) {
+    public LevelTwo(final PaintBall host, float musicVolume, String buttonText) {
 
         batch = host.getBatch();
         this.host = host;
+        this.buttonText = buttonText;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 400f, 200f);
         tiledMap = new TmxMapLoader().load("SecondLevel.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        player = new PlayerLevelTwo(32 * 21, 32 * 12, tiledMap);
+        player = new PlayerLevelTwo(32 * 21, 32 * 12, tiledMap, host);
+
+        musicVol = musicVolume;
+        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        music.play();
+        music.setVolume(musicVol);
+        music.setLooping(true);
+
+
+        logo = new BitmapFont(Gdx.files.internal("font.txt"));
+        logo.getData().setScale(0.7f, 0.7f);
+
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
+        row_height = camera.viewportHeight / 15;
+        col_width = camera.viewportWidth / 12;
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
+
+        int row_height = Gdx.graphics.getWidth() / 12;
+        int col_width = Gdx.graphics.getWidth() / 12;
+
+        Button button2 = new TextButton(buttonText,mySkin,"small");
+        button2.setSize(col_width * 2, row_height);
+        button2.setPosition(width - (width / 4), 0);
+        button2.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
+                host.setScreen(mainMenuScreen);
+                dispose();
+                return true;
+            }
+        });
+        stage.addActor(button2);
 
         blueColorChanged = false;
         redColorChanged = false;
@@ -65,6 +122,7 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         cyanColorChanged = false;
         blackColorChanged = false;
         secondWhiteChanged = false;
+        greenColorChanged = false;
 
         redColor = false;
         blueColor = false;
@@ -99,9 +157,10 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         blackColorChanged = checkPaintCollision(blackColorChanged, "black_puddle_obj");
         yellowColorChanged = checkPaintCollision(yellowColorChanged, "yellow_puddle_obj");
         secondWhiteChanged = checkPaintCollision(secondWhiteChanged, "second_white_puddle_obj");
+        greenColorChanged = checkPaintCollision(greenColorChanged, "green_puddle_obj");
 
 
-        setColorOfPlayer(redColorChanged, blueColorChanged, secondRedColorChanged, whiteColorChanged, blackColorChanged, yellowColorChanged, secondWhiteChanged);
+        setColorOfPlayer(redColorChanged, blueColorChanged, secondRedColorChanged, whiteColorChanged, blackColorChanged, yellowColorChanged, secondWhiteChanged, greenColorChanged);
 
         if(checkResetCollision()) {
             changeColor("null");
@@ -111,22 +170,29 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
             player.setSecondRedColor(false);
             player.setWhite(false);
             player.setBlack(false);
+            player.setGreen(false);
             redColorChanged = false;
             blueColorChanged = false;
             secondRedColorChanged = false;
             whiteColorChanged = false;
             blackColorChanged = false;
             yellowColorChanged = false;
+            secondWhiteChanged = false;
+            greenColorChanged = false;
         }
 
         if(checkGoalCollision()) {
+            dispose();
             MapFinished mapFinished = new MapFinished(host);
             host.setScreen(mapFinished);
         }
 
         batch.end();
-
         player.render(batch);
+        stage.act();
+        stage.draw();
+
+
     }
 
     private boolean checkGoalCollision() {
@@ -162,7 +228,7 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
         return puddleCol;
     }
 
-    private void setColorOfPlayer(boolean red, boolean blue, boolean secondRed, boolean white, boolean black, boolean yellow, boolean secondWhite) {
+    private void setColorOfPlayer(boolean red, boolean blue, boolean secondRed, boolean white, boolean black, boolean yellow, boolean secondWhite, boolean green) {
         if(red && !blue && !yellow && !white && !black) {
             setPuddleCol("red");
             clearGate("red_gate");
@@ -219,7 +285,20 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
             player.setPink(true);
             clearGate("pink_gate");
         }
-
+        if(green && !yellow && !white && !black) {
+            setPuddleCol("green");
+            player.setGreen(true);
+        }
+        if(green && red && !black && !white){
+            setPuddleCol("brown");
+            clearGate("brown_gate");
+            player.setBrown(true);
+        }
+        if(blue && red && yellow && !white && !black) {
+            setPuddleCol("brown");
+            clearGate("brown_gate");
+            player.setBrown(true);
+        }
         if(player.isColorChanged()) {
             changeColor(getPuddleCol());
             player.setupTextureRegion();
@@ -331,6 +410,7 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
             whiteColorChanged = false;
             blackColorChanged = false;
             yellowColorChanged = false;
+            greenColorChanged = false;
         }
     }
 
@@ -386,8 +466,9 @@ public class LevelTwo extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
-
-        batch.dispose();
+        music.dispose();
+        stage.dispose();
+        player.dispose();
     }
 }
 

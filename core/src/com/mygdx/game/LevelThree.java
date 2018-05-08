@@ -4,9 +4,11 @@ import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.MapLayer;
 import com.badlogic.gdx.maps.MapObjects;
@@ -17,6 +19,12 @@ import com.badlogic.gdx.maps.tiled.TiledMapTileLayer;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
 import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Rectangle;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.InputListener;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.Array;
 
 /**
@@ -35,42 +43,90 @@ public class LevelThree extends ApplicationAdapter implements Screen {
     Rectangle rectangle;
 
     boolean redColorChanged;
-    boolean blueColorChanged;
-    boolean purpleColorChanged;
     boolean secondRedColorChanged;
+    boolean blueColorChanged;
+    boolean secondBlueChanged;
+    boolean purpleColorChanged;
     boolean whiteColorChanged;
     boolean cyanColorChanged;
     boolean blackColorChanged;
     boolean secondWhiteChanged;
-    boolean secondBlueChanged;
     boolean redColor;
     boolean blueColor;
     boolean bluePicked;
+    float width;
+    float height;
+    float row_height;
+    float col_width;
+    float musicVol;
     String puddleCol;
+    Stage stage;
+    Skin mySkin;
+    BitmapFont logo;
+    Music music;
+    String buttonText;
 
-
-
-    public LevelThree(final PaintBall host) {
+    public LevelThree(final PaintBall host, float musicVolume, String buttonText) {
 
         batch = host.getBatch();
         this.host = host;
+        this.buttonText = buttonText;
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 400f, 200f);
         tiledMap = new TmxMapLoader().load("Map_Three.tmx");
         tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap);
-        player = new PlayerLevelThree(32 * 22, 32 * 8, tiledMap);
+        player = new PlayerLevelThree(32 * 22, 32 * 8, tiledMap, host);
+
+        musicVol = musicVolume;
+        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        music.play();
+        music.setVolume(musicVol);
+        music.setLooping(true);
+
 
         blueColorChanged = false;
         redColorChanged = false;
+
         purpleColorChanged = false;
         whiteColorChanged = false;
         cyanColorChanged = false;
         blackColorChanged = false;
         secondWhiteChanged = false;
         secondBlueChanged = false;
+        secondRedColorChanged = false;
 
         redColor = false;
         blueColor = false;
+
+        logo = new BitmapFont(Gdx.files.internal("font.txt"));
+        logo.getData().setScale(0.7f, 0.7f);
+
+        width = Gdx.graphics.getWidth();
+        height = Gdx.graphics.getHeight();
+        row_height = camera.viewportHeight / 15;
+        col_width = camera.viewportWidth / 12;
+
+        stage = new Stage();
+        Gdx.input.setInputProcessor(stage);
+        mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
+
+        int row_height = Gdx.graphics.getWidth() / 12;
+        int col_width = Gdx.graphics.getWidth() / 12;
+
+        Button button2 = new TextButton(buttonText,mySkin,"small");
+        button2.setSize(col_width * 2, row_height);
+        button2.setPosition(width - (width / 4), 0);
+        button2.addListener(new InputListener(){
+
+            @Override
+            public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
+                MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
+                host.setScreen(mainMenuScreen);
+                dispose();
+                return true;
+            }
+        });
+        stage.addActor(button2);
     }
 
     @Override
@@ -116,11 +172,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             player.setSecondWhite(false);
             player.setBlack(false);
 
-
             redColorChanged = false;
+            secondRedColorChanged = false;
             blueColorChanged = false;
             secondBlueChanged = false;
-            secondRedColorChanged = false;
             whiteColorChanged = false;
             secondWhiteChanged = false;
             blackColorChanged = false;
@@ -128,13 +183,15 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         }
 
         if(checkGoalCollision()) {
+            dispose();
             MapFinished mapFinished = new MapFinished(host);
             host.setScreen(mapFinished);
         }
 
         batch.end();
-
         player.render(batch);
+        stage.act();
+        stage.draw();
     }
 
     private boolean checkGoalCollision() {
@@ -183,14 +240,13 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         }
         if(secondBlue && !white && !red && !black) {
             setPuddleCol("blue");
+            clearGate("blue_gate_two");
             player.setSecondBlueColor(true);
         }
-
         if(white) {
             setPuddleCol("white");
             player.setWhite(true);
         }
-
         if(blue && white) {
             setPuddleCol("cyan");
             clearGate("lightblue_gate_one");
@@ -201,14 +257,14 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             clearGate("purple_gate");
             clearGate("blue_gate");
         }
-        if(secondRed && !blue) {
+        if(secondRed) {
             setPuddleCol("secondRed");
-            clearGate("red_gate_second");
+            clearGate("red_gate_two");
             player.setSecondRedColor(true);
         }
-
-        if(black && !blue && !red && !white) {
+        if(black) {
             setPuddleCol("black");
+            clearGate("black_gate_two");
             player.setBlack(true);
         }
         if(black && red && !white && !blue) {
@@ -221,10 +277,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             player.setSecondWhite(true);
             clearGate("white_gate_one");
         }
-        if(secondWhite && red && !blue) {
+        if(secondWhite && secondRed && !blue) {
             setPuddleCol("pink");
             player.setPink(true);
-            clearGate("pink_gate");
+            clearGate("pink_gate_two");
         }
 
         if(player.isColorChanged()) {
@@ -248,12 +304,17 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             cell.setCell(20, 13, null);
             boolean redColorSet = true;
             player.setRed(redColorSet);
-        } else if(path.equals("secondBlue")) {
+        } else if(path.equals("blue_gate_two")) {
+            cell.setCell(23, 25, null);
+            cell.setCell(24, 25, null);
+            cell.setCell(25, 25, null);
+            cell.setCell(26, 25, null);
             player.setSecondBlueColor(true);
-        } else if(path.equals("red_gate_second")) {
-            cell.setCell(39, 10, null);
-            cell.setCell(36, 14, null);
-            cell.setCell(37, 14, null);
+        } else if(path.equals("red_gate_two")) {
+            cell.setCell(34, 20, null);
+            cell.setCell(35, 20, null);
+            cell.setCell(36, 20, null);
+            cell.setCell(37, 20, null);
             player.setSecondRedColor(true);
         } else if(path.equals("lightblue_gate_one")) {
             cell.setCell(21, 15, null);
@@ -271,11 +332,17 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             cell.setCell(29, 28, null);
             cell.setCell(29, 29, null);
             cell.setCell(29, 30, null);
-        } else if(path.equals("pink_gate")) {
-            cell.setCell(33, 43, null);
+        } else if(path.equals("pink_gate_two")) {
+            cell.setCell(20, 28, null);
+            cell.setCell(20, 29, null);
+            cell.setCell(20, 30, null);
         } else if(path.equals("blue_gate")) {
             boolean blueColorSet = true;
             player.setBlue(blueColorSet);
+        } else if(path.equals("black_gate_two")) {
+            cell.setCell(13, 28, null);
+            cell.setCell(13, 29, null);
+            cell.setCell(13, 30, null);
         }
     }
 
@@ -398,6 +465,8 @@ public class LevelThree extends ApplicationAdapter implements Screen {
 
     @Override
     public void dispose() {
-
+        music.dispose();
+        stage.dispose();
+        player.dispose();
     }
 }

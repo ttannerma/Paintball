@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="50" height="36" tilewidth="32" tileheight="32" infinite="0" nextobjectid="70">
+<map version="1.0" tiledversion="1.1.2" orientation="orthogonal" renderorder="right-down" width="50" height="36" tilewidth="32" tileheight="32" infinite="0" nextobjectid="71">
  <tileset firstgid="1" name="ground" tilewidth="32" tileheight="32" tilecount="80" columns="8">
   <image source="Sprite_sheet_levels.png" trans="ffffff" width="256" height="320"/>
  </tileset>
@@ -96,10 +96,12 @@
  <objectgroup name="black_paint_one_object">
   <object id="58" x="768" y="384" width="32" height="32"/>
  </objectgroup>
- <objectgroup name="black_gate_two_object"/>
+ <objectgroup name="black_gate_two_object">
+  <object id="70" x="422.333" y="147.667" width="18.3333" height="120.667"/>
+ </objectgroup>
  <layer name="walls" width="50" height="36">
   <data encoding="base64" compression="zlib">
-   eJztmGEOgyAMhfkr7JAcbUfxKB5lJIuJwQej9nVjpl/CH8CW17RYDcFxHA1LCGsM4fmlkXujnCVf1RGJMdGiOYvr4KM5ywLyGOXpsY466938/1QL7Jgie1GwzvDBwHWc7/EEciq982rIrwaNjnpNEnfXgWncYfV6ff/As/xSh4YZdZQYb9J3wYw6Ru32aucB9qM5iT8pDB0W/qzsHus+4TsgV/thD4PeKQxY8RmpGUuQvz2WGjsz6Chzq9aO67jGnXWgnmTvYcHzp56mZdcSiT+rvQxcB28vg7voQN8hrZEE/xCt+g/Hcf6XF95lUgc=
+   eJztmFEOhCAMRPsrXJKj7VE8ikdZko2JwQHBDsqSvoQfwZZpWqiKGIahYRFZncjnoRFKI+4l3NXhiDHRotmL6eCj2csC8hjl6bGOCvPF/L+qBXZMkT3XMM/wwcB0nM9xD3LK//Kqyq8GjY50riXupgOTOcPS+fT8gXt5U4eGEXXEGG+td8GIOmrtXtUO218vu7PoONa9x2dASNbDHgbdKQxY8ampmZ4gf3ssNXZG0BGfrVo7puMeM+tAPcnew4L3Tz1Nzm5PWvz1WsvAdPDWMphFB/oOyQ3f8A+xV/9hGMb/8gWHZlHv
   </data>
  </layer>
  <layer name="finnish" width="50" height="36">

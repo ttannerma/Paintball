@@ -6,6 +6,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -26,10 +27,16 @@ public class MapFinished extends ApplicationAdapter implements Screen {
     PaintBall host;
     BitmapFont message;
     OrthographicCamera camera;
+    Texture backgroundImage;
+    Settings settings;
 
     float width;
     float height;
-    //ShapeRenderer shapeRenderer;
+    float row_height;
+    float col_width;
+
+    String mapFinishedText;
+    String mainMenuButtonText;
 
     Stage stage;
     Skin mySkin;
@@ -37,14 +44,22 @@ public class MapFinished extends ApplicationAdapter implements Screen {
     public MapFinished(final PaintBall host) {
         batch = host.getBatch();
         this.host = host;
-        //shapeRenderer = new ShapeRenderer();
+        settings = Settings.getInstance();
+
+        mapFinishedText = settings.getString("levelCompletedText", GameData.DEFAULT_LEVEL_COMPLETED_EN);
+        mainMenuButtonText = settings.getString("mainMenuButtonText", GameData.DEFAULT_MAIN_MENU_EN);
+
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 800, 480);
         message = new BitmapFont(Gdx.files.internal("font.txt"));
         message.getData().setScale(0.7f, 0.7f);
+        backgroundImage = new Texture(Gdx.files.internal("settings_menu.png"));
 
         width = Gdx.graphics.getWidth();
         height = Gdx.graphics.getHeight();
+
+        row_height = Gdx.graphics.getWidth() / 12;
+        col_width = Gdx.graphics.getWidth() / 12;
 
         stage = new Stage();
         Gdx.input.setInputProcessor(stage);
@@ -53,14 +68,14 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         int row_height = Gdx.graphics.getWidth() / 12;
         int col_width = Gdx.graphics.getWidth() / 12;
 
-        Button button2 = new TextButton("Palaa valikkoon",mySkin,"small");
+        Button button2 = new TextButton(mainMenuButtonText, mySkin,"small");
         button2.setSize(col_width*4,row_height);
-        button2.setPosition(50,60);
+        button2.setPosition(0,0);
         button2.addListener(new InputListener(){
 
             @Override
             public boolean touchDown (InputEvent event, float x, float y, int pointer, int button) {
-                MainMenuScreen mainMenuScreen = new MainMenuScreen(host, true);
+                MainMenuScreen mainMenuScreen = new MainMenuScreen(host);
                 host.setScreen(mainMenuScreen);
                 return true;
             }
@@ -81,11 +96,13 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         batch.setProjectionMatrix(camera.combined);
 
         batch.begin();
-        message.draw(batch, "Taso suoritettu", width / 2 - 250f, height - 20f);
+        batch.draw(backgroundImage, 0,0, width, height);
+        message.draw(batch, mapFinishedText, col_width * 3, row_height * 5);
         batch.end();
 
         stage.act();
         stage.draw();
+
     }
 
     @Override
