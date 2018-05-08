@@ -141,7 +141,7 @@ public class PlayerLevelTwo extends Sprite {
 
         // y = oikea vasen
         // z = eteen taakse
-        if(accelY > posThreshold || right) {
+        if(accelY > 1 || right) {
             getMyCorners(getX(playerXpos) + speed, getY(playerYpos), collision);
             if(upRightCollision && upLeftCollision) {
                 if(!checkPurpleGateCollision() && !checkSecondRedGateCollision()) {
@@ -163,7 +163,7 @@ public class PlayerLevelTwo extends Sprite {
             }
         }
 
-        if(accelZ > posThreshold || up) {
+        if(accelZ > 3.5 || up) {
             getMyCorners(getX(playerXpos), getY(playerYpos) + speed, collision);
             if(upLeftCollision && upRightCollision) {
                 if(!checkSecondRedGateCollision() && !checkCyanGateCollision() && !checkBrownGateCollision() && !checkOrangeGateCollision() && !checkPinkGateCollision()) {
@@ -174,7 +174,7 @@ public class PlayerLevelTwo extends Sprite {
             }
         }
 
-        if(accelZ < negThreshold || down) {
+        if(accelZ < 1.5 || down) {
             getMyCorners(getX(playerXpos), getY(playerYpos) - speed, collision);
             if(downLeftCollision && downRightCollision && !checkSecondWhiteGateCollision()) {
                 y += (-1 * speed);
