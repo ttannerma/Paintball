@@ -67,7 +67,7 @@ public class SettingsScreen implements Screen {
     final float MEDIUM_TEXT_SCALE = 0.5f;
 
     boolean musicPlaying;
-    boolean useFinnish;
+    boolean useEnglish;
     float musicVol;
 
     String mainMenuText;
@@ -88,7 +88,7 @@ public class SettingsScreen implements Screen {
         savedHoverText = settings.getString("savedHoverText", GameData.DEFAULT_SAVED_EN);
         calibratedHoverText = settings.getString("calibratedHoverText", GameData.DEFAULT_CALIBRATED_EN);
         sensitivityButtonText = settings.getString("sensitivityButtonText", GameData.DEFAULT_SENSITIVITY_TEXT_EN);
-        useFinnish = settings.getBoolean("language", GameData.DEFAULT_LANGUAGE);
+        useEnglish = settings.getBoolean("language", GameData.DEFAULT_LANGUAGE);
 
         shapeRenderer = new ShapeRenderer();
         camera = new OrthographicCamera();
@@ -122,7 +122,6 @@ public class SettingsScreen implements Screen {
 
         stage.addActor(calibrateText);
 
-
         buttonSave();
         buttonBack();
         buttonCalibrate();
@@ -150,7 +149,6 @@ public class SettingsScreen implements Screen {
     }
 
     public void buttonBack() {
-        settings = Settings.getInstance();
         mainMenuText = settings.getString("mainMenuButtonText", GameData.DEFAULT_MAIN_MENU_EN);
         back = new TextButton(mainMenuText ,mySkin,"small");
         back.setSize(col_width*2,row_height*2);
@@ -177,7 +175,6 @@ public class SettingsScreen implements Screen {
     }
 
     public void buttonSave() {
-        settings = Settings.getInstance();
         saveButtonText = settings.getString("saveButtonText", GameData.DEFAULT_SAVE_EN);
         save = new TextButton(saveButtonText ,mySkin);
         save.setSize(col_width*2,row_height*2);
@@ -202,10 +199,15 @@ public class SettingsScreen implements Screen {
                 settings.setBoolean("language", language.isChecked());
                 settings.setFloat("volume", sliderV.getValue());
                 settings.setBoolean("gameChair", usingChair.isChecked());
-                if(useFinnish) {
-                    setFinnish();
-                } else {
+
+                settings.saveSettings();
+                host.updateSettings();
+                host.updateControls();
+
+                if(settings.getBoolean("language", language.isChecked())) {
                     setEnglish();
+                } else {
+                    setFinnish();
                 }
                 settings.saveSettings();
                 host.updateSettings();
@@ -222,7 +224,6 @@ public class SettingsScreen implements Screen {
     }
 
     public void buttonCalibrate() {
-        settings = Settings.getInstance();
         calibrateButtonText = settings.getString("calibrateButtonText", GameData.DEFAULT_CALIBRATE_EN);
         calibrate = new TextButton(calibrateButtonText, mySkin);
         calibrate.setSize(selectBoxSize*2, row_height*2);
@@ -249,7 +250,6 @@ public class SettingsScreen implements Screen {
     }
 
     public void setZeroPoint() {
-        settings = Settings.getInstance();
 
         settings.setFloat("zeroPointX", Gdx.input.getAccelerometerY());
         settings.setFloat("zeroPointY", Gdx.input.getAccelerometerZ());
@@ -300,7 +300,6 @@ public class SettingsScreen implements Screen {
     }
 
     private void sliderVolume() {
-        settings = Settings.getInstance();
         volumeButtonText = settings.getString("volumeButtonText", GameData.DEFAULT_VOLUME_TEXT_EN);
 
         sliderV = new Slider(0f,100f,1f,false, mySkin);
@@ -316,7 +315,6 @@ public class SettingsScreen implements Screen {
     }
 
     public void language() {
-        settings = Settings.getInstance();
         languageButtonText = settings.getString("languageButtonText", GameData.DEFAULT_LANGUAGE_BUTTON_EN);
 
         language = new CheckBox(languageButtonText, mySkin);
@@ -329,7 +327,6 @@ public class SettingsScreen implements Screen {
 
 
     public void usingChair() {
-        settings = Settings.getInstance();
         usingChairButtonText = settings.getString("usingChairButtonText", GameData.DEFAULT_USING_CHAIR_TEXT_EN);
 
         usingChair = new CheckBox(usingChairButtonText, mySkin);

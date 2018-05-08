@@ -78,7 +78,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         player = new PlayerLevelThree(32 * 22, 32 * 8, tiledMap, host);
 
         musicVol = musicVolume;
-        music = Gdx.audio.newMusic(Gdx.files.internal("mainmenu_music.wav"));
+        music = Gdx.audio.newMusic(Gdx.files.internal("gameplay.wav"));
         music.play();
         music.setVolume(musicVol);
         music.setLooping(true);
@@ -238,7 +238,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             clearGate("blue_gate");
             player.setBlue(true);
         }
-        if(secondBlue && !white && !red && !black) {
+        if(secondBlue && !secondWhite && !secondRed && !black) {
             setPuddleCol("blue");
             clearGate("blue_gate_two");
             player.setSecondBlueColor(true);
@@ -246,6 +246,10 @@ public class LevelThree extends ApplicationAdapter implements Screen {
         if(white) {
             setPuddleCol("white");
             player.setWhite(true);
+        }
+        if(secondBlue && secondWhite) {
+            setPuddleCol("cyan");
+            player.setCyan(true);
         }
         if(blue && white) {
             setPuddleCol("cyan");
@@ -257,7 +261,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             clearGate("purple_gate");
             clearGate("blue_gate");
         }
-        if(secondRed) {
+        if(secondRed && !secondWhite) {
             setPuddleCol("secondRed");
             clearGate("red_gate_two");
             player.setSecondRedColor(true);
@@ -272,7 +276,7 @@ public class LevelThree extends ApplicationAdapter implements Screen {
             clearGate("brown_gate");
             player.setBrown(true);
         }
-        if(secondWhite && !blue && !red) {
+        if(secondWhite && !secondBlue && !blue && !red) {
             setPuddleCol("white");
             player.setSecondWhite(true);
             clearGate("white_gate_one");
