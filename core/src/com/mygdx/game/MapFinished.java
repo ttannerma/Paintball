@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Button;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 
 /**
  * @author Teemu Tannerma
@@ -61,21 +63,18 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         message.getData().setScale(0.7f, 0.7f);
         backgroundImage = new Texture(Gdx.files.internal("settings_menu.png"));
 
-        width = Gdx.graphics.getWidth();
-        height = Gdx.graphics.getHeight();
+        width = camera.viewportWidth;
+        height = camera.viewportHeight;
 
         row_height = Gdx.graphics.getWidth() / 12;
         col_width = Gdx.graphics.getWidth() / 12;
 
-        stage = new Stage();
+        stage = new Stage(new StretchViewport(width, height));
         Gdx.input.setInputProcessor(stage);
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
-        int row_height = Gdx.graphics.getWidth() / 12;
-        int col_width = Gdx.graphics.getWidth() / 12;
-
-        Button button2 = new TextButton(mainMenuButtonText, mySkin,"small");
-        button2.setSize(col_width*4,row_height);
+        Button button2 = new TextButton(mainMenuButtonText, mySkin, "small");
+        button2.setSize(col_width * 3, row_height * 2);
         button2.setPosition(0,0);
         button2.addListener(new InputListener(){
 
@@ -103,7 +102,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
 
         batch.begin();
         batch.draw(backgroundImage, 0,0, width, height);
-        message.draw(batch, mapFinishedText, col_width * 3, row_height * 5);
+        message.draw(batch, mapFinishedText, col_width / 2, row_height * 3);
         batch.end();
 
         stage.act();
