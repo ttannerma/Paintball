@@ -66,15 +66,15 @@ public class MapFinished extends ApplicationAdapter implements Screen {
         width = camera.viewportWidth;
         height = camera.viewportHeight;
 
-        row_height = Gdx.graphics.getWidth() / 12;
-        col_width = Gdx.graphics.getWidth() / 12;
+        row_height = height / 12;
+        col_width = width / 12;
 
         stage = new Stage(new StretchViewport(width, height));
         Gdx.input.setInputProcessor(stage);
         mySkin = new Skin(Gdx.files.internal("glassy-ui.json"));
 
         Button button2 = new TextButton(mainMenuButtonText, mySkin, "small");
-        button2.setSize(col_width * 3, row_height * 2);
+        button2.setSize(col_width *3, row_height*3);
         button2.setPosition(0,0);
         button2.addListener(new InputListener(){
 
@@ -102,7 +102,7 @@ public class MapFinished extends ApplicationAdapter implements Screen {
 
         batch.begin();
         batch.draw(backgroundImage, 0,0, width, height);
-        message.draw(batch, mapFinishedText, col_width / 2, row_height * 3);
+        message.draw(batch, mapFinishedText, col_width, row_height * 10);
         batch.end();
 
         stage.act();
